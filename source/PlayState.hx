@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.display.FlxBackdrop;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -16,6 +17,7 @@ import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
 import openfl.Assets;
 import flixel.util.FlxPoint;
+import openfl.Lib;
 
 
 
@@ -56,15 +58,28 @@ class PlayState extends FlxState
 	{
 		FlxRandom.globalSeed = 123321;
 		
-		var bg:FlxSprite = new FlxSprite(0, 0);
-		//bg.makeGraphic(TILE_WIDTH*35, TILE_HEIGHT*25, 0xffd5f2f7);
-		bg.makeGraphic(TILE_WIDTH*12, TILE_HEIGHT*14, 0xffd5f2f7);
-		add(bg);
 		
-		var x:FlxSprite = new FlxSprite(200, 0);
-		x.makeGraphic(200, TILE_HEIGHT*14, 0xff0000FF);
-		x.scrollFactor.x = .5;
-		add(x);
+		
+		var backgroundRepeat1:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_sky__png), 0, 0, true, false);
+		add(backgroundRepeat1);
+		
+		var backgroundRepeat2:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_clouds__png), .1, .2, true, false);
+		add(backgroundRepeat2);
+		backgroundRepeat2.y = 130;
+		var backgroundRepeat3:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_mountains__png), .3, .4, true, false);
+		add(backgroundRepeat3);
+		backgroundRepeat3.y = 120;
+		var backgroundRepeat4:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_grass__png), .5, 1, true, false);
+		add(backgroundRepeat4);
+		backgroundRepeat4.y = 190;
+		
+		var mapTileHeightMax = 28;
+		//var mapTileWidthMax = 40;
+		var leftoverbgheight =  (mapTileHeightMax * TILE_HEIGHT) - (190 + 233);
+		var bg:FlxSprite = new FlxSprite(0, 185 + 233);
+		bg.makeGraphic(FlxG.width, Std.int(leftoverbgheight), FlxColor.BLACK);
+		add(bg);
+		bg.scrollFactor.x = 0;
 		
 		_debugtxt = new FlxText(10, 10, 200, "-");
 		add(_debugtxt);
@@ -89,7 +104,7 @@ class PlayState extends FlxState
 		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
 		
 		_collisionMap = new FlxTilemap();				
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap_small__txt),textureRegion, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);		
+		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),textureRegion, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);		
 		add(_collisionMap);
 				
 		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
@@ -116,7 +131,7 @@ class PlayState extends FlxState
 		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
 		FlxG.camera.setBounds(0, 0, 1000, 1000, true);
 		FlxG.camera.follow(_player, FlxCamera.STYLE_NO_DEAD_ZONE,1);
-		FlxG.camera.zoom = 2;
+		//FlxG.camera.zoom = 2;
 	}
 	
 	/**
@@ -247,20 +262,23 @@ class PlayState extends FlxState
 	
 	public function resetCam():Void
 	{
-		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
+		
+		FlxG.camera.zoom = 1;
+		FlxG.camera.setSize(1000, 600);
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN,1);
-		FlxG.camera.zoom = 2;
+		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
+		
 	}
 	
 	public function resetGame():Void
 	{
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
+		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
 		_player.setPosition(64, 64);
 	}
 	
 	public function mapGen1():Void
 	{
-		var dirtbeginsrow:Int = 8;
+		var dirtbeginsrow:Int = 10;
 		
 		trace("mapgen " + _collisionMap.widthInTiles + "x" + _collisionMap.heightInTiles);
 		for (i in 1..._collisionMap.widthInTiles-1) {
@@ -276,8 +294,8 @@ class PlayState extends FlxState
 	
 	public function mapGen2():Void
 	{
-		var coalBeginRow:Int = 10;
-		var coalEndRow:Int = 12;
+		var coalBeginRow:Int = 12;
+		var coalEndRow:Int = 14;
 		var coalSeeds:Int = FlxRandom.intRanged(1, 20);
 		
 		//var coalLocX:Int = FlxRandom.intRanged(10, 12);
