@@ -6,6 +6,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
+import flixel.system.scaleModes.FixedScaleMode;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
@@ -262,9 +263,10 @@ class PlayState extends FlxState
 	
 	public function resetCam():Void
 	{
+		FlxG.scaleMode = new FixedScaleMode();
 		
-		FlxG.camera.zoom = 1;
-		FlxG.camera.setSize(1000, 600);
+		//FlxG.camera.zoom = 2;
+		FlxG.camera.setSize(500, 300);
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN,1);
 		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
 		

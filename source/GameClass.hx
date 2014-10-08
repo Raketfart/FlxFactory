@@ -18,6 +18,8 @@ class GameClass extends FlxGame
 	 */
 	public function new()
 	{
+		
+		
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 		
@@ -28,12 +30,14 @@ class GameClass extends FlxGame
 		
 		var fps:Int = 60;
 		
-		super(Math.ceil(stageWidth / _ratio), Math.ceil(stageHeight / _ratio), MenuState, _ratio, fps, fps);
+		//super(Math.ceil(stageWidth / _ratio), Math.ceil(stageHeight / _ratio), MenuState, _ratio, fps, fps);
+		super(Math.ceil(stageWidth), Math.ceil(stageHeight), MenuState, _ratio, fps, fps);
 		
 		// Center game on screen.
 		
-		x = 0.5 * ( stageWidth - GAME_WIDTH * _ratio);
-		y = 0.5 * ( stageHeight - GAME_HEIGHT * _ratio);
+		//x = 0.5 * ( stageWidth - GAME_WIDTH * _ratio);
+		//y = 0.5 * ( stageHeight - GAME_HEIGHT * _ratio);
+		
 		
 		
 	}

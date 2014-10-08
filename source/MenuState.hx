@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.system.scaleModes.FixedScaleMode;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
@@ -19,8 +20,9 @@ class MenuState extends FlxState
 	 */
 	override public function create():Void
 	{
-		FlxG.camera.zoom = 2;
-		
+		//FlxG.camera.zoom = 2;
+		FlxG.scaleMode = new FixedScaleMode();
+		//FlxG.camera.zoom = 1;
 		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
 		add(_btnPlay);
 		
