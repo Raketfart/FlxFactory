@@ -6,7 +6,7 @@
     <movie input="" />
     <movie path="Project.xml" />
     <movie fps="60" />
-    <movie width="800" />
+    <movie width="1000" />
     <movie height="600" />
     <movie version="3" />
     <movie minorVersion="0" />
@@ -29,7 +29,7 @@
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--no-output&#xA;-swf-version 11.8" />
+    <option additional="--no-output&#xA;-swf-version 12" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

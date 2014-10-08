@@ -23,7 +23,7 @@ using flixel.util.FlxSpriteUtil;
 class PlayState extends FlxState
 {
 	//var _player:Player;
-	var _btnPlay:FlxButton;
+	
 	public var _debugtxt:FlxText;
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -41,13 +41,12 @@ class PlayState extends FlxState
 	/**
 	 * Some interface buttons and text
 	 */
-	private var _resetButton:FlxButton;
-	private var _helperText:FlxText;
-	var _cambutton:FlxButton;
+	
 	
 	private static inline var TILE_WIDTH:Int = 20;
 	private static inline var TILE_HEIGHT:Int = 20;
 	private var _collisionMap:FlxTilemap;
+	var hud:HUD;
 	
 	
 	override public function create():Void
@@ -89,30 +88,8 @@ class PlayState extends FlxState
 		setupPlayer();
 		
 		
-		var HUD:FlxGroup = new FlxGroup();		
-		add(HUD);
-		
-		var hudbg:FlxSprite = new FlxSprite(4, FlxG.height-30);
-		hudbg.makeGraphic(300, 30, 0xffFF00FF);
-		HUD.add(hudbg);
-		
-		// When switching between modes here, the map is reloaded with it's own data, so the positions of tiles are kept the same
-		// Notice that different tilesets are used when the auto mode is switched
-		_cambutton = new FlxButton(8, FlxG.height - 24, "CAM", onCam); 
-		HUD.add(_cambutton);
-		
-		_resetButton = new FlxButton(8 +_cambutton.width, FlxG.height - 24, "Reset", onReset); 
-		HUD.add(_resetButton);
-		
-		_helperText = new FlxText(20 + _resetButton.x+_resetButton.width , FlxG.height - 26, 300, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
-		HUD.add(_helperText);
-		HUD.setAll("scrollFactor", new FlxPoint(0, 0));
-		
-		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		
-		
-		_btnPlay.screenCenter();
-		HUD.add(_btnPlay);
+		hud = new HUD(this);
+		add(hud);
 		
 		//_btnPlay.y = 10;
 		
@@ -140,11 +117,7 @@ class PlayState extends FlxState
 	 * Function that is called once every frame.
 	 */
 	
-	private function clickPlay():Void
-	{
-		//_debugtxt.text += "button";
-		//_player.x += 10;
-	}
+	
 	private function setupPlayer():Void
 	{
 		_player = new FlxSprite(64, 64);
@@ -173,7 +146,6 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		
-		
 		if (FlxG.mouse.justPressedRight)
 		{
 			_debugtxt.text = "right";
@@ -184,13 +156,16 @@ class PlayState extends FlxState
 			//_player.switchState(1);	
 			_debugtxt.text = "left";
 			
-			//TODO: lav hud class, check på hud bg i stedet.
-			//hvis musen overlapper hud, så går klikket ikke videre
-			if (_btnPlay.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
+			
+		}
+		if (FlxG.mouse.pressed)
+		{		
+			if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
 			{
-				trace("overlap");
+				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
 			}
 		}
+		
 		if (FlxG.mouse.justReleased || FlxG.mouse.justReleasedRight)
 		{
 			_debugtxt.text = "-";
@@ -205,14 +180,7 @@ class PlayState extends FlxState
 		_highlightBox.x = Math.floor(FlxG.mouse.x / TILE_WIDTH) * TILE_WIDTH;
 		_highlightBox.y = Math.floor(FlxG.mouse.y / TILE_HEIGHT) * TILE_HEIGHT;
 		
-		if (FlxG.mouse.pressed)
-		{
-			
-			// FlxTilemaps can be manually edited at runtime as well.
-			// Setting a tile to 0 removes it, and setting it to anything else will place a tile.
-			// If auto map is on, the map will automatically update all surrounding tiles.
-			_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
-		}
+		
 		
 		updatePlayer();
 		
@@ -258,21 +226,17 @@ class PlayState extends FlxState
 		}
 	}
 	
-	private function onCam():Void
+	public function resetCam():Void
 	{
 		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN,1);
 		FlxG.camera.zoom = 2;
-		
 	}
 	
-	private function onReset():Void
+	public function resetGame():Void
 	{
-		switch (_collisionMap.auto)
-		{			
-			case FlxTilemap.OFF:
-				_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
-				_player.setPosition(64, 64);
-		}
+		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
+		_player.setPosition(64, 64);
 	}
+	
 }

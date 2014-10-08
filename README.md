@@ -1,4 +1,4 @@
 FlxFactory
 ==========
 
-Flixel game
+HaxeFlixel game
