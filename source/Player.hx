@@ -18,26 +18,36 @@ class Player extends FlxSprite
     {
         super(X, Y);
 		//makeGraphic(16, 16, FlxColor.GRAY);
-		loadGraphic(AssetPaths.workerTile_19x17__png, true, 19,17);
+		loadGraphic(AssetPaths.characterpixel__png, true,21,21);
 		
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
+		setSize(11, 18);
+		offset.set(5, 2);
+		setFacingFlip(FlxObject.LEFT, true, false);
+		setFacingFlip(FlxObject.RIGHT, false, false);
 
-		animation.add("lr", [2,3], 6, false);
-		//animation.add("u", [6, 7, 6, 8], 6, false);
-		//animation.add("d", [0, 1, 0, 2], 6, false);
+		animation.add("idle", [0], 6, false);
+		animation.add("run", [1, 9, 10], 6, false);
+		animation.add("jump", [7,8], 6, false);
+		animation.add("jumpdown", [2], 6, false);
+		animation.add("duck", [3], 6, false);
 		
 		
-		drag.x = drag.y = 1600;
+		//drag.x = drag.y = 1600;
+		
+		drag.x = 640;
+		acceleration.y = 420;
+		maxVelocity.set(120, 200);
+		
 	}
 	
 	override public function update():Void
 	{
-		
-			movement();
+		/*
+			movement();*/
 			super.update();
+			
 	}
-	
+	/*
 	private function movement():Void
 	{
 		var _up:Bool = false;
@@ -112,6 +122,6 @@ class Player extends FlxSprite
 		var ct:ColorTransform = new ColorTransform(.5, 1, 1);
 		
 		this.colorTransform = ct;
-	}
+	}*/
 	
 }

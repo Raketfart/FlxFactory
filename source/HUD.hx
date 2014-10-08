@@ -18,7 +18,7 @@ class HUD extends FlxGroup
 	var _resetButton:FlxButton;
 	var _helperText:FlxText;
 	var _cambutton:FlxButton;	
-	
+		
 	
 	public var hudbg:FlxSprite;
 	
@@ -43,8 +43,13 @@ class HUD extends FlxGroup
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn1:FlxButton = new FlxButton(nextpositionX, FlxG.height - 24, "Play", onBtn1);
+		var _btn1:FlxButton = new FlxButton(nextpositionX, FlxG.height - 24, "Generate1", onBtn1);
 		add(_btn1);
+		
+		nextpositionX += _cambutton.width + buttonspace;
+		
+		var _btn2:FlxButton = new FlxButton(nextpositionX, FlxG.height - 24, "Generate2", onBtn2);
+		add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
@@ -71,8 +76,11 @@ class HUD extends FlxGroup
 	}
 	private function onBtn1():Void
 	{
-		
+		_state.mapGen1();
 	}
-	
+	private function onBtn2():Void
+	{
+		_state.mapGen2();
+	}
 	
 }

@@ -11,6 +11,9 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
+import flixel.util.loaders.CachedGraphics;
+import flixel.util.loaders.TextureRegion;
 import openfl.Assets;
 import flixel.util.FlxPoint;
 
@@ -36,32 +39,30 @@ class PlayState extends FlxState
 	/**
 	 * Player modified from "Mode" demo
 	 */ 
-	private var _player:FlxSprite;
+	private var _player:Player;
 	
 	/**
 	 * Some interface buttons and text
 	 */
 	
 	
-	private static inline var TILE_WIDTH:Int = 20;
-	private static inline var TILE_HEIGHT:Int = 20;
+	private static inline var TILE_WIDTH:Int = 21;
+	private static inline var TILE_HEIGHT:Int = 21;
 	private var _collisionMap:FlxTilemap;
 	var hud:HUD;
 	
 	
 	override public function create():Void
 	{
-		
-		var bg2:FlxSprite = new FlxSprite(-200, -200);
-		bg2.makeGraphic(FlxG.width*8, FlxG.height*4, 0xffFF00FF);
-		add(bg2);
+		FlxRandom.globalSeed = 123321;
 		
 		var bg:FlxSprite = new FlxSprite(0, 0);
-		bg.makeGraphic(FlxG.width, FlxG.height, 0xffd5f2f7);
+		//bg.makeGraphic(TILE_WIDTH*35, TILE_HEIGHT*25, 0xffd5f2f7);
+		bg.makeGraphic(TILE_WIDTH*12, TILE_HEIGHT*14, 0xffd5f2f7);
 		add(bg);
 		
 		var x:FlxSprite = new FlxSprite(200, 0);
-		x.makeGraphic(200, FlxG.height, 0xff0000FF);
+		x.makeGraphic(200, TILE_HEIGHT*14, 0xff0000FF);
 		x.scrollFactor.x = .5;
 		add(x);
 		
@@ -70,12 +71,25 @@ class PlayState extends FlxState
 		
 		
 		
+		//tile space helper
+		var cached:CachedGraphics = FlxG.bitmap.add(AssetPaths.pixelspritesheet_trans__png);
+		// top left corner of the first tile
+		var startX:Int = 2;
+		var startY:Int = 2;
+		// tile size
+		var tileWidth:Int = 21;
+		var tileHeight:Int = 21;
+		// tile spacing
+		var spacingX:Int = 2;
+		var spacingY:Int = 2;
+		// end of tiles
+		var width:Int = cached.bitmap.width - startX;
+		var height:Int = cached.bitmap.height - startY;
+		// define region
+		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
 		
-		_collisionMap = new FlxTilemap();
-		
-		// Initializes the map using the generated string, the tile images, and the tile size
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
-		
+		_collisionMap = new FlxTilemap();				
+		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap_small__txt),textureRegion, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);		
 		add(_collisionMap);
 				
 		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
@@ -99,8 +113,9 @@ class PlayState extends FlxState
 		
 		super.create();
 		
-		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
-		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN,1);
+		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
+		FlxG.camera.setBounds(0, 0, 1000, 1000, true);
+		FlxG.camera.follow(_player, FlxCamera.STYLE_NO_DEAD_ZONE,1);
 		FlxG.camera.zoom = 2;
 	}
 	
@@ -120,6 +135,7 @@ class PlayState extends FlxState
 	
 	private function setupPlayer():Void
 	{
+		/*
 		_player = new FlxSprite(64, 64);
 		_player.loadGraphic("assets/spaceman.png", true, 16);
 		
@@ -139,15 +155,16 @@ class PlayState extends FlxState
 		_player.animation.add("jump", [4]);
 		
 		add(_player);
-		
-		
+		*/
+		_player = new Player(64, 64);
+		add(_player);
 	}
 	
 	override public function update():Void
 	{
 		
 		if (FlxG.mouse.justPressedRight)
-		{
+		{ 
 			_debugtxt.text = "right";
 			//_player.switchState(2);		
 		}
@@ -162,7 +179,9 @@ class PlayState extends FlxState
 		{		
 			if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
 			{
-				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
+				//_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
+				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				
 			}
 		}
 		
@@ -238,5 +257,57 @@ class PlayState extends FlxState
 		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
 		_player.setPosition(64, 64);
 	}
+	
+	public function mapGen1():Void
+	{
+		var dirtbeginsrow:Int = 8;
+		
+		trace("mapgen " + _collisionMap.widthInTiles + "x" + _collisionMap.heightInTiles);
+		for (i in 1..._collisionMap.widthInTiles-1) {
+			_collisionMap.setTile(i, dirtbeginsrow, TileType.TYPE_DIRT_GRASS);			
+		}
+		for (iy in dirtbeginsrow+1..._collisionMap.heightInTiles-1) {
+			for (ix in 1..._collisionMap.widthInTiles-1) {
+				_collisionMap.setTile(ix,iy, TileType.TYPE_DIRT_SOLID);			
+			}
+		}
+		
+	}
+	
+	public function mapGen2():Void
+	{
+		var coalBeginRow:Int = 10;
+		var coalEndRow:Int = 12;
+		var coalSeeds:Int = FlxRandom.intRanged(1, 20);
+		
+		//var coalLocX:Int = FlxRandom.intRanged(10, 12);
+		//var coalLocY:Int = FlxRandom.intRanged(1,_collisionMap.widthInTiles-1);
+		
+		for (i in 1...coalSeeds) {
+			var pos:FlxPoint = getSeedLoc(coalBeginRow,coalEndRow);
+			_collisionMap.setTile(Std.int(pos.x),Std.int(pos.y), TileType.TYPE_ICE_SOLID);						
+		}
+		
+	}
+	private function getSeedLoc(startRow:Int,endRow:Int):FlxPoint
+	{
+		var coalLocX:Int = FlxRandom.intRanged(1, _collisionMap.widthInTiles - 2);
+		var coalLocY:Int = FlxRandom.intRanged(startRow, endRow);
+		//trace("x" + coalLocX + " : " + (_collisionMap.widthInTiles - 1));
+		
+		return new FlxPoint(coalLocX, coalLocY);
+	}
+	
+	public function mapGen3():Void
+	{
+		
+		
+	}
+	public function mapGen4():Void
+	{
+		
+		
+	}
+	
 	
 }
