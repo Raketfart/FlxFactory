@@ -1,6 +1,8 @@
 package;
 
 import flixel.addons.display.FlxBackdrop;
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -14,6 +16,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
 import openfl.Assets;
@@ -53,12 +56,21 @@ class PlayState extends FlxState
 	private static inline var TILE_HEIGHT:Int = 21;
 	private var _collisionMap:FlxTilemap;
 	var hud:HUD;
+	var camfollow:FlxSprite;
+	var camfollowBounds:FlxRect;
+	var camZoom:Int;
+	var camfollowBoundsBorder:FlxSprite;
 	
+	/* EMITTER */
+	private var _emitter:FlxEmitter;
+	private var _whitePixel:FlxParticle;	
+	/* EMITTER */
 	
 	override public function create():Void
 	{
 		FlxRandom.globalSeed = 123321;
 		
+		camZoom = 1;
 		
 		
 		var backgroundRepeat1:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_sky__png), 0, 0, true, false);
@@ -74,7 +86,7 @@ class PlayState extends FlxState
 		add(backgroundRepeat4);
 		backgroundRepeat4.y = 190;
 		
-		var mapTileHeightMax = 28;
+		var mapTileHeightMax = 40;
 		//var mapTileWidthMax = 40;
 		var leftoverbgheight =  (mapTileHeightMax * TILE_HEIGHT) - (190 + 233);
 		var bg:FlxSprite = new FlxSprite(0, 185 + 233);
@@ -121,18 +133,54 @@ class PlayState extends FlxState
 		hud = new HUD(this);
 		add(hud);
 		
+		
+		
 		//_btnPlay.y = 10;
 		
 		//_helperText.text = "rect w " + _collisionMap.getBounds().width;
+		camfollowBounds = new FlxRect(100, 280, 500, 400);
+		camfollowBoundsBorder = new FlxSprite();
+		add(camfollowBoundsBorder);
+		drawCamFollowBounds();
 		
+		camfollow = new FlxSprite(camfollowBounds.left, camfollowBounds.top);
+		camfollow.makeGraphic(2, 2, FlxColor.AZURE);
+		add(camfollow);
 		
 		
 		super.create();
 		
 		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
-		FlxG.camera.setBounds(0, 0, 1000, 1000, true);
-		FlxG.camera.follow(_player, FlxCamera.STYLE_NO_DEAD_ZONE,1);
+		FlxG.camera.setBounds(-500, -500, 2000, 1500, false);
+		FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
 		//FlxG.camera.zoom = 2;
+		
+		_emitter = new FlxEmitter(40, 40, 200);
+		_emitter.setXSpeed( -50, 50);
+		_emitter.setYSpeed( -50, -100);
+		_emitter.width = TILE_WIDTH;
+		_emitter.height= TILE_WIDTH;
+		
+		_emitter.bounce = 0.1;
+		_emitter.gravity = 400;
+		add(_emitter);
+		
+		for (i in 0...(Std.int(_emitter.maxSize / 2))) 
+		{
+			_whitePixel = new FlxParticle();
+			_whitePixel.makeGraphic(4, 4, FlxColor.BROWN);
+			_whitePixel.visible = false; 
+			//_whitePixel.acceleration.y = 800; 			
+			_emitter.add(_whitePixel);	
+			_whitePixel = new FlxParticle();
+			_whitePixel.makeGraphic(2, 2, FlxColor.BLACK);
+			_whitePixel.acceleration.y = 400; 						
+			_whitePixel.visible = false;
+			_emitter.add(_whitePixel);
+		}
+		
+		FlxG.worldBounds.height = _collisionMap.heightInTiles * TILE_HEIGHT+20;
+		FlxG.worldBounds.width = _collisionMap.widthInTiles * TILE_WIDTH+20;
 	}
 	
 	/**
@@ -147,7 +195,16 @@ class PlayState extends FlxState
 	/**
 	 * Function that is called once every frame.
 	 */
-	
+	private function drawCamFollowBounds():Void
+	{
+		
+		camfollowBoundsBorder.x = camfollowBounds.left;
+		camfollowBoundsBorder.y = camfollowBounds.top;
+		camfollowBoundsBorder.makeGraphic(Std.int(camfollowBounds.width), Std.int(camfollowBounds.height), FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawRect(camfollowBoundsBorder, 0, 0, camfollowBounds.width - 1, camfollowBounds.height - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED } );
+		
+		
+	}
 	
 	private function setupPlayer():Void
 	{
@@ -176,53 +233,121 @@ class PlayState extends FlxState
 		add(_player);
 	}
 	
-	override public function update():Void
+	private function checkMouseClicks():Void
 	{
-		
 		if (FlxG.mouse.justPressedRight)
 		{ 
-			_debugtxt.text = "right";
-			//_player.switchState(2);		
+			if (isClickOnMap() == true)
+			{
+				_emitter.x = _highlightBox.x;
+				_emitter.y = _highlightBox.y;
+				_emitter.start(true, 3, 0,20,2);
+				
+				_debugtxt.text = "right";
+				//_player.switchState(2);		
+			}
 		}
 		if (FlxG.mouse.justPressed)
 		{
-			//_player.switchState(1);	
-			_debugtxt.text = "left";
-			
+			if (isClickOnMap() == true)
+			{				
+				_emitter.x = _highlightBox.x;
+				_emitter.y = _highlightBox.y;
+				_emitter.start(false, 1, 0.01,6,3);
+				//_player.switchState(1);	
+				_debugtxt.text = "left";
+					
+			}
 			
 		}
 		if (FlxG.mouse.pressed)
 		{		
-			if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
-			{
-				//_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : 1);
-				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
-				
+			if (isClickOnMap() == true)
+			{				
+					_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
 			}
 		}
 		
 		if (FlxG.mouse.justReleased || FlxG.mouse.justReleasedRight)
 		{
-			_debugtxt.text = "-";
-		
+			_debugtxt.text = "-";		
 		}
+	}
+	private function isClickOnMap():Bool
+	{
+		//if not over hud
+		if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
+		{
+			//if inside map
+			var mapsize:FlxRect = new FlxRect(0, 0, _collisionMap.width, _collisionMap.height);				
+			if (mapsize.overlaps(new FlxRect(FlxG.mouse.x,FlxG.mouse.y,1,1)))
+			{
+			
+				return true;
+			
+			}
+			
+		}
+		return false;
+	}
+	override public function update():Void
+	{
+		
+		checkMouseClicks();
 		
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
 		FlxG.collide(_player, _collisionMap);
+		FlxG.collide(_emitter, _collisionMap);
 		
+		if (camZoom == 1)
+		{		
+			updateCamera();
+		} else {
+			updatePlayer();
+		}
 		
 		_highlightBox.x = Math.floor(FlxG.mouse.x / TILE_WIDTH) * TILE_WIDTH;
 		_highlightBox.y = Math.floor(FlxG.mouse.y / TILE_HEIGHT) * TILE_HEIGHT;
 		
-		
-		
-		updatePlayer();
-		
 		super.update();
 		
 	}
-	
+	private function updateCamera():Void
+	{
+		if (FlxG.keys.anyPressed(["LEFT", "A"]))
+		{
+			//FlxG.camera..x += 10;			
+			if (camfollow.x > camfollowBounds.left)
+			{
+				camfollow.x -= 10;
+			}
+		}
+		else if (FlxG.keys.anyPressed(["RIGHT", "D"]))
+		{
+			//FlxG.camera.x -= 10;
+			if (camfollow.x < camfollowBounds.left+camfollowBounds.width)
+			{
+				camfollow.x += 10;
+			}
+		}
+		if (FlxG.keys.anyPressed(["UP", "W"]) )
+		{
+			//FlxG.camera.y += 10;
+			if (camfollow.y > camfollowBounds.top)
+			{
+				camfollow.y -= 10;
+			}
+		}
+		if (FlxG.keys.anyPressed(["DOWN", "S"]) )
+		{
+			//FlxG.camera.y -= 10;
+			if (camfollow.y < camfollowBounds.top+camfollowBounds.height)
+			{
+				camfollow.y += 10;
+			}
+		}
+	}
 	private function updatePlayer():Void
 	{
 		//FlxSpriteUtil.screenWrap(_player);
@@ -263,13 +388,63 @@ class PlayState extends FlxState
 	
 	public function resetCam():Void
 	{
-		FlxG.scaleMode = new FixedScaleMode();
+		//FlxG.scaleMode = new FixedScaleMode();
+		//trace("w1 " + FlxG.worldBounds.toString());
 		
-		//FlxG.camera.zoom = 2;
-		FlxG.camera.setSize(500, 300);
-		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN,1);
-		FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
+		if (camZoom == 1)
+		{
+			camZoom = 2;
+			FlxG.camera.zoom = camZoom;
+			FlxG.camera.setSize(500, 300);
+			
+			camfollowBounds = new FlxRect(50, 120, 600, 500);
+			drawCamFollowBounds();
+			restrictCamFollow();
+			
+			FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER, 1);
+		}
+		else {
+			//trace("zoom out");
+			camZoom = 1;
+			FlxG.camera.zoom = camZoom;
+			FlxG.camera.setSize(1000, 600);
+			
+			camfollowBounds = new FlxRect(100, 280, 500, 400);
+			drawCamFollowBounds();
+			restrictCamFollow();
+			
+			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
+		}
+		trace("w2 " + FlxG.worldBounds.toString());
+		trace("m2 " + (_collisionMap.heightInTiles*TILE_HEIGHT));
 		
+		//FlxG.camera.setBounds(-500, -500, 2000, 1500, true);
+		//FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
+		
+	}
+	
+	private function restrictCamFollow()
+	{
+		if (camfollow.x < camfollowBounds.left)
+			{
+				
+				camfollow.x = camfollowBounds.left;
+			} 
+			else if (camfollow.x > camfollowBounds.left+camfollowBounds.width)
+			{
+				
+				camfollow.x = camfollowBounds.left+camfollowBounds.width;
+			}
+			if (camfollow.y < camfollowBounds.top)
+			{
+				
+				camfollow.y = camfollowBounds.top;
+			} 
+			else if (camfollow.y > camfollowBounds.top+camfollowBounds.height)
+			{
+				
+				camfollow.y = camfollowBounds.top+camfollowBounds.height;
+			}
 	}
 	
 	public function resetGame():Void

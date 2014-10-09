@@ -27,33 +27,33 @@ class HUD extends FlxGroup
 		super();
 		
 		_state = State;
-		hudbg = new FlxSprite(0, FlxG.height-30);
+		hudbg = new FlxSprite(0, 0);
 		add(hudbg);
 		
 		var buttonspace:Float = 4;
 		var nextpositionX:Float = buttonspace;
 		
-		_cambutton = new FlxButton(nextpositionX, FlxG.height - 24, "CAM", onCam); 		
+		_cambutton = new FlxButton(nextpositionX, 6, "CAM", onCam); 		
 		add(_cambutton);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		_resetButton = new FlxButton(nextpositionX, FlxG.height - 24, "Reset", onReset); 
+		_resetButton = new FlxButton(nextpositionX, 6, "Reset", onReset); 
 		add(_resetButton);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn1:FlxButton = new FlxButton(nextpositionX, FlxG.height - 24, "Generate1", onBtn1);
+		var _btn1:FlxButton = new FlxButton(nextpositionX, 6, "Generate1", onBtn1);
 		add(_btn1);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn2:FlxButton = new FlxButton(nextpositionX, FlxG.height - 24, "Generate2", onBtn2);
+		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "Generate2", onBtn2);
 		add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		_helperText = new FlxText(nextpositionX , FlxG.height - 26, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
+		_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
 		add(_helperText);
 		
 		nextpositionX += _helperText.width + buttonspace;
