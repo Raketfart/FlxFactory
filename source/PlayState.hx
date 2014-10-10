@@ -5,6 +5,7 @@ import flixel.effects.particles.FlxEmitter;
 import flixel.effects.particles.FlxParticle;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
@@ -64,6 +65,8 @@ class PlayState extends FlxState
 	/* EMITTER */
 	private var _emitter:FlxEmitter;
 	private var _whitePixel:FlxParticle;	
+	var _boxGroup:FlxGroup;
+	var _conveyorGroup:FlxGroup;
 	/* EMITTER */
 	
 	override public function create():Void
@@ -128,6 +131,12 @@ class PlayState extends FlxState
 		add(_highlightBox);
 		
 		setupPlayer();
+		
+		_boxGroup = new FlxGroup();
+		add(_boxGroup);
+		
+		_conveyorGroup = new FlxGroup();
+		add(_conveyorGroup);
 		
 		
 		hud = new HUD(this);
@@ -239,12 +248,23 @@ class PlayState extends FlxState
 		{ 
 			if (isClickOnMap() == true)
 			{
+				/*
 				_emitter.x = _highlightBox.x;
 				_emitter.y = _highlightBox.y;
 				_emitter.start(true, 3, 0,20,2);
 				
 				_debugtxt.text = "right";
-				//_player.switchState(2);		
+				//_player.switchState(2);
+				*/
+				if ( FlxG.keys.pressed.SHIFT )
+				{
+					var b:Box = new Box(_highlightBox.x, _highlightBox.y);
+					_boxGroup.add(add(b));
+				}
+				else {
+					var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
+					_conveyorGroup.add(b);
+				}
 			}
 		}
 		if (FlxG.mouse.justPressed)
@@ -264,7 +284,7 @@ class PlayState extends FlxState
 		{		
 			if (isClickOnMap() == true)
 			{				
-					_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
 			}
 		}
 		
@@ -299,6 +319,8 @@ class PlayState extends FlxState
 		// automatically collides each individual tile with the object.
 		FlxG.collide(_player, _collisionMap);
 		FlxG.collide(_emitter, _collisionMap);
+		
+		FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
 		if (camZoom == 1)
 		{		
@@ -384,6 +406,12 @@ class PlayState extends FlxState
 		{
 			_player.animation.play("run");
 		}
+	}
+	
+	function onConveyorCollision(boxRef:FlxObject, convRef:FlxObject):Void
+	{
+		boxRef.acceleration.x += 400;
+		
 	}
 	
 	public function resetCam():Void
