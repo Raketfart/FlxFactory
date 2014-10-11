@@ -31,7 +31,8 @@ class GameClass extends FlxGame
 		var fps:Int = 60;
 		
 		//super(Math.ceil(stageWidth / _ratio), Math.ceil(stageHeight / _ratio), MenuState, _ratio, fps, fps);
-		super(Math.ceil(stageWidth), Math.ceil(stageHeight), MenuState, _ratio, fps, fps);
+		//super(Math.ceil(stageWidth), Math.ceil(stageHeight), MenuState, _ratio, fps, fps);
+		super(Math.ceil(stageWidth), Math.ceil(stageHeight), PlayState, _ratio, fps, fps);
 		
 		// Center game on screen.
 		

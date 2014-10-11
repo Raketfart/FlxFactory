@@ -13,6 +13,7 @@ import flixel.system.scaleModes.FixedScaleMode;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
+import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
@@ -20,6 +21,10 @@ import flixel.util.FlxRandom;
 import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
+import machine.Conveyor;
+import machine.InventoryItem;
+import machine.Machine;
+import machine.Module;
 import openfl.Assets;
 import flixel.util.FlxPoint;
 import openfl.Lib;
@@ -53,8 +58,6 @@ class PlayState extends FlxState
 	 */
 	
 	
-	private static inline var TILE_WIDTH:Int = 21;
-	private static inline var TILE_HEIGHT:Int = 21;
 	private var _collisionMap:FlxTilemap;
 	var hud:HUD;
 	var camfollow:FlxSprite;
@@ -66,8 +69,9 @@ class PlayState extends FlxState
 	private var _emitter:FlxEmitter;
 	private var _whitePixel:FlxParticle;	
 	var _boxGroup:FlxGroup;
-	var _conveyorGroup:FlxGroup;
 	/* EMITTER */
+	
+	public var moduleArr:Array<Module>;
 	
 	override public function create():Void
 	{
@@ -91,7 +95,7 @@ class PlayState extends FlxState
 		
 		var mapTileHeightMax = 40;
 		//var mapTileWidthMax = 40;
-		var leftoverbgheight =  (mapTileHeightMax * TILE_HEIGHT) - (190 + 233);
+		var leftoverbgheight =  (mapTileHeightMax * GC.tileSize) - (190 + 233);
 		var bg:FlxSprite = new FlxSprite(0, 185 + 233);
 		bg.makeGraphic(FlxG.width, Std.int(leftoverbgheight), FlxColor.BLACK);
 		add(bg);
@@ -120,14 +124,14 @@ class PlayState extends FlxState
 		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
 		
 		_collisionMap = new FlxTilemap();				
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),textureRegion, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);		
+		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),textureRegion, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
 		add(_collisionMap);
 				
 		//FlxG.camera.setBounds(0, 0, _collisionMap.width, _collisionMap.height, true);
 		
 		_highlightBox = new FlxSprite(0, 0);
-		_highlightBox.makeGraphic(TILE_WIDTH, TILE_HEIGHT, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, TILE_WIDTH - 1, TILE_HEIGHT - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
+		_highlightBox.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.TRANSPARENT);
+		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, GC.tileSize - 1, GC.tileSize - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
 		add(_highlightBox);
 		
 		setupPlayer();
@@ -135,8 +139,6 @@ class PlayState extends FlxState
 		_boxGroup = new FlxGroup();
 		add(_boxGroup);
 		
-		_conveyorGroup = new FlxGroup();
-		add(_conveyorGroup);
 		
 		
 		hud = new HUD(this);
@@ -167,8 +169,8 @@ class PlayState extends FlxState
 		_emitter = new FlxEmitter(40, 40, 200);
 		_emitter.setXSpeed( -50, 50);
 		_emitter.setYSpeed( -50, -100);
-		_emitter.width = TILE_WIDTH;
-		_emitter.height= TILE_WIDTH;
+		_emitter.width = GC.tileSize;
+		_emitter.height= GC.tileSize;
 		
 		_emitter.bounce = 0.1;
 		_emitter.gravity = 400;
@@ -188,8 +190,25 @@ class PlayState extends FlxState
 			_emitter.add(_whitePixel);
 		}
 		
-		FlxG.worldBounds.height = _collisionMap.heightInTiles * TILE_HEIGHT+20;
-		FlxG.worldBounds.width = _collisionMap.widthInTiles * TILE_WIDTH+20;
+		FlxG.worldBounds.height = _collisionMap.heightInTiles * GC.tileSize+20;
+		FlxG.worldBounds.width = _collisionMap.widthInTiles * GC.tileSize + 20;
+		
+		moduleArr = new Array<Module>();
+		setupTestMachines();
+	}
+	
+	function setupTestMachines():Void
+	{
+		var mod:Module = new Machine(4, 4);
+		add(mod);
+		moduleArr.push(mod);
+		var crate:InventoryItem = new InventoryItem();
+		var mod2:Module = new Conveyor(5, 4);
+		add(mod2);
+		moduleArr.push(mod2);
+		
+		mod.connections.push(mod2);
+		
 	}
 	
 	/**
@@ -262,8 +281,8 @@ class PlayState extends FlxState
 					_boxGroup.add(add(b));
 				}
 				else {
-					var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
-					_conveyorGroup.add(b);
+					//var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
+					//_conveyorGroup.add(b);
 				}
 			}
 		}
@@ -284,7 +303,7 @@ class PlayState extends FlxState
 		{		
 			if (isClickOnMap() == true)
 			{				
-				_collisionMap.setTile(Std.int(FlxG.mouse.x / TILE_WIDTH), Std.int(FlxG.mouse.y / TILE_HEIGHT), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				_collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
 			}
 		}
 		
@@ -320,7 +339,7 @@ class PlayState extends FlxState
 		FlxG.collide(_player, _collisionMap);
 		FlxG.overlap(_emitter, _collisionMap);
 		
-		FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
+		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
 		FlxG.collide(_boxGroup);
 		
@@ -331,8 +350,8 @@ class PlayState extends FlxState
 			updatePlayer();
 		}
 		
-		_highlightBox.x = Math.floor(FlxG.mouse.x / TILE_WIDTH) * TILE_WIDTH;
-		_highlightBox.y = Math.floor(FlxG.mouse.y / TILE_HEIGHT) * TILE_HEIGHT;
+		_highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+		_highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
 		
 		super.update();
 		
@@ -409,7 +428,7 @@ class PlayState extends FlxState
 			_player.animation.play("run");
 		}
 	}
-	
+	/*
 	function onConveyorCollision(boxRef:FlxObject, convRef:FlxObject):Void
 	{
 		boxRef.velocity.x = 100;
@@ -417,7 +436,7 @@ class PlayState extends FlxState
 		boxRef.y = convRef.y - 10;
 		
 	}
-	
+	*/
 	public function resetCam():Void
 	{
 		//FlxG.scaleMode = new FixedScaleMode();
@@ -448,7 +467,7 @@ class PlayState extends FlxState
 			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
 		}
 		trace("w2 " + FlxG.worldBounds.toString());
-		trace("m2 " + (_collisionMap.heightInTiles*TILE_HEIGHT));
+		trace("m2 " + (_collisionMap.heightInTiles*GC.tileSize));
 		
 		//FlxG.camera.setBounds(-500, -500, 2000, 1500, true);
 		//FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
@@ -481,7 +500,7 @@ class PlayState extends FlxState
 	
 	public function resetGame():Void
 	{
-		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, TILE_WIDTH, TILE_HEIGHT, FlxTilemap.OFF);
+		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);
 		_player.setPosition(64, 64);
 	}
 	
