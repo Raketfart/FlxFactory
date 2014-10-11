@@ -24,6 +24,7 @@ class Module extends FlxSprite
 		immovable = true;
 		
 		connections = new Array<Module>();
+		inventoryArr = new Array<InventoryItem>();
 	}
 	
 	public function addToInventory(item:InventoryItem):Void 

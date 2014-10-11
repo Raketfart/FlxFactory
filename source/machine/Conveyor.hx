@@ -18,7 +18,28 @@ class Conveyor extends Module
 	override public function update():Void 
 	{
 		super.update();
-		
+		for (item in inventoryArr) {
+			
+			var nextX:Float = item.x + .1;
+			if (nextX-item.width > x + width)
+			{
+				if (connections.length > 0)
+				{
+					var item = getFromInventory();
+					connections[0].addToInventory(item);
+				} 
+				
+			} else {
+				item.x = nextX;
+			}
+		}
 	}
+	override public function addToInventory(item:InventoryItem):Void 
+	{
+		super.addToInventory(item);
+		item.x = this.x;
+		item.y = this.y;
+	}
+	
 	
 }

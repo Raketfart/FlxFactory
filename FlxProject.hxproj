@@ -28,7 +28,7 @@
     <option directives="flixel-addons=1.1.0&#xA;openfl=2.0.1&#xA;flixel=3.3.5&#xA;lime=1.0.1&#xA;tools=1.5.7&#xA;FLX_NO_DEBUG&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;FLX_RENDER_BLIT&#xA;display&#xA;web" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
-    <option mainClass="Main" />
+    <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
     <option additional="--no-output&#xA;-swf-version 12" />
   </build>

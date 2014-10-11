@@ -68,7 +68,6 @@ class PlayState extends FlxState
 	/* EMITTER */
 	private var _emitter:FlxEmitter;
 	private var _whitePixel:FlxParticle;	
-	var _boxGroup:FlxGroup;
 	/* EMITTER */
 	
 	public var moduleArr:Array<Module>;
@@ -136,8 +135,6 @@ class PlayState extends FlxState
 		
 		setupPlayer();
 		
-		_boxGroup = new FlxGroup();
-		add(_boxGroup);
 		
 		
 		
@@ -202,12 +199,22 @@ class PlayState extends FlxState
 		var mod:Module = new Machine(4, 4);
 		add(mod);
 		moduleArr.push(mod);
-		var crate:InventoryItem = new InventoryItem();
+		
 		var mod2:Module = new Conveyor(5, 4);
 		add(mod2);
 		moduleArr.push(mod2);
 		
 		mod.connections.push(mod2);
+		
+		var mod3:Module = new Conveyor(6, 4);
+		add(mod3);
+		moduleArr.push(mod3);
+		
+		mod2.connections.push(mod3);
+		
+		var crate:InventoryItem = new InventoryItem();
+		add(crate);
+		mod.addToInventory(crate);
 		
 	}
 	
@@ -277,8 +284,8 @@ class PlayState extends FlxState
 				*/
 				if ( FlxG.keys.pressed.SHIFT )
 				{
-					var b:Box = new Box(_highlightBox.x, _highlightBox.y);
-					_boxGroup.add(add(b));
+					//var b:Box = new Box(_highlightBox.x, _highlightBox.y);
+					//_boxGroup.add(add(b));
 				}
 				else {
 					//var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
@@ -341,7 +348,7 @@ class PlayState extends FlxState
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
-		FlxG.collide(_boxGroup);
+		//FlxG.collide(_boxGroup);
 		
 		if (camZoom == 1)
 		{		
@@ -439,8 +446,8 @@ class PlayState extends FlxState
 	*/
 	public function resetCam():Void
 	{
-		//FlxG.scaleMode = new FixedScaleMode();
-		//trace("w1 " + FlxG.worldBounds.toString());
+		FlxG.scaleMode = new FixedScaleMode();
+		trace("w1 " + FlxG.worldBounds.toString());
 		
 		if (camZoom == 1)
 		{

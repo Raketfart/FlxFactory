@@ -23,6 +23,11 @@ class Machine extends Module
 		{
 			trace("PRODUCT COUNT DONE");
 			productCounter = 0;
+			if (inventoryArr.length > 0)
+			{
+				var item = getFromInventory();
+				connections[0].addToInventory(item);
+			}
 		}
 	}
 	
