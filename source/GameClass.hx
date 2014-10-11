@@ -5,6 +5,7 @@ import flash.Lib;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxCamera;
+import flixel.system.scaleModes.FixedScaleMode;
 	
 class GameClass extends FlxGame
 {

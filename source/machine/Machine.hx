@@ -19,9 +19,9 @@ class Machine extends Module
 	{
 		super.update();
 		productCounter++;
-		if (productCounter > 300)
+		if (productCounter > 60)
 		{
-			trace("PRODUCT COUNT DONE");
+			//trace("PRODUCT COUNT DONE");
 			productCounter = 0;
 			if (inventoryArr.length > 0)
 			{

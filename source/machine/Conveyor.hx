@@ -19,18 +19,52 @@ class Conveyor extends Module
 	{
 		super.update();
 		for (item in inventoryArr) {
-			
-			var nextX:Float = item.x + .1;
-			if (nextX-item.width > x + width)
-			{
+			var doMove:Bool = true;
+			var nextX:Float = item.x + 1;
+			if (nextX > x + width)
+			{				
 				if (connections.length > 0)
 				{
-					var item = getFromInventory();
-					connections[0].addToInventory(item);
+					for (otheritem in connections[0].inventoryArr)
+					{
+						if (item.overlaps(otheritem))
+						{
+							doMove = false;
+						}
+					}
+					if (doMove)
+					{
+						var item = getFromInventory();
+						connections[0].addToInventory(item);
+					}
 				} 
 				
 			} else {
-				item.x = nextX;
+				for (otheritem in inventoryArr)
+				{
+					if (item != otheritem)
+					{
+						if (item.overlaps(otheritem))
+						{
+							doMove = false;
+						}
+					}
+				}
+				if (connections.length > 0)
+				{
+					for (otheritem in connections[0].inventoryArr)
+					{
+						if (item.overlaps(otheritem))
+						{
+							doMove = false;
+						}
+					}
+				}
+				if (doMove)
+				{
+					item.x = nextX;
+				}
+				
 			}
 		}
 	}

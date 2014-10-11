@@ -14,6 +14,8 @@ class InventoryItem extends FlxSprite
 		super(X, Y);
 		makeGraphic(Std.int(GC.tileSize/3),Std.int(GC.tileSize/3),FlxColor.CRIMSON);
 		
+		offset.x = width / 2;
+		offset.y = height/ 2;
 	}
 	
 }
