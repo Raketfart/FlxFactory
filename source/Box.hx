@@ -12,7 +12,8 @@ class Box extends FlxSprite
     {
         super(X, Y);
 		makeGraphic(10, 10);
-		drag.x = 20;
+		drag.x = 200;
+		drag.y = 200;
 		acceleration.y = 420;
 		maxVelocity.set(120, 200);
 		

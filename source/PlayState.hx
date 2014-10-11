@@ -79,10 +79,10 @@ class PlayState extends FlxState
 		var backgroundRepeat1:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_sky__png), 0, 0, true, false);
 		add(backgroundRepeat1);
 		
-		var backgroundRepeat2:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_clouds__png), .1, .2, true, false);
+		var backgroundRepeat2:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_clouds__png), .1, .8, true, false);
 		add(backgroundRepeat2);
 		backgroundRepeat2.y = 130;
-		var backgroundRepeat3:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_mountains__png), .3, .4, true, false);
+		var backgroundRepeat3:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_mountains__png), .3, .9, true, false);
 		add(backgroundRepeat3);
 		backgroundRepeat3.y = 120;
 		var backgroundRepeat4:FlxBackdrop = new FlxBackdrop(Assets.getBitmapData(AssetPaths.background_grass__png), .5, 1, true, false);
@@ -318,9 +318,11 @@ class PlayState extends FlxState
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
 		FlxG.collide(_player, _collisionMap);
-		FlxG.collide(_emitter, _collisionMap);
+		FlxG.overlap(_emitter, _collisionMap);
 		
 		FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
+		
+		FlxG.collide(_boxGroup);
 		
 		if (camZoom == 1)
 		{		
@@ -410,7 +412,9 @@ class PlayState extends FlxState
 	
 	function onConveyorCollision(boxRef:FlxObject, convRef:FlxObject):Void
 	{
-		boxRef.acceleration.x += 400;
+		boxRef.velocity.x = 100;
+		trace(convRef.ID);
+		boxRef.y = convRef.y - 10;
 		
 	}
 	
