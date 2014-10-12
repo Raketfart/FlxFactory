@@ -7,6 +7,7 @@ import flixel.util.FlxColor;
  */
 class Conveyor extends Module
 {
+	
 	var productCounter:Int;
 	public function new(tileX:Int=0, tileY:Int=0) 
 	{		
@@ -18,10 +19,12 @@ class Conveyor extends Module
 	override public function update():Void 
 	{
 		super.update();
+		//trace(this.ID + " : inv " + inventoryArr.length);
+		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			var nextX:Float = item.x + 1;
-			if (nextX > x + width)
+			item.x += 1;
+			if (item.x > x + width)
 			{				
 				if (connections.length > 0)
 				{
@@ -37,7 +40,9 @@ class Conveyor extends Module
 						var item = getFromInventory();
 						connections[0].addToInventory(item);
 					}
-				} 
+				} else {
+					doMove = false;
+				}
 				
 			} else {
 				for (otheritem in inventoryArr)
@@ -60,11 +65,12 @@ class Conveyor extends Module
 						}
 					}
 				}
-				if (doMove)
-				{
-					item.x = nextX;
-				}
 				
+				
+			}
+			if (!doMove)
+			{
+				item.x -= 1;
 			}
 		}
 	}

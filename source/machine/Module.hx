@@ -15,12 +15,15 @@ class Module extends FlxSprite
 	public var tilePos:TilePos;
 	public var connections:Array<Module>;
 	public var inventoryArr:Array<InventoryItem>;		
-		
+	public static var idcounter:Int = 0;
+	
 	public function new(tileX:Int=0, tileY:Int=0) 
 	{		
 		super(tileX*GC.tileSize, tileY*GC.tileSize);
 		tilePos = new TilePos(tileX,tileY);
 		
+		idcounter++;
+		this.ID = idcounter;
 		immovable = true;
 		
 		connections = new Array<Module>();
