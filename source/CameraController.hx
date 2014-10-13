@@ -3,7 +3,9 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.system.scaleModes.FillScaleMode;
 import flixel.system.scaleModes.FixedScaleMode;
+import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.util.FlxColor;
 import flixel.util.FlxRect;
 import flixel.util.FlxSpriteUtil;
@@ -41,6 +43,17 @@ class CameraController extends FlxGroup
 		
 		switchCam();
 		
+	}
+	
+	override public function update():Void 
+	{
+		FlxG.camera.scroll.x = camfollow.x-(FlxG.width/2)/camZoom;
+		FlxG.camera.scroll.y = camfollow.y-(FlxG.height/2)/camZoom;
+		if (camZoom == 2)
+		{
+			camfollow.x = _state.player.x;
+			camfollow.y = _state.player.y;
+		}
 	}
 	
 	private function drawCamFollowBounds():Void
@@ -82,8 +95,30 @@ class CameraController extends FlxGroup
 			}
 		}
 	}
-	
 	public function switchCam()
+	{
+		FlxG.scaleMode = new StageSizeScaleMode();
+		FlxG.cameras.reset();
+		
+		if (camZoom == 1)
+		{
+			camZoom = 2;
+			//FlxG.camera.width = 500;
+			//FlxG.camera.height = 300;
+			FlxG.camera.zoom = 2;
+			//FlxG.camera.follow(_state.player, FlxCamera.STYLE_PLATFORMER, null, 0);
+			
+		} else {
+			//FlxG.camera.width = 1000;
+			//FlxG.camera.height = 600;
+			camZoom = 1;
+			FlxG.camera.zoom = 1;
+			//FlxG.camera.follow(camfollow, FlxCamera.STYLE_LOCKON, null, 0);
+			
+		}
+	}
+	/*
+	public function switchCam_old()
 	{
 		FlxG.scaleMode = new FixedScaleMode();
 		//trace("w1 " + FlxG.worldBounds.toString());
@@ -93,19 +128,22 @@ class CameraController extends FlxGroup
 			camZoom = 2;
 			FlxG.camera.zoom = camZoom;
 			//FlxCamera.defaultZoom = camZoom;
-			FlxG.camera.setSize(500, 300);
+			//FlxG.camera.setSize(500, 300);
 			//FlxG.camera.zoom = 0;
 			//FlxG.cameras.reset();
-			
+			FlxG.camera.zoom = 2;
+			FlxG.camera.width = 500;
+			FlxG.camera.height = 300;
+			FlxG.camera.follow(_state.player, FlxCamera.STYLE_PLATFORMER, null, 0);
 			
 			camfollowBounds = new FlxRect(50, 120, 600, 500);
 			drawCamFollowBounds();
 			restrictCamFollow();
 			
-			FlxG.camera.follow(_state.player, FlxCamera.STYLE_PLATFORMER, 1);
+			//FlxG.camera.follow(_state.player, FlxCamera.STYLE_PLATFORMER, 1);
 		}
 		else {
-			/*
+			
 			//trace("zoom out");
 			camZoom = 1;
 			
@@ -124,9 +162,15 @@ class CameraController extends FlxGroup
 			restrictCamFollow();
 			
 			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
-			*/
+			
+			
 			camZoom = 1;
-			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE, 1);
+			//FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE, 1);
+			FlxG.camera.zoom = 1;
+			//FlxG.camera.width = Std.int(FlxG.camera.width *2);
+			//FlxG.camera.height = Std.int(FlxG.camera.height *2);
+			FlxG.camera.follow(camfollow, FlxCamera.STYLE_LOCKON, null, 0);
+			
 			camfollowBounds = new FlxRect(100, 280, 500, 400);
 			drawCamFollowBounds();
 			restrictCamFollow();
@@ -139,7 +183,8 @@ class CameraController extends FlxGroup
 		//FlxG.camera.setBounds(-500, -500, 2000, 1500, true);
 		//FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
 			
-	}
+	}*/
+	
 	private function restrictCamFollow()
 	{
 		if (camfollow.x < camfollowBounds.left)
