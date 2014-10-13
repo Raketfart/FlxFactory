@@ -7,6 +7,7 @@ import flixel.system.scaleModes.FixedScaleMode;
 import flixel.util.FlxColor;
 import flixel.util.FlxRect;
 import flixel.util.FlxSpriteUtil;
+import openfl.Lib;
 
 /**
  * ...
@@ -29,8 +30,6 @@ class CameraController extends FlxGroup
 		
 		_state = State;
 		
-		camZoom = 1;
-		
 		camfollowBounds = new FlxRect(100, 280, 500, 400);
 		camfollowBoundsBorder = new FlxSprite();
 		add(camfollowBoundsBorder);
@@ -40,6 +39,7 @@ class CameraController extends FlxGroup
 		camfollow.makeGraphic(2, 2, FlxColor.BLUE);
 		add(camfollow);
 		
+		switchCam();
 		
 	}
 	
@@ -86,13 +86,17 @@ class CameraController extends FlxGroup
 	public function switchCam()
 	{
 		FlxG.scaleMode = new FixedScaleMode();
-		trace("w1 " + FlxG.worldBounds.toString());
+		//trace("w1 " + FlxG.worldBounds.toString());
 		
 		if (camZoom == 1)
 		{
 			camZoom = 2;
 			FlxG.camera.zoom = camZoom;
+			//FlxCamera.defaultZoom = camZoom;
 			FlxG.camera.setSize(500, 300);
+			//FlxG.camera.zoom = 0;
+			//FlxG.cameras.reset();
+			
 			
 			camfollowBounds = new FlxRect(50, 120, 600, 500);
 			drawCamFollowBounds();
@@ -101,18 +105,36 @@ class CameraController extends FlxGroup
 			FlxG.camera.follow(_state.player, FlxCamera.STYLE_PLATFORMER, 1);
 		}
 		else {
+			/*
 			//trace("zoom out");
 			camZoom = 1;
-			FlxG.camera.zoom = camZoom;
+			
+			FlxCamera.defaultZoom = camZoom;
+			FlxG.camera.zoom = 0;
+			FlxG.cameras.reset();
 			FlxG.camera.setSize(1000, 600);
+			
+			//FlxG.camera.zoom = camZoom;
+			
+			//FlxG.camera.bounds = new FlxRect(0, 0, 1000, 600);
+			//FlxG.cameras.reset();
 			
 			camfollowBounds = new FlxRect(100, 280, 500, 400);
 			drawCamFollowBounds();
 			restrictCamFollow();
 			
 			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);
+			*/
+			camZoom = 1;
+			FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE, 1);
+			camfollowBounds = new FlxRect(100, 280, 500, 400);
+			drawCamFollowBounds();
+			restrictCamFollow();
+			trace("zoom out does not work");
+			
 		}
-		trace("w2 " + FlxG.worldBounds.toString());
+		//trace("w2 " + FlxG.worldBounds.toString());
+		//trace("w2 " + FlxG.width);
 		
 		//FlxG.camera.setBounds(-500, -500, 2000, 1500, true);
 		//FlxG.camera.follow(camfollow, FlxCamera.STYLE_NO_DEAD_ZONE,1);

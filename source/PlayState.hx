@@ -1,35 +1,20 @@
 package;
 
 import entity.Player;
-import flixel.addons.display.FlxBackdrop;
-import flixel.effects.particles.FlxEmitter;
-import flixel.effects.particles.FlxParticle;
-import flixel.FlxCamera;
 import flixel.FlxG;
-import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.group.FlxGroup;
-import flixel.system.scaleModes.FixedScaleMode;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
-import flixel.ui.FlxButton;
-import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
-import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
-import inventory.InventoryItem;
-import machine.Conveyor;
-import machine.Machine;
-import machine.Module;
 import openfl.Assets;
-import flixel.util.FlxPoint;
-import openfl.Lib;
 import scene.Background;
+import scene.Emitter;
 import scene.MapGenerator;
 
 
@@ -40,46 +25,21 @@ using flixel.util.FlxSpriteUtil;
  */
 class PlayState extends FlxState
 {
-	//var _player:Player;
 	
-	public var _debugtxt:FlxText;
-	/**
-	 * Function that is called up when to state is created to set it up. 
-	 */
-	/**
-	 * Box to show the user where they're placing stuff
-	 */ 
+	public var _debugtxt:FlxText;	
 	private var _highlightBox:FlxSprite;
-	
-	/**
-	 * Player modified from "Mode" demo
-	 */ 
-	public var player:Player;
-	
-	/**
-	 * Some interface buttons and text
-	 */
-	
-	
-	private var _collisionMap:FlxTilemap;
-	public var moduleGrp:FlxGroup;
-	public var inventoryGrp:FlxGroup;
+	public var player:Player;	
+	public var _collisionMap:FlxTilemap;
+	public var machineController:MachineController;
 	
 	var camController:CameraController;
-	var hud:HUD;
+	var hud:HUD;	
+	var _emitter:Emitter;	
 	
-	/* EMITTER */
-	private var _emitter:FlxEmitter;
-	private var _whitePixel:FlxParticle;	
-	/* EMITTER */
 	
-	public var moduleArr:Array<Module>;
-
 	override public function create():Void
 	{
 		FlxRandom.globalSeed = 123321;
-		
-		
 		
 		var background:Background = new Background();
 		add(background);
@@ -88,79 +48,28 @@ class PlayState extends FlxState
 		add(_debugtxt);
 		
 		setupMap();
-				
+		
+		machineController = new MachineController();
+		add(machineController);
+		
+		machineController.setupTestMachines();
 		
 		_highlightBox = new FlxSprite(0, 0);
 		_highlightBox.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.TRANSPARENT);
 		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, GC.tileSize - 1, GC.tileSize - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
 		add(_highlightBox);
-			
-		_emitter = new FlxEmitter(40, 40, 200);
-		_emitter.setXSpeed( -50, 50);
-		_emitter.setYSpeed( -50, -100);
-		_emitter.width = GC.tileSize;
-		_emitter.height= GC.tileSize;
-		
-		_emitter.bounce = 0.1;
-		_emitter.gravity = 400;
-		add(_emitter);
-		
-		for (i in 0...(Std.int(_emitter.maxSize / 2))) 
-		{
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, FlxColor.BROWN);
-			_whitePixel.visible = false; 
-			//_whitePixel.acceleration.y = 800; 			
-			_emitter.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(2, 2, FlxColor.BLACK);
-			_whitePixel.acceleration.y = 400; 						
-			_whitePixel.visible = false;
-			_emitter.add(_whitePixel);
-		}
-
-		moduleArr = new Array<Module>();
-		moduleGrp = new FlxGroup();
-		add(moduleGrp);
-		inventoryGrp = new FlxGroup();
-		add(inventoryGrp);
-		
-		setupTestMachines();
 		
 		player = new Player(64, 64);
 		add(player);
-	
-		_emitter = new FlxEmitter(40, 40, 200);
-		_emitter.setXSpeed( -50, 50);
-		_emitter.setYSpeed( -50, -100);
-		_emitter.width = GC.tileSize;
-		_emitter.height= GC.tileSize;
 		
-		_emitter.bounce = 0.1;
-		_emitter.gravity = 400;
+		_emitter = new Emitter();
 		add(_emitter);
-		
-		for (i in 0...(Std.int(_emitter.maxSize / 2))) 
-		{
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, FlxColor.BROWN);
-			_whitePixel.visible = false; 
-			//_whitePixel.acceleration.y = 800; 			
-			_emitter.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(2, 2, FlxColor.BLACK);
-			_whitePixel.acceleration.y = 400; 						
-			_whitePixel.visible = false;
-			_emitter.add(_whitePixel);
-		}
 		
 		hud = new HUD(this);
 		add(hud);
 		
-		
 		camController = new CameraController(this);
 		add(camController);
-		
 		
 		super.create();
 		
@@ -168,6 +77,8 @@ class PlayState extends FlxState
 		FlxG.worldBounds.width = _collisionMap.widthInTiles * GC.tileSize + 20;
 		
 		mapGen1();
+		
+		//FlxG.watch.add(player,"x","px");
 		
 	}
 	//{ region Setup
@@ -195,31 +106,7 @@ class PlayState extends FlxState
 		add(_collisionMap);
 	}
 	
-	function setupTestMachines():Void
-	{
-		var mod:Module = new Machine(7, 9);
-		moduleGrp.add(mod);
-		moduleArr.push(mod);
-		
-		var mod2:Module = new Conveyor(8, 9);
-		moduleGrp.add(mod2);
-		moduleArr.push(mod2);
-		
-		mod.connections.push(mod2);
-		
-		var mod3:Module = new Conveyor(9, 9);
-		moduleGrp.add(mod3);
-		moduleArr.push(mod3);
-		
-		mod2.connections.push(mod3);
-		
-		var crate:InventoryItem = new InventoryItem();
-		inventoryGrp.add(crate);
-		mod.addToInventory(crate);
-		crate = new InventoryItem();
-		inventoryGrp.add(crate);
-		
-	}
+	
 	
 	//} endregion
 	
@@ -243,35 +130,14 @@ class PlayState extends FlxState
 		{ 
 			if (isClickOnMap() == true)
 			{
-				/*
-				_emitter.x = _highlightBox.x;
-				_emitter.y = _highlightBox.y;
-				_emitter.start(true, 3, 0,20,2);
 				
-				_debugtxt.text = "right";
-				//_player.switchState(2);
-				*/
 				if ( FlxG.keys.pressed.SHIFT )
 				{
-					var crate:InventoryItem = new InventoryItem();
-					inventoryGrp.add(crate);
-					moduleArr[0].addToInventory(crate);
-					//var b:Box = new Box(_highlightBox.x, _highlightBox.y);
-					//_boxGroup.add(add(b));
+					machineController.addCrate();
+					
 				}
 				else {
-					var mod:Module = new Conveyor(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-					moduleGrp.add(mod);
-					moduleArr.push(mod);
-					for (m in moduleArr)
-					{
-						trace(m.tilePos.tileX + " vs " + (Std.int(FlxG.mouse.x / GC.tileSize) - 1));
-						if (m.tilePos.tileX == Std.int(FlxG.mouse.x / GC.tileSize) - 1 && m.tilePos.tileY == Std.int(FlxG.mouse.y / GC.tileSize))
-						{
-							m.connections.push(mod);
-							
-						}
-					}
+					machineController.addMachine();
 					
 					//var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
 					//_conveyorGroup.add(b);
@@ -281,10 +147,9 @@ class PlayState extends FlxState
 		if (FlxG.mouse.justPressed)
 		{
 			if (isClickOnMap() == true)
-			{				
-				_emitter.x = _highlightBox.x;
-				_emitter.y = _highlightBox.y;
-				_emitter.start(false, 1, 0.01,6,3);
+			{			
+				_emitter.emit(_highlightBox.x,_highlightBox.y);
+				
 				//_player.switchState(1);	
 				_debugtxt.text = "left";
 					
@@ -312,10 +177,8 @@ class PlayState extends FlxState
 			//if inside map
 			var mapsize:FlxRect = new FlxRect(0, 0, _collisionMap.width, _collisionMap.height);				
 			if (mapsize.overlaps(new FlxRect(FlxG.mouse.x,FlxG.mouse.y,1,1)))
-			{
-			
-				return true;
-			
+			{			
+				return true;			
 			}
 			
 		}
@@ -329,7 +192,7 @@ class PlayState extends FlxState
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
 		FlxG.collide(player, _collisionMap);
-		FlxG.overlap(_emitter, _collisionMap);
+		FlxG.collide(_emitter, _collisionMap);
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		

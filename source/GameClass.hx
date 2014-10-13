@@ -59,8 +59,8 @@ class GameClass extends FlxGame
 		FlxG.camera.zoom = 0;
 		
 		// Lastly, center the game on the screen.
-		trace("resize stagew " + Lib.current.stage.stageWidth);
-		trace("resize stagew " + FlxG.width);
+		//trace("resize stagew " + Lib.current.stage.stageWidth);
+		//trace("resize stagew " + FlxG.width);
 		x = ( Lib.current.stage.stageWidth - ( FlxG.width * FlxG.camera.zoom ) ) / 2;
 		y = ( Lib.current.stage.stageHeight - ( FlxG.height * FlxG.camera.zoom ) ) / 2;
 		

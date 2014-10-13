@@ -12,16 +12,18 @@ class Conveyor extends Module
 	
 	var productCounter:Int;
 	var base:FlxSprite;
-	public function new(tileX:Int=0, tileY:Int=0) 
+	public function new(Controller:MachineController,tileX:Int=0, tileY:Int=0) 
 	{		
-		super(tileX, tileY);
+		super(Controller,tileX, tileY);
 		
 		
 		
 		base = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		base.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.BLUE);
-		add(base);
+		imageLayer.add(base);
 		
+		this.connectsWest = false;
+		this.connectsEast = true;
 	}
 	override public function update():Void 
 	{
