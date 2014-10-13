@@ -117,7 +117,8 @@ class CameraController extends FlxGroup
 			camZoom = 1;
 			FlxG.camera.zoom = 1;
 			//FlxG.camera.follow(camfollow, FlxCamera.STYLE_LOCKON, null, 0);
-			
+			camfollowBounds = new FlxRect(100, 280, FlxG.worldBounds.width-100, 400);
+			restrictCamFollow();
 		}
 	}
 	/*

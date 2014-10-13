@@ -30,17 +30,17 @@ class MachineController extends FlxGroup
 	public function setupTestMachines():Void
 	{
 		
-		var mod:Module = new Machine(this,7, 8,3,2);
+		var mod:Module = new Machine(this,10, 8,3,2);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod2:Module = new Conveyor(this,10, 9);
+		var mod2:Module = new Conveyor(this,13, 9);
 		moduleGrp.add(mod2);
 		moduleArr.push(mod2);
 		
 		//mod.connections.push(mod2);
 		
-		var mod3:Module = new Conveyor(this,11, 9);
+		var mod3:Module = new Conveyor(this,14, 9);
 		moduleGrp.add(mod3);
 		moduleArr.push(mod3);
 		
@@ -87,7 +87,7 @@ class MachineController extends FlxGroup
 		{
 			if (m.tileRect.containsTile(TileX, TileY))
 			{
-				trace("m contains " + TileX + "x" + TileY);
+				//trace("m contains " + TileX + "x" + TileY);
 				return m;
 			}
 		}

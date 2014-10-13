@@ -83,7 +83,7 @@ class PlayState extends FlxState
 	}
 	//{ region Setup
 	function setupMap() 
-	{		
+	{		/*
 		//tile space helper
 		var cached:CachedGraphics = FlxG.bitmap.add(AssetPaths.pixelspritesheet_trans__png);
 		// top left corner of the first tile
@@ -100,9 +100,9 @@ class PlayState extends FlxState
 		var height:Int = cached.bitmap.height - startY;
 		// define region
 		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
-		
+		*/
 		_collisionMap = new FlxTilemap();				
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),textureRegion, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
+		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
 		add(_collisionMap);
 	}
 	
@@ -148,7 +148,7 @@ class PlayState extends FlxState
 		{
 			if (isClickOnMap() == true)
 			{			
-				_emitter.emit(_highlightBox.x,_highlightBox.y);
+				
 				
 				//_player.switchState(1);	
 				_debugtxt.text = "left";
@@ -161,6 +161,10 @@ class PlayState extends FlxState
 			if (isClickOnMap() == true)
 			{				
 				_collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
+				{
+					_emitter.emit(_highlightBox.x, _highlightBox.y);
+				}
 			}
 		}
 		
@@ -237,6 +241,7 @@ class PlayState extends FlxState
 	{
 		
 		MapGenerator.generateCoal(this._collisionMap);
+		MapGenerator.generateSilver(this._collisionMap);
 		
 	}
 	

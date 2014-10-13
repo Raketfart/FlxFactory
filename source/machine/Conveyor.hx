@@ -11,16 +11,25 @@ class Conveyor extends Module
 {
 	
 	var productCounter:Int;
-	var base:FlxSprite;
+	var graphic:FlxSprite;
+	//var base:FlxSprite;
 	public function new(Controller:MachineController,tileX:Int=0, tileY:Int=0) 
 	{		
 		super(Controller,tileX, tileY);
 		
 		
-		
+		/*
 		base = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		base.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.BLUE);
 		imageLayer.add(base);
+		*/
+		graphic = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
+		graphic.loadGraphic(AssetPaths.conveyor_tiles__png,true);
+		add(graphic);
+		
+		graphic.animation.add("running", [0,1,2,3], 12, true);
+		
+		graphic.animation.play("running");
 		
 		this.connectsWest = false;
 		this.connectsEast = true;
@@ -32,8 +41,8 @@ class Conveyor extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.x += 1;
-			if (item.x > base.x + base.width)
+			item.x += .4;
+			if (item.x > graphic.x + graphic.width)
 			{				
 				if (connections.length > 0)
 				{
@@ -79,15 +88,15 @@ class Conveyor extends Module
 			}
 			if (!doMove)
 			{
-				item.x -= 1;
+				item.x -= .4;
 			}
 		}
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.x = base.x;
-		item.y = base.y;
+		item.x = graphic.x;
+		item.y = graphic.y;
 	}
 	
 	

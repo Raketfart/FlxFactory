@@ -16,10 +16,13 @@ class Machine extends Module
 	{		
 		super(Controller,tileX, tileY,TileWidth,TileHeight);
 		productCounter = 0;
-		
+		/*
 		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		base.makeGraphic(GC.tileSize*TileWidth, GC.tileSize*TileHeight, FlxColor.GRAY);
-		imageLayer.add(base);
+		imageLayer.add(base);*/
+		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
+		base.loadGraphic(AssetPaths.factory__png);
+		add(base);
 		
 		lamp = new FlxSprite(base.x+4, base.y+5);
 		lamp.makeGraphic(2, 2, FlxColor.RED);

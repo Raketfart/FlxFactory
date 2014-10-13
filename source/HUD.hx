@@ -53,7 +53,8 @@ class HUD extends FlxGroup
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
+		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
+		_helperText = new FlxText(nextpositionX , 8, 220, "-");
 		add(_helperText);
 		
 		nextpositionX += _helperText.width + buttonspace;

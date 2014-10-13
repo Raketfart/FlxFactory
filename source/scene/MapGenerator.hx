@@ -30,14 +30,30 @@ class MapGenerator
 		var coalBeginRow:Int = 12;
 		var coalEndRow:Int = 14;
 		//var rnd:FlxRandom = new FlxRandom();
-		var coalSeeds:Int = FlxRandom.intRanged(1, 20);		
+		var coalSeeds:Int = FlxRandom.intRanged(1, 30);		
 		
 		for (i in 1 ... coalSeeds) {
 			var coalLocX:Int = FlxRandom.intRanged(1,  map.widthInTiles - 2);
 			var coalLocY:Int = FlxRandom.intRanged(coalBeginRow, coalEndRow);
 			var pos:TilePos = new TilePos(coalLocX,coalLocY);
 			
-			map.setTile(pos.tileX,pos.tileY, TileType.TYPE_ICE_SOLID);						
+			map.setTile(pos.tileX,pos.tileY, TileType.TYPE_DIRT_COAL);						
+		}
+		
+	}
+	
+	public static function generateSilver(map:FlxTilemap):Void
+	{
+		var coalBeginRow:Int = 15;
+		var coalEndRow:Int = 16;
+		var silverSeeds:Int = FlxRandom.intRanged(1, 10);		
+		
+		for (i in 1 ... silverSeeds) {
+			var coalLocX:Int = FlxRandom.intRanged(1,  map.widthInTiles - 2);
+			var coalLocY:Int = FlxRandom.intRanged(coalBeginRow, coalEndRow);
+			var pos:TilePos = new TilePos(coalLocX,coalLocY);
+			
+			map.setTile(pos.tileX,pos.tileY, TileType.TYPE_DIRT_CLAY);						
 		}
 		
 	}
