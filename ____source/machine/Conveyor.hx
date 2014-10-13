@@ -23,9 +23,9 @@ class Conveyor extends Module
 		add(base);
 		
 	}
-	override public function update():Void 
+	override public function update(elapsed:Float):Void 
 	{
-		super.update();
+		super.update(elapsed);
 		//trace(this.ID + " : inv " + inventoryArr.length);
 		
 		for (item in inventoryArr) {

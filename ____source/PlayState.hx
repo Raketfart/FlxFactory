@@ -1,5 +1,6 @@
 package;
 
+
 import entity.Player;
 import flixel.addons.display.FlxBackdrop;
 import flixel.effects.particles.FlxEmitter;
@@ -9,25 +10,26 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.system.scaleModes.FixedScaleMode;
 import flixel.text.FlxText;
+import flixel.tile.FlxBaseTilemap.FlxTilemapAutoTiling;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
-import flixel.util.FlxMath;
-import flixel.util.FlxPoint;
-import flixel.util.FlxRandom;
-import flixel.util.FlxRect;
-import flixel.util.loaders.CachedGraphics;
-import flixel.util.loaders.TextureRegion;
-import inventory.InventoryItem;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRandom;
+import flixel.math.FlxRect;
+
 import machine.Conveyor;
+import inventory.InventoryItem;
 import machine.Machine;
 import machine.Module;
 import openfl.Assets;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 import openfl.Lib;
 import scene.Background;
 import scene.MapGenerator;
@@ -65,8 +67,10 @@ class PlayState extends FlxState
 	public var moduleGrp:FlxGroup;
 	public var inventoryGrp:FlxGroup;
 	
+	public var camfollow:FlxSprite;
 	var camController:CameraController;
 	var hud:HUD;
+	
 	
 	/* EMITTER */
 	private var _emitter:FlxEmitter;
@@ -74,10 +78,11 @@ class PlayState extends FlxState
 	/* EMITTER */
 	
 	public var moduleArr:Array<Module>;
-
+	
+	
 	override public function create():Void
 	{
-		FlxRandom.globalSeed = 123321;
+		//FlxRandom.globalSeed = 123321;
 		
 		
 		
@@ -95,29 +100,6 @@ class PlayState extends FlxState
 		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, GC.tileSize - 1, GC.tileSize - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
 		add(_highlightBox);
 			
-		_emitter = new FlxEmitter(40, 40, 200);
-		_emitter.setXSpeed( -50, 50);
-		_emitter.setYSpeed( -50, -100);
-		_emitter.width = GC.tileSize;
-		_emitter.height= GC.tileSize;
-		
-		_emitter.bounce = 0.1;
-		_emitter.gravity = 400;
-		add(_emitter);
-		
-		for (i in 0...(Std.int(_emitter.maxSize / 2))) 
-		{
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, FlxColor.BROWN);
-			_whitePixel.visible = false; 
-			//_whitePixel.acceleration.y = 800; 			
-			_emitter.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(2, 2, FlxColor.BLACK);
-			_whitePixel.acceleration.y = 400; 						
-			_whitePixel.visible = false;
-			_emitter.add(_whitePixel);
-		}
 
 		moduleArr = new Array<Module>();
 		moduleGrp = new FlxGroup();
@@ -131,13 +113,13 @@ class PlayState extends FlxState
 		add(player);
 	
 		_emitter = new FlxEmitter(40, 40, 200);
-		_emitter.setXSpeed( -50, 50);
-		_emitter.setYSpeed( -50, -100);
+		//_emitter.setXSpeed( -50, 50);
+		//_emitter.setYSpeed( -50, -100);
 		_emitter.width = GC.tileSize;
 		_emitter.height= GC.tileSize;
 		
-		_emitter.bounce = 0.1;
-		_emitter.gravity = 400;
+		//_emitter.bounce = 0.1;
+		//_emitter.gravity = 400;
 		add(_emitter);
 		
 		for (i in 0...(Std.int(_emitter.maxSize / 2))) 
@@ -157,24 +139,31 @@ class PlayState extends FlxState
 		hud = new HUD(this);
 		add(hud);
 		
-		
 		camController = new CameraController(this);
 		add(camController);
+		camfollow = new FlxSprite(camController.camfollowBounds.left, camController.camfollowBounds.top);
+		camfollow.makeGraphic(2, 2, FlxColor.BLUE);
+		add(camfollow);
 		
 		
-		super.create();
+		
+		//FlxG.camera.setBounds(-500, -500, 2000, 1500, false);
+		FlxG.camera.follow( camfollow, FlxCameraFollowStyle.NO_DEAD_ZONE,1);		
 		
 		FlxG.worldBounds.height = _collisionMap.heightInTiles * GC.tileSize+20;
 		FlxG.worldBounds.width = _collisionMap.widthInTiles * GC.tileSize + 20;
 		
 		mapGen1();
 		
+		super.create();
+		
 	}
 	//{ region Setup
 	function setupMap() 
 	{		
+		/*
 		//tile space helper
-		var cached:CachedGraphics = FlxG.bitmap.add(AssetPaths.pixelspritesheet_trans__png);
+		var cached:FlxGraphic = FlxG.bitmap.add(AssetPaths.pixelspritesheet_trans__png);
 		// top left corner of the first tile
 		var startX:Int = 2;
 		var startY:Int = 2;
@@ -189,10 +178,11 @@ class PlayState extends FlxState
 		var height:Int = cached.bitmap.height - startY;
 		// define region
 		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
-		
+		*/
 		_collisionMap = new FlxTilemap();				
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),textureRegion, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
+		_collisionMap.loadMapFromCSV(Assets.getText(AssetPaths.worldmap__txt),AssetPaths.pixelspritesheet_trans__png, GC.tileSize, GC.tileSize,FlxTilemapAutoTiling.OFF,0,1,1);		
 		add(_collisionMap);
+		
 	}
 	
 	function setupTestMachines():Void
@@ -234,9 +224,6 @@ class PlayState extends FlxState
 		super.destroy();
 	}
 
-	
-	
-	
 	private function checkMouseClicks():Void
 	{
 		if (FlxG.mouse.justPressedRight)
@@ -265,7 +252,7 @@ class PlayState extends FlxState
 					moduleArr.push(mod);
 					for (m in moduleArr)
 					{
-						trace(m.tilePos.tileX + " vs " + (Std.int(FlxG.mouse.x / GC.tileSize) - 1));
+						//trace(m.tilePos.tileX + " vs " + (Std.int(FlxG.mouse.x / GC.tileSize) - 1));
 						if (m.tilePos.tileX == Std.int(FlxG.mouse.x / GC.tileSize) - 1 && m.tilePos.tileY == Std.int(FlxG.mouse.y / GC.tileSize))
 						{
 							m.connections.push(mod);
@@ -284,7 +271,7 @@ class PlayState extends FlxState
 			{				
 				_emitter.x = _highlightBox.x;
 				_emitter.y = _highlightBox.y;
-				_emitter.start(false, 1, 0.01,6,3);
+				_emitter.start(false, 1, 6);
 				//_player.switchState(1);	
 				_debugtxt.text = "left";
 					
@@ -321,7 +308,7 @@ class PlayState extends FlxState
 		}
 		return false;
 	}
-	override public function update():Void
+	override public function update(elapsed:Float):Void
 	{
 		
 		checkMouseClicks();
@@ -339,13 +326,14 @@ class PlayState extends FlxState
 		{		
 			camController.updateCameraControls();
 		} else {
+			
 			player.updateMovementControls();
 		}
 		
 		_highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
 		_highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
 		
-		super.update();
+		super.update(elapsed);
 		
 	}
 	
@@ -354,29 +342,18 @@ class PlayState extends FlxState
 	public function switchCam():Void
 	{
 		camController.switchCam();
-	}
-	
-	
+	}	
 	public function resetGame():Void
 	{
-		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);
 		player.setPosition(64, 64);
-	}
-	
+	}	
 	public function mapGen1():Void
 	{
-		MapGenerator.generateWorld(this._collisionMap);
-		
+		MapGenerator.generateWorld(_collisionMap);		
 	}
-	
 	public function mapGen2():Void
 	{
-		
-		MapGenerator.generateCoal(this._collisionMap);
-		
+		MapGenerator.generateCoal(_collisionMap);		
 	}
-	
-	
-	
 	
 }

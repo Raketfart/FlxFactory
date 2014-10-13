@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 
 using flixel.util.FlxSpriteUtil;
 /**
@@ -27,8 +27,9 @@ class HUD extends FlxGroup
 		super();
 		
 		_state = State;
-		hudbg = new FlxSprite(0, 0);
+		hudbg = new FlxSprite(0, 0);		
 		add(hudbg);
+		//hudbg.scrollFactor = new FlxPoint(0, 0);
 		
 		var buttonspace:Float = 4;
 		var nextpositionX:Float = buttonspace;
@@ -59,7 +60,7 @@ class HUD extends FlxGroup
 		nextpositionX += _helperText.width + buttonspace;
 		hudbg.makeGraphic(Std.int(nextpositionX), 30, 0xffFF00FF);
 		
-		this.setAll("scrollFactor", new FlxPoint(0, 0));
+		//this.setAll("scrollFactor", new FlxPoint(0, 0));
 		
 	}
 	

@@ -18,7 +18,7 @@ class Machine extends Module
 		productCounter = 0;
 		
 		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
-		base.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.GRAY);
+		base.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.BLUE);
 		add(base);
 		
 		lamp = new FlxSprite(base.x+4, base.y+5);
@@ -26,9 +26,9 @@ class Machine extends Module
 		add(lamp);
 		
 	}
-	override public function update():Void 
+	override public function update(elapsed:Float):Void 
 	{
-		super.update();
+		super.update(elapsed);
 		productCounter++;
 		if (productCounter > 60)
 		{

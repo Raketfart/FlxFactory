@@ -6,7 +6,7 @@ import util.TilePos;
 import flixel.FlxSprite;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
-import flixel.util.FlxPoint;
+import flixel.math.FlxPoint;
 
 /**
  * ...
