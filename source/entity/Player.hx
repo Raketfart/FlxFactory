@@ -27,9 +27,9 @@ class Player extends FlxSprite
 		setFacingFlip(FlxObject.RIGHT, false, false);
 
 		animation.add("idle", [0], 6, false);
-		animation.add("run", [1, 9, 10], 6, false);
-		animation.add("jump", [7,8], 6, false);
-		animation.add("jumpdown", [2], 6, false);
+		animation.add("run", [1, 3, 2, 3], 6, false);
+		animation.add("jump", [4], 6, false);
+		animation.add("jumpdown", [5], 6, false);
 		animation.add("duck", [3], 6, false);
 		
 		
@@ -71,9 +71,13 @@ class Player extends FlxSprite
 		}
 		
 		// ANIMATION
-		if (velocity.y != 0)
+		if (velocity.y < 0)
 		{
 			animation.play("jump");
+		}
+		else if (velocity.y > 0)
+		{
+			animation.play("jumpdown");
 		}
 		else if (velocity.x == 0)
 		{

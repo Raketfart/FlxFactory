@@ -92,6 +92,7 @@ class Module extends FlxGroup
 			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
+				
 				connections.push(module);
 				debugDraw( ((connTileX - 1) * GC.tileSize) + 16 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );				
 			}
@@ -108,7 +109,7 @@ class Module extends FlxGroup
 				connections.push(module);
 				debugDraw( ((thisTileX) * GC.tileSize) + 4 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );
 			}
-		}		
+		}	
 	}
 	private function debugClear()
 	{

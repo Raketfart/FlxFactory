@@ -41,6 +41,9 @@ class CameraController extends FlxGroup
 		camfollow.makeGraphic(2, 2, FlxColor.BLUE);
 		add(camfollow);
 		
+		camfollow.visible = false;
+		camfollowBoundsBorder.visible = false;
+		
 		switchCam();
 		
 	}

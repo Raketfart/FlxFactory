@@ -57,7 +57,7 @@ class HUD extends FlxGroup
 		add(_helperText);
 		
 		nextpositionX += _helperText.width + buttonspace;
-		hudbg.makeGraphic(Std.int(nextpositionX), 30, 0xffFF00FF);
+		hudbg.makeGraphic(Std.int(nextpositionX), 30, 0xff000000);
 		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		

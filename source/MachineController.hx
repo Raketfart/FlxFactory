@@ -29,6 +29,7 @@ class MachineController extends FlxGroup
 	
 	public function setupTestMachines():Void
 	{
+		
 		var mod:Module = new Machine(this,7, 8,3,2);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
@@ -86,6 +87,7 @@ class MachineController extends FlxGroup
 		{
 			if (m.tileRect.containsTile(TileX, TileY))
 			{
+				trace("m contains " + TileX + "x" + TileY);
 				return m;
 			}
 		}

@@ -21,7 +21,7 @@ class TileRect
 	
 	public function containsTile(X:Int, Y:Int):Bool
 	{
-		if (X >= tileX && X < tileX + tileW && Y >= tileY && Y <= tileY + tileH)
+		if (X >= tileX && X < tileX + tileW && Y >= tileY && Y < tileY + tileH)
 		{
 			return true;
 		}

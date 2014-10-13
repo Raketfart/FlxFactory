@@ -224,6 +224,7 @@ class PlayState extends FlxState
 	{
 		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt), AssetPaths.worldtiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);
 		player.setPosition(64, 64);
+		FlxG.resetGame();
 	}
 	
 	public function mapGen1():Void
