@@ -25,7 +25,7 @@ class Conveyor extends Module
 		*/
 		graphic = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		graphic.loadGraphic(AssetPaths.conveyor_tiles__png,true);
-		add(graphic);
+		imageLayer.add(graphic);
 		
 		graphic.animation.add("running", [0,1,2,3], 12, true);
 		

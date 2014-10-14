@@ -18,6 +18,7 @@ class HUD extends FlxGroup
 	var _resetButton:FlxButton;
 	var _helperText:FlxText;
 	var _cambutton:FlxButton;	
+	var htt:HUDTypedText;
 		
 	
 	public var hudbg:FlxSprite;
@@ -58,12 +59,23 @@ class HUD extends FlxGroup
 		add(_helperText);
 		
 		nextpositionX += _helperText.width + buttonspace;
-		hudbg.makeGraphic(Std.int(nextpositionX), 30, 0xff000000);
+		hudbg.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
+		
+		
+		htt = new HUDTypedText();
+		add(htt);
 		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		
 	}
-	
+	override public function update():Void
+	{
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			htt.visible = false;
+		}
+		super.update();
+	}
 	private function onCam():Void
 	{
 		_state.switchCam();

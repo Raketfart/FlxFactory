@@ -4,7 +4,7 @@ import classes.TileRect;
 import flixel.group.FlxGroup;
 import flixel.util.FlxRect;
 import inventory.InventoryItem;
-import util.TilePos;
+import classes.TilePos;
 import flixel.FlxSprite;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxColor;
@@ -121,7 +121,7 @@ class Module extends FlxGroup
 	private function debugDraw(drawX,drawY)
 	{
 		var dot:FlxSprite = new FlxSprite(drawX, drawY);
-		dot.makeGraphic(2, 2, FlxColor.GOLDEN);
+		dot.makeGraphic(4, 4, FlxColor.GOLDEN);
 		debugLayer.add(dot);
 	}
 	

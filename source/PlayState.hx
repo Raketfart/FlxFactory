@@ -16,6 +16,8 @@ import openfl.Assets;
 import scene.Background;
 import scene.Emitter;
 import scene.MapGenerator;
+import scene.TileType;
+import scene.WorldMap;
 
 
 
@@ -26,15 +28,17 @@ using flixel.util.FlxSpriteUtil;
 class PlayState extends FlxState
 {
 	
-	public var _debugtxt:FlxText;	
+	
 	private var _highlightBox:FlxSprite;
 	public var player:Player;	
-	public var _collisionMap:FlxTilemap;
+	//public var _collisionMap:FlxTilemap;
+	public var worldmap:WorldMap;
 	public var machineController:MachineController;
 	
 	var camController:CameraController;
 	var hud:HUD;	
 	var _emitter:Emitter;	
+	
 	
 	
 	override public function create():Void
@@ -44,9 +48,7 @@ class PlayState extends FlxState
 		var background:Background = new Background();
 		add(background);
 		
-		_debugtxt = new FlxText(10, 10, 200, "-");
-		add(_debugtxt);
-		
+	
 		setupMap();
 		
 		machineController = new MachineController();
@@ -68,15 +70,17 @@ class PlayState extends FlxState
 		hud = new HUD(this);
 		add(hud);
 		
+		FlxG.worldBounds.width = worldmap.mapWidth * GC.tileSize + 20;
+		FlxG.worldBounds.height = worldmap.mapHeight * GC.tileSize+20;
+		
 		camController = new CameraController(this);
 		add(camController);
 		
 		super.create();
 		
-		FlxG.worldBounds.height = _collisionMap.heightInTiles * GC.tileSize+20;
-		FlxG.worldBounds.width = _collisionMap.widthInTiles * GC.tileSize + 20;
 		
-		mapGen1();
+		
+		//mapGen1();
 		
 		//FlxG.watch.add(player,"x","px");
 		
@@ -101,9 +105,13 @@ class PlayState extends FlxState
 		// define region
 		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
 		*/
-		_collisionMap = new FlxTilemap();				
-		_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
-		add(_collisionMap);
+		
+		//_collisionMap = new FlxTilemap();				
+		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
+		//add(_collisionMap);
+		
+		worldmap = new WorldMap();
+		add(worldmap);
 	}
 	
 	
@@ -151,7 +159,7 @@ class PlayState extends FlxState
 				
 				
 				//_player.switchState(1);	
-				_debugtxt.text = "left";
+				
 					
 			}
 			
@@ -160,7 +168,7 @@ class PlayState extends FlxState
 		{		
 			if (isClickOnMap() == true)
 			{				
-				_collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
 				{
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
@@ -170,7 +178,7 @@ class PlayState extends FlxState
 		
 		if (FlxG.mouse.justReleased || FlxG.mouse.justReleasedRight)
 		{
-			_debugtxt.text = "-";		
+			
 		}
 	}
 	private function isClickOnMap():Bool
@@ -179,7 +187,7 @@ class PlayState extends FlxState
 		if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
 		{
 			//if inside map
-			var mapsize:FlxRect = new FlxRect(0, 0, _collisionMap.width, _collisionMap.height);				
+			var mapsize:FlxRect = new FlxRect(0, 0, worldmap.collisionMap.width, worldmap.collisionMap.height);				
 			if (mapsize.overlaps(new FlxRect(FlxG.mouse.x,FlxG.mouse.y,1,1)))
 			{			
 				return true;			
@@ -195,8 +203,8 @@ class PlayState extends FlxState
 		
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
-		FlxG.collide(player, _collisionMap);
-		FlxG.collide(_emitter, _collisionMap);
+		FlxG.collide(worldmap.collisionMap,player);
+		FlxG.collide(worldmap.collisionMap,_emitter);
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
@@ -233,15 +241,15 @@ class PlayState extends FlxState
 	
 	public function mapGen1():Void
 	{
-		MapGenerator.generateWorld(this._collisionMap);
+		MapGenerator.generateWorld(worldmap.collisionMap);
 		
 	}
 	
 	public function mapGen2():Void
 	{
 		
-		MapGenerator.generateCoal(this._collisionMap);
-		MapGenerator.generateSilver(this._collisionMap);
+		MapGenerator.generateCoal(worldmap.collisionMap);
+		MapGenerator.generateSilver(worldmap.collisionMap);
 		
 	}
 	

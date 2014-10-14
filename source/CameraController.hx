@@ -32,7 +32,7 @@ class CameraController extends FlxGroup
 		
 		_state = State;
 		
-		camfollowBounds = new FlxRect(100, 280, 500, 400);
+		camfollowBounds = new FlxRect(300, 280, FlxG.worldBounds.width-600, FlxG.worldBounds.height-300);
 		camfollowBoundsBorder = new FlxSprite();
 		add(camfollowBoundsBorder);
 		drawCamFollowBounds();
@@ -117,7 +117,7 @@ class CameraController extends FlxGroup
 			camZoom = 1;
 			FlxG.camera.zoom = 1;
 			//FlxG.camera.follow(camfollow, FlxCamera.STYLE_LOCKON, null, 0);
-			camfollowBounds = new FlxRect(100, 280, FlxG.worldBounds.width-100, 400);
+			//camfollowBounds = new FlxRect(300, 280, FlxG.worldBounds.width-600, FlxG.worldBounds.height-300);
 			restrictCamFollow();
 		}
 	}

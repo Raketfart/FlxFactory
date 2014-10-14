@@ -30,21 +30,28 @@ class MachineController extends FlxGroup
 	public function setupTestMachines():Void
 	{
 		
-		var mod:Module = new Machine(this,10, 8,3,2);
+		
+		var mod:Module = new Machine(this,25, 13,3,2);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod2:Module = new Conveyor(this,13, 9);
+		var mod2:Module = new Conveyor(this,28, 14);
 		moduleGrp.add(mod2);
 		moduleArr.push(mod2);
 		
 		//mod.connections.push(mod2);
 		
-		var mod3:Module = new Conveyor(this,14, 9);
+		var mod3:Module = new Conveyor(this,29, 14);
 		moduleGrp.add(mod3);
 		moduleArr.push(mod3);
 		
 		//mod2.connections.push(mod3);
+		
+		//loading module types
+		var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13,3,2]);
+		moduleGrp.add(loadedMod);
+		moduleArr.push(loadedMod);
+		
 		
 		for (m in moduleArr)
 		{

@@ -3,8 +3,10 @@ package entity ;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
+import flixel.util.FlxRandom;
 import openfl.geom.ColorTransform;
 
 /**
@@ -38,6 +40,7 @@ class Player extends FlxSprite
 		drag.x = 640;
 		acceleration.y = 420;
 		maxVelocity.set(120, 200);
+		
 		
 	}
 	

@@ -22,7 +22,7 @@ class Machine extends Module
 		imageLayer.add(base);*/
 		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		base.loadGraphic(AssetPaths.factory__png);
-		add(base);
+		imageLayer.add(base);
 		
 		lamp = new FlxSprite(base.x+4, base.y+5);
 		lamp.makeGraphic(2, 2, FlxColor.RED);
