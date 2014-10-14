@@ -48,36 +48,37 @@ class HUD extends FlxGroup
 		_resetButton = new FlxButton(nextpositionX, 6, "Reset", onReset); 
 		add(_resetButton);
 		
+		//nextpositionX += _cambutton.width + buttonspace;
+		
+		//var _btn1:FlxButton = new FlxButton(nextpositionX, 6, "Generate1", onBtn1);
+		//add(_btn1);
+		
 		nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn1:FlxButton = new FlxButton(nextpositionX, 6, "Generate1", onBtn1);
-		add(_btn1);
-		
-		nextpositionX += _cambutton.width + buttonspace;
-		
-		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "Generate2", onBtn2);
+		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "MapGen Ore", onBtn2);
 		add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
-		_helperText = new FlxText(nextpositionX , 8, 220, "-");
-		add(_helperText);
 		
-		nextpositionX += _helperText.width + buttonspace;
+		
 		hudbg.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
 		
-		var _tool1:FlxButton = new FlxButton(4,36, "Tool 1", onTool1);
+		_helperText = new FlxText(4, 40, 220, "Tool: dig");
+		add(_helperText);
+		
+		var _tool1:FlxButton = new FlxButton(4,70, "DIG", onTool1);
 		add(_tool1);
-		var _tool2:FlxButton = new FlxButton(4,66, "Tool 2", onTool2);
+		var _tool2:FlxButton = new FlxButton(4,100, "DECONSTRUCT", onTool2);
 		add(_tool2);
-		var _tool3:FlxButton = new FlxButton(4,96, "Tool 3", onTool3);
+		var _tool3:FlxButton = new FlxButton(4,130, "BUILD", onTool3);
 		add(_tool3);
 		hudbg2.makeGraphic(100, 200, 0xff000000);
 		
 		
-		htt = new HUDTypedText();
-		add(htt);
+		//htt = new HUDTypedText();
+		//add(htt);
 		
 		GC.currentTool = TOOL_DIG;
 		
@@ -88,7 +89,7 @@ class HUD extends FlxGroup
 	{
 		if (FlxG.keys.justPressed.SPACE)
 		{
-			htt.visible = false;
+			//htt.visible = false;
 		}
 		super.update();
 	}
@@ -105,7 +106,7 @@ class HUD extends FlxGroup
 	}
 	private function onBtn1():Void
 	{
-		_state.mapGen1();
+		//_state.mapGen1();
 	}
 	private function onBtn2():Void
 	{
@@ -115,16 +116,16 @@ class HUD extends FlxGroup
 	private function onTool1():Void
 	{
 		GC.currentTool = TOOL_DIG;
-		_helperText.text = GC.currentTool;
+		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onTool2():Void
 	{
 		GC.currentTool = TOOL_DECONSTRUCT;
-		_helperText.text = GC.currentTool;
+		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onTool3():Void
 	{
 		GC.currentTool = TOOL_BUILD;
-		_helperText.text = GC.currentTool;
+		_helperText.text = "Tool: " + GC.currentTool;
 	}
 }

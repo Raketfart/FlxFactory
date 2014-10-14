@@ -168,15 +168,25 @@ class PlayState extends FlxState
 		{		
 			if (isClickOnMap() == true)
 			{	
+				var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
 				//worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
-				if (GC.currentTool == HUD.TOOL_DIG)
+				if (GC.currentTool == HUD.TOOL_DIG && 
+					(tiletype == TileType.TYPE_DIRT_SOLID
+					|| tiletype == TileType.TYPE_DIRT_GRASS))
 				{
-					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
+					
+					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
 				} 
 				else if (GC.currentTool == HUD.TOOL_BUILD)
 				{
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
+				}
+				else if (GC.currentTool == HUD.TOOL_DECONSTRUCT &&
+						tiletype == TileType.TYPE_METAL_WALL)
+				{
+					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
+					_emitter.emit(_highlightBox.x, _highlightBox.y);
 				}
 				
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)

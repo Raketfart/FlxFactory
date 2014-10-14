@@ -71,7 +71,7 @@ class MapGenerator
 	{
 
 		//var rnd:FlxRandom = new FlxRandom();
-		var coalSeeds:Int = FlxRandom.intRanged(1, 30);		
+		var coalSeeds:Int = FlxRandom.intRanged(10, 60);		
 		
 		for (i in 1 ... coalSeeds) {
 			var coalLocX:Int = FlxRandom.intRanged(1,  map.widthInTiles - 2);
@@ -86,7 +86,7 @@ class MapGenerator
 	public static function generateSilver(map:FlxTilemap):Void
 	{
 
-		var silverSeeds:Int = FlxRandom.intRanged(1, 10);		
+		var silverSeeds:Int = FlxRandom.intRanged(1, 20);		
 		
 		for (i in 1 ... silverSeeds) {
 			var coalLocX:Int = FlxRandom.intRanged(1,  map.widthInTiles - 2);

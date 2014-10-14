@@ -22,7 +22,7 @@ class Emitter extends FlxGroup
 		super();
 		
 		
-		_emitter = new FlxEmitter(40, 40, 200);
+		_emitter = new FlxEmitter(40, 40, 100);
 		_emitter.setXSpeed( -50, 50);
 		_emitter.setYSpeed( -50, -100);
 		_emitter.width = GC.tileSize;
@@ -54,7 +54,8 @@ class Emitter extends FlxGroup
 		
 		_emitter.x = X;
 		_emitter.y = Y;
-		_emitter.start(false, 1, 0.01,6,3);
+		//_emitter.start(false, 1, 0.01,10,3);
+		_emitter.start(true, 1, 0,10,3);
 	}
 	
 }

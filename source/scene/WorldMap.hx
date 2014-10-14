@@ -12,8 +12,8 @@ import openfl.Assets;
 class WorldMap extends FlxGroup
 {
 
-	public var mapWidth:Int = 100;
-	public var mapHeight:Int = 40;
+	public var mapWidth:Int = 70;
+	public var mapHeight:Int = 30;
 	
 	public var coins:FlxGroup;	
 	public var floor:FlxObject;
@@ -36,7 +36,7 @@ class WorldMap extends FlxGroup
 		
 		MapGenerator.generateBuilding(backgroundMap,collisionMap);
 		
-		trace(backgroundMap.getData());	
+		//trace(backgroundMap.getData());	
 		//trace(collisionMap.getData());		
 		add(backgroundMap);
 		add(collisionMap);
