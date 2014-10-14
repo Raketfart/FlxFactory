@@ -20,6 +20,9 @@ class HUD extends FlxGroup
 	var _cambutton:FlxButton;	
 	var htt:HUDTypedText;
 		
+	public static var TOOL_DIG = "dig";
+	public static var TOOL_DECONSTRUCT = "deconstruct";
+	public static var TOOL_BUILD = "build";
 	
 	public var hudbg:FlxSprite;
 	
@@ -30,6 +33,9 @@ class HUD extends FlxGroup
 		_state = State;
 		hudbg = new FlxSprite(0, 0);
 		add(hudbg);
+		
+		var hudbg2:FlxSprite = new FlxSprite(0, 0);
+		add(hudbg2);
 		
 		var buttonspace:Float = 4;
 		var nextpositionX:Float = buttonspace;
@@ -61,9 +67,19 @@ class HUD extends FlxGroup
 		nextpositionX += _helperText.width + buttonspace;
 		hudbg.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
 		
+		var _tool1:FlxButton = new FlxButton(4,36, "Tool 1", onTool1);
+		add(_tool1);
+		var _tool2:FlxButton = new FlxButton(4,66, "Tool 2", onTool2);
+		add(_tool2);
+		var _tool3:FlxButton = new FlxButton(4,96, "Tool 3", onTool3);
+		add(_tool3);
+		hudbg2.makeGraphic(100, 200, 0xff000000);
+		
 		
 		htt = new HUDTypedText();
 		add(htt);
+		
+		GC.currentTool = TOOL_DIG;
 		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		
@@ -96,4 +112,19 @@ class HUD extends FlxGroup
 		_state.mapGen2();
 	}
 	
+	private function onTool1():Void
+	{
+		GC.currentTool = TOOL_DIG;
+		_helperText.text = GC.currentTool;
+	}
+	private function onTool2():Void
+	{
+		GC.currentTool = TOOL_DECONSTRUCT;
+		_helperText.text = GC.currentTool;
+	}
+	private function onTool3():Void
+	{
+		GC.currentTool = TOOL_BUILD;
+		_helperText.text = GC.currentTool;
+	}
 }

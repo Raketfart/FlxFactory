@@ -167,8 +167,18 @@ class PlayState extends FlxState
 		if (FlxG.mouse.pressed)
 		{		
 			if (isClickOnMap() == true)
-			{				
-				worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+			{	
+				//worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				if (GC.currentTool == HUD.TOOL_DIG)
+				{
+					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
+					_emitter.emit(_highlightBox.x, _highlightBox.y);
+				} 
+				else if (GC.currentTool == HUD.TOOL_BUILD)
+				{
+					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
+				}
+				
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
 				{
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
