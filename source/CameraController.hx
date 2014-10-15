@@ -1,15 +1,12 @@
 package ;
-import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
-import flixel.system.scaleModes.FillScaleMode;
-import flixel.system.scaleModes.FixedScaleMode;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.util.FlxColor;
 import flixel.util.FlxRect;
 import flixel.util.FlxSpriteUtil;
-import openfl.Lib;
+import openfl.display.BlendMode;
 
 /**
  * ...
@@ -24,6 +21,7 @@ class CameraController extends FlxGroup
 	public var camfollow:FlxSprite;
 	public var camfollowBounds:FlxRect;
 	var camfollowBoundsBorder:FlxSprite;
+	
 	
 	
 	public function new(State:PlayState) 
@@ -43,6 +41,8 @@ class CameraController extends FlxGroup
 		
 		camfollow.visible = false;
 		camfollowBoundsBorder.visible = false;
+		
+		
 		
 		switchCam();
 		

@@ -5,6 +5,7 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
+import openfl.display.BlendMode;
 
 using flixel.util.FlxSpriteUtil;
 /**
@@ -19,6 +20,7 @@ class HUD extends FlxGroup
 	var _helperText:FlxText;
 	var _cambutton:FlxButton;	
 	var htt:HUDTypedText;
+	var blendsprite:FlxSprite;
 		
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
@@ -31,6 +33,15 @@ class HUD extends FlxGroup
 		super();
 		
 		_state = State;
+		
+		blendsprite= new FlxSprite(0,0);
+		blendsprite.loadGraphic(AssetPaths.blendoverlay__png,false);
+		add(blendsprite);
+		blendsprite.scale.set(.55, .55);
+		blendsprite.setPosition(-250, -160);
+		blendsprite.blend = BlendMode.MULTIPLY;
+		blendsprite.visible = false;
+		
 		hudbg = new FlxSprite(0, 0);
 		add(hudbg);
 		
@@ -77,6 +88,8 @@ class HUD extends FlxGroup
 		hudbg2.makeGraphic(100, 200, 0xff000000);
 		
 		
+		
+		
 		//htt = new HUDTypedText();
 		//add(htt);
 		
@@ -96,6 +109,14 @@ class HUD extends FlxGroup
 	private function onCam():Void
 	{
 		_state.switchCam();
+		if (FlxG.camera.zoom == 1)
+		{
+			blendsprite.visible = false;
+		}
+		else 
+		{
+			blendsprite.visible = true;
+		}
 		
 	}
 	

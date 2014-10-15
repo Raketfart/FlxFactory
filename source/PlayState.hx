@@ -249,6 +249,7 @@ class PlayState extends FlxState
 	public function switchCam():Void
 	{
 		camController.switchCam();
+		
 	}
 	
 	
