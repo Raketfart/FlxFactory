@@ -39,6 +39,7 @@ class Machine extends Module
 		if (inventoryArr.length > 0)
 		{
 			inventoryArr[0].x = lamp.x + 10;
+			inventoryArr[0].y = lamp.y + 10;
 			productCounter+=productionSpeed;
 			if (productCounter > 60)
 			{
