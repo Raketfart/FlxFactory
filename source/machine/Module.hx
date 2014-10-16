@@ -56,7 +56,10 @@ class Module extends FlxGroup
 		add(debugLayer);
 		
 	}
-		
+	public function willAddToInventory(item:InventoryItem):Bool
+	{
+		return true;
+	}	
 	public function addToInventory(item:InventoryItem):Void 
 	{
 		inventoryArr.push(item);				

@@ -1,6 +1,7 @@
 package machine;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import inventory.InventoryItem;
 
 /**
  * ...
@@ -8,9 +9,10 @@ import flixel.util.FlxColor;
  */
 class Machine extends Module
 {
-	var productCounter:Int;
+	var productCounter:Float;
 	var lamp:FlxSprite;
-	var lampCount:Int = 0;
+	var lampCount:Float = 0;
+	public var productionSpeed:Float = 1;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
@@ -34,13 +36,15 @@ class Machine extends Module
 	override public function update():Void 
 	{
 		super.update();
-		productCounter++;
-		if (productCounter > 60)
+		if (inventoryArr.length > 0)
 		{
-			//trace("PRODUCT COUNT DONE");
-			productCounter = 0;
-			if (inventoryArr.length > 0)
+			inventoryArr[0].x = lamp.x + 10;
+			productCounter+=productionSpeed;
+			if (productCounter > 60)
 			{
+				//trace("PRODUCT COUNT DONE");
+				productCounter = 0;
+			
 				var item = getFromInventory();
 				connections[0].addToInventory(item);
 				lampOn();
@@ -52,6 +56,17 @@ class Machine extends Module
 			lampCount --;
 		} else {
 			lampOff();
+		}
+	}
+	override public function willAddToInventory(item:InventoryItem):Bool
+	{
+		if (inventoryArr.length > 0 )
+		{
+			return false;
+		}
+		else
+		{
+			return true;
 		}
 	}
 	public function lampOn():Void

@@ -45,12 +45,18 @@ class MachineController extends FlxGroup
 		moduleGrp.add(mod3);
 		moduleArr.push(mod3);
 		
+		var mod4:Machine = new Machine(this,33, 13,3,2);
+		moduleGrp.add(mod4);
+		moduleArr.push(mod4);
+		mod4.productionSpeed = .5;
+		
 		//mod2.connections.push(mod3);
 		
 		//loading module types
 		var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13,3,2]);
 		moduleGrp.add(loadedMod);
 		moduleArr.push(loadedMod);
+		
 		
 		
 		for (m in moduleArr)

@@ -42,7 +42,7 @@ class Conveyor extends Module
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
 			item.x += .4;
-			if (item.x > graphic.x + graphic.width)
+			if (item.x > graphic.x + graphic.width) // move to next module
 			{				
 				if (connections.length > 0)
 				{
@@ -53,16 +53,18 @@ class Conveyor extends Module
 							doMove = false;
 						}
 					}
-					if (doMove)
+					if (doMove && connections[0].willAddToInventory(item))
 					{
 						var item = getFromInventory();
 						connections[0].addToInventory(item);
+					} else {
+						doMove = false;
 					}
 				} else {
 					doMove = false;
 				}
 				
-			} else {
+			} else { // move in this module
 				for (otheritem in inventoryArr)
 				{
 					if (item != otheritem)
