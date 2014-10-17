@@ -7,7 +7,7 @@ import inventory.InventoryItem;
  * ...
  * @author 
  */
-class Conveyor extends Module
+class ConveyorWest extends Module
 {
 	
 	var productCounter:Int;
@@ -17,12 +17,6 @@ class Conveyor extends Module
 	{		
 		super(Controller,tileX, tileY);
 		
-		
-		/*
-		base = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
-		base.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.BLUE);
-		imageLayer.add(base);
-		*/
 		graphic = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		graphic.loadGraphic(AssetPaths.tiles__png,true,21,21);
 		imageLayer.add(graphic);
@@ -31,8 +25,12 @@ class Conveyor extends Module
 		
 		graphic.animation.play("running");
 		
-		this.connectsWest = false;
-		this.connectsEast = true;
+		this.connectsOutWest = true;
+		this.connectsOutEast = false;
+		
+		this.connectsInWest = false;
+		this.connectsInEast = true;
+		
 	}
 	override public function update():Void 
 	{
@@ -41,8 +39,8 @@ class Conveyor extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.x += .4;
-			if (item.x > graphic.x + graphic.width) // move to next module
+			item.x -= .4;
+			if (item.x < graphic.x) // move to next module
 			{				
 				if (connections.length > 0)
 				{
@@ -90,7 +88,7 @@ class Conveyor extends Module
 			}
 			if (!doMove)
 			{
-				item.x -= .4;
+				item.x += .4;
 			}
 		}
 	}

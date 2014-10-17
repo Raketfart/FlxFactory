@@ -28,8 +28,10 @@ class Module extends FlxGroup
 	private var imageLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
 	
-	public var connectsEast:Bool;
-	public var connectsWest:Bool;
+	public var connectsOutEast:Bool;
+	public var connectsOutWest:Bool;
+	public var connectsInEast:Bool;
+	public var connectsInWest:Bool;
 	
 		
 	public function new(Controller:MachineController, tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
@@ -77,11 +79,11 @@ class Module extends FlxGroup
 	{
 		debugClear();
 		connections = new Array<Module>();
-		if (connectsEast)
+		if (connectsOutEast)
 		{
 			refreshConnectionsEast();
 		}
-		if (connectsWest)
+		if (connectsOutWest)
 		{
 			refreshConnectionsWest();
 		}
@@ -95,9 +97,11 @@ class Module extends FlxGroup
 			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
-				
-				connections.push(module);
-				debugDraw( ((connTileX - 1) * GC.tileSize) + 16 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );				
+				if (module.connectsInWest)
+				{
+					connections.push(module);
+					debugDraw( ((connTileX - 1) * GC.tileSize) + 16 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );				
+				}
 			}
 		}		
 	}
@@ -109,8 +113,11 @@ class Module extends FlxGroup
 			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
-				connections.push(module);
-				debugDraw( ((thisTileX) * GC.tileSize) + 4 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );
+				if (module.connectsInEast)
+				{
+					connections.push(module);
+					debugDraw( ((thisTileX) * GC.tileSize) + 4 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );
+				}
 			}
 		}	
 	}

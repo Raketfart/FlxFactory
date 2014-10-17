@@ -188,7 +188,14 @@ class PlayState extends FlxState
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
 				}
-				
+				else if (GC.currentTool == HUD.TOOL_CONV_E)
+				{
+					machineController.addConvE();					
+				}
+				else if (GC.currentTool == HUD.TOOL_CONV_W)
+				{
+					machineController.addConvW();					
+				}
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
 				{
 					_emitter.emit(_highlightBox.x, _highlightBox.y);

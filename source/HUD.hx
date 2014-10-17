@@ -25,6 +25,8 @@ class HUD extends FlxGroup
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
 	public static var TOOL_BUILD = "build";
+	public static var TOOL_CONV_E = "conv-e";
+	public static var TOOL_CONV_W = "conv-w";
 	
 	public var hudbg:FlxSprite;
 	
@@ -84,6 +86,10 @@ class HUD extends FlxGroup
 		var _tool2:FlxButton = new FlxButton(4,100, "DECONSTRUCT", onTool2);
 		add(_tool2);
 		var _tool3:FlxButton = new FlxButton(4,130, "BUILD", onTool3);
+		add(_tool3);
+		var _tool3:FlxButton = new FlxButton(4,160, "ConvE", onToolCE);
+		add(_tool3);
+		var _tool3:FlxButton = new FlxButton(4,190, "ConvW", onToolCW);
 		add(_tool3);
 		hudbg2.makeGraphic(100, 200, 0xff000000);
 		
@@ -147,6 +153,16 @@ class HUD extends FlxGroup
 	private function onTool3():Void
 	{
 		GC.currentTool = TOOL_BUILD;
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	private function onToolCW():Void
+	{
+		GC.currentTool = TOOL_CONV_W;
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	private function onToolCE():Void
+	{
+		GC.currentTool = TOOL_CONV_E;
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 }

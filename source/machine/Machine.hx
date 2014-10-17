@@ -30,8 +30,10 @@ class Machine extends Module
 		lamp.makeGraphic(2, 2, FlxColor.RED);
 		imageLayer.add(lamp);
 		
-		this.connectsWest = true;
-		this.connectsEast = true;
+		this.connectsOutWest = true;
+		this.connectsOutEast = true;
+		this.connectsInWest = true;
+		this.connectsInEast = true;
 	}
 	override public function update():Void 
 	{
