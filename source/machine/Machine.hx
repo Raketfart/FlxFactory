@@ -14,9 +14,9 @@ class Machine extends Module
 	var lampCount:Float = 0;
 	public var productionSpeed:Float = 1;
 	
-	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
+	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		
-		super(Controller,tileX, tileY,TileWidth,TileHeight);
+		super(Controller,tileX, tileY,3,2);
 		productCounter = 0;
 		/*
 		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
@@ -40,6 +40,7 @@ class Machine extends Module
 		super.update();
 		if (inventoryArr.length > 0)
 		{
+			
 			inventoryArr[0].x = lamp.x + 10;
 			inventoryArr[0].y = lamp.y + 10;
 			productCounter+=productionSpeed;
@@ -47,12 +48,41 @@ class Machine extends Module
 			{
 				//trace("PRODUCT COUNT DONE");
 				productCounter = 0;
-			
-				var item = getFromInventory();
-				connections[0].addToInventory(item);
-				lampOn();
+				
+				var doMove:Bool = true;
+				
+				
+				
+				if (connections.length > 0)
+				{
+					inventoryArr[0].x = connections[0].tilePos.tileX * GC.tileSize;
+					inventoryArr[0].y = connections[0].tilePos.tileY * GC.tileSize;
+					
+					for (otheritem in connections[0].inventoryArr)
+					{
+						if (inventoryArr[0].overlaps(otheritem))
+						{
+							doMove = false;
+						}
+					}
+					
+					if (doMove && connections[0].willAddToInventory(inventoryArr[0]))
+					{
+						var item = getFromInventory();
+						item.visible = true;
+						connections[0].addToInventory(item);
+						lampOn();	
+					} else {
+						doMove = false;
+						inventoryArr[0].x = connections[0].tilePos.tileX * GC.tileSize;
+						inventoryArr[0].y = connections[0].tilePos.tileY * GC.tileSize;
+					
+					}
+				}
+				
 				
 			}
+			
 		}
 		if (lampCount > 0)
 		{
@@ -60,6 +90,11 @@ class Machine extends Module
 		} else {
 			lampOff();
 		}
+	}
+	override public function addToInventory(item:InventoryItem):Void 
+	{
+		item.visible = false;
+		super.addToInventory(item);
 	}
 	override public function willAddToInventory(item:InventoryItem):Bool
 	{

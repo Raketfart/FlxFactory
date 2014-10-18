@@ -11,6 +11,7 @@ import inventory.InventoryItem;
  */
 class MachineController extends FlxGroup
 {
+	var machineTOPRIGHT:Machine;
 	public var moduleGrp:FlxGroup;
 	public var inventoryGrp:FlxGroup;	
 	public var moduleArr:Array<Module>;
@@ -31,39 +32,44 @@ class MachineController extends FlxGroup
 	{
 		
 		
-		var mod:Module = new Machine(this,25, 13,3,2);
+		var mod:Module = new Machine(this,25, 13);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod2:Module = new ConveyorEast(this,28, 14);
-		moduleGrp.add(mod2);
-		moduleArr.push(mod2);
-		
-		//mod.connections.push(mod2);
-		
-		var mod3:Module = new ConveyorEast(this,29, 14);
-		moduleGrp.add(mod3);
-		moduleArr.push(mod3);
-		
-		var mod4:Machine = new Machine(this,33, 13,3,2);
+		var mod4:Machine = new Machine(this,33, 13);
 		moduleGrp.add(mod4);
 		moduleArr.push(mod4);
 		mod4.productionSpeed = .5;
 		
+		var mod22:Module = new Machine(this,25, 8);
+		moduleGrp.add(mod22);
+		moduleArr.push(mod22);
+
+		machineTOPRIGHT = new Machine(this,35, 8);
+		moduleGrp.add(machineTOPRIGHT);
+		moduleArr.push(machineTOPRIGHT);
+		
+		
+
+		
+		var mod2:Module = new ConveyorEast(this,28, 14);
+		moduleGrp.add(mod2);
+		moduleArr.push(mod2);
+
+		var mod3:Module = new ConveyorEast(this,29, 14);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		
+		
+		
 		//mod2.connections.push(mod3);
 		
 		//loading module types
-		var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13,3,2]);
+		var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13]);
 		moduleGrp.add(loadedMod);
 		moduleArr.push(loadedMod);
 		
-		var mod:Module = new Machine(this,25, 8,3,2);
-		moduleGrp.add(mod);
-		moduleArr.push(mod);
 
-		var mod:Module = new Machine(this,33, 8,3,2);
-		moduleGrp.add(mod);
-		moduleArr.push(mod);
 		
 		for (m in moduleArr)
 		{
@@ -77,6 +83,10 @@ class MachineController extends FlxGroup
 		var crate:InventoryItem = new InventoryItem();
 		inventoryGrp.add(crate);
 		moduleArr[0].addToInventory(crate);
+		
+		var crate2:InventoryItem = new InventoryItem();
+		inventoryGrp.add(crate2);
+		machineTOPRIGHT.addToInventory(crate2);
 		
 	}
 	public function addMachine()

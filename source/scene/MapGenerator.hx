@@ -66,7 +66,17 @@ class MapGenerator
 			}
 		}		
 	}
-	
+	public static function generateBackground(map:FlxTilemap):Void
+	{
+		for (i in 1...map.widthInTiles-1) {
+			map.setTile(i, _dirtbeginsrow, TileType.BG_DIRT_GRASS);			
+		}
+		for (iy in _dirtbeginsrow+1...map.heightInTiles-1) {
+			for (ix in 1...map.widthInTiles-1) {
+				map.setTile(ix,iy, TileType.BG_DIRT_SOLID);			
+			}
+		}	
+	}
 	public static function generateCoal(map:FlxTilemap):Void
 	{
 

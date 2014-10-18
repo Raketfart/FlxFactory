@@ -1,6 +1,8 @@
 package machine;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
 import inventory.InventoryItem;
 
 /**
@@ -24,6 +26,9 @@ class ConveyorWest extends Module
 		graphic.animation.add("running", [40,41,42,43,44], 12, true);
 		
 		graphic.animation.play("running");
+		
+		graphic.setFacingFlip(FlxObject.LEFT, true, false);
+		graphic.facing = FlxObject.LEFT;
 		
 		this.connectsOutWest = true;
 		this.connectsOutEast = false;
@@ -95,7 +100,7 @@ class ConveyorWest extends Module
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.x = graphic.x;
+		item.x = graphic.x+graphic.width;
 		item.y = graphic.y;
 	}
 	

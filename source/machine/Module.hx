@@ -40,7 +40,6 @@ class Module extends FlxGroup
 		_controller = Controller;
 		tilePos = new TilePos(tileX,tileY);
 		
-		
 		tileWidth = TileWidth;
 		tileHeight = TileHeight;
 		

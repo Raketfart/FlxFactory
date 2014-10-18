@@ -33,6 +33,7 @@ class WorldMap extends FlxGroup
 		
 		
 		MapGenerator.generateWorld(collisionMap);
+		MapGenerator.generateBackground(backgroundMap);
 		
 		MapGenerator.generateBuilding(backgroundMap,collisionMap);
 		

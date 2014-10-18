@@ -22,6 +22,9 @@ class TileType
 	public static var TYPE_DIRT_GRASS:Int = 3;
 	public static var TYPE_DIRT_FLOOR:Int = 10;
 	
+	public static var BG_DIRT_SOLID:Int = 16;
+	public static var BG_DIRT_GRASS:Int = 17;
+	
 	public static var BG_WALL_LEFT:Int = 11;
 	public static var BG_WALL_MIDDLE:Int = 12;
 	public static var BG_WALL_RIGHT:Int = 13;
