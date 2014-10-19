@@ -196,6 +196,10 @@ class PlayState extends FlxState
 				{
 					machineController.addConvW();					
 				}
+				else if (GC.currentTool == HUD.TOOL_MACHINE)
+				{
+					machineController.addMachine();					
+				}
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
 				{
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
@@ -211,7 +215,9 @@ class PlayState extends FlxState
 	private function isClickOnMap():Bool
 	{
 		//if not over hud
-		if (!hud.hudbg.overlapsPoint(new FlxPoint(FlxG.mouse.x,FlxG.mouse.y), true))
+		if (!hud.hudbg1.overlapsPoint(new FlxPoint(FlxG.mouse.x, FlxG.mouse.y), true)
+			&& !hud.hudbg2.overlapsPoint(new FlxPoint(FlxG.mouse.x, FlxG.mouse.y), true)
+			)
 		{
 			//if inside map
 			var mapsize:FlxRect = new FlxRect(0, 0, worldmap.collisionMap.width, worldmap.collisionMap.height);				

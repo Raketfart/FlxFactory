@@ -27,8 +27,10 @@ class HUD extends FlxGroup
 	public static var TOOL_BUILD = "build";
 	public static var TOOL_CONV_E = "conv-e";
 	public static var TOOL_CONV_W = "conv-w";
+	public static var TOOL_MACHINE = "machine";
 	
-	public var hudbg:FlxSprite;
+	public var hudbg1:FlxSprite;
+	public var hudbg2:FlxSprite;
 	
 	public function new(State:PlayState) 
 	{
@@ -44,10 +46,10 @@ class HUD extends FlxGroup
 		blendsprite.blend = BlendMode.MULTIPLY;
 		blendsprite.visible = false;
 		
-		hudbg = new FlxSprite(0, 0);
-		add(hudbg);
+		hudbg1 = new FlxSprite(0, 0);
+		add(hudbg1);
 		
-		var hudbg2:FlxSprite = new FlxSprite(0, 0);
+		hudbg2 = new FlxSprite(0, 0);
 		add(hudbg2);
 		
 		var buttonspace:Float = 4;
@@ -76,7 +78,7 @@ class HUD extends FlxGroup
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
 		
 		
-		hudbg.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
+		hudbg1.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
 		
 		_helperText = new FlxText(4, 40, 220, "Tool: dig");
 		add(_helperText);
@@ -91,7 +93,9 @@ class HUD extends FlxGroup
 		add(_tool3);
 		var _tool3:FlxButton = new FlxButton(4,190, "ConvW", onToolCW);
 		add(_tool3);
-		hudbg2.makeGraphic(100, 200, 0xff000000);
+		var _tool4:FlxButton = new FlxButton(4,220, "Machine", onToolMachine);
+		add(_tool4);
+		hudbg2.makeGraphic(100, 280, 0xff000000);
 		
 		
 		
@@ -163,6 +167,12 @@ class HUD extends FlxGroup
 	private function onToolCE():Void
 	{
 		GC.currentTool = TOOL_CONV_E;
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	
+	private function onToolMachine():Void
+	{
+		GC.currentTool = TOOL_MACHINE;
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 }
