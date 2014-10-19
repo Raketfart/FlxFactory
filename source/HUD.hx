@@ -28,6 +28,7 @@ class HUD extends FlxGroup
 	public static var TOOL_CONV_E = "conv-e";
 	public static var TOOL_CONV_W = "conv-w";
 	public static var TOOL_MACHINE = "machine";
+	public static var TOOL_CRATE = "crate";
 	
 	public var hudbg1:FlxSprite;
 	public var hudbg2:FlxSprite;
@@ -89,12 +90,14 @@ class HUD extends FlxGroup
 		add(_tool2);
 		var _tool3:FlxButton = new FlxButton(4,130, "BUILD", onTool3);
 		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,160, "ConvE", onToolCE);
+		var _tool3:FlxButton = new FlxButton(4,160, "ConvRight", onToolCE);
 		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,190, "ConvW", onToolCW);
+		var _tool3:FlxButton = new FlxButton(4,190, "ConvLeft", onToolCW);
 		add(_tool3);
 		var _tool4:FlxButton = new FlxButton(4,220, "Machine", onToolMachine);
 		add(_tool4);
+		var _tool5:FlxButton = new FlxButton(4,250, "Crate", onToolCrate);
+		add(_tool5);
 		hudbg2.makeGraphic(100, 280, 0xff000000);
 		
 		
@@ -108,6 +111,8 @@ class HUD extends FlxGroup
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		
 	}
+	
+	
 	override public function update():Void
 	{
 		if (FlxG.keys.justPressed.SPACE)
@@ -173,6 +178,11 @@ class HUD extends FlxGroup
 	private function onToolMachine():Void
 	{
 		GC.currentTool = TOOL_MACHINE;
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	function onToolCrate():Void
+	{
+		GC.currentTool = TOOL_CRATE;
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 }

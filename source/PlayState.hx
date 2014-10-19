@@ -165,20 +165,16 @@ class PlayState extends FlxState
 			
 		}
 		if (FlxG.mouse.pressed)
-		{		
+		{
+			var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
 			if (isClickOnMap() == true)
-			{	
-				var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-				//worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
-				if (GC.currentTool == HUD.TOOL_DIG && 
-					(tiletype == TileType.TYPE_DIRT_SOLID
-					|| tiletype == TileType.TYPE_DIRT_GRASS))
-				{
-					
+			{
+				if (GC.currentTool == HUD.TOOL_DIG && TileType.isTileDiggable(tiletype))
+				{					
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
 				} 
-				else if (GC.currentTool == HUD.TOOL_BUILD)
+				else if (GC.currentTool == HUD.TOOL_BUILD && tiletype==TileType.TYPE_EMPTY)
 				{
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
 				}
@@ -188,7 +184,16 @@ class PlayState extends FlxState
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
 					_emitter.emit(_highlightBox.x, _highlightBox.y);
 				}
-				else if (GC.currentTool == HUD.TOOL_CONV_E)
+			}
+		}
+		if (FlxG.mouse.justReleased)
+		{		
+			if (isClickOnMap() == true)
+			{	
+				var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
+				//worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
+				
+				if (GC.currentTool == HUD.TOOL_CONV_E)
 				{
 					machineController.addConvE();					
 				}
@@ -200,6 +205,12 @@ class PlayState extends FlxState
 				{
 					machineController.addMachine();					
 				}
+				else if (GC.currentTool == HUD.TOOL_CRATE)
+				{
+					machineController.addCrateToModule();					
+				}
+				
+				
 				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
 				{
 					_emitter.emit(_highlightBox.x, _highlightBox.y);

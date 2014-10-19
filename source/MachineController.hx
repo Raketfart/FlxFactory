@@ -52,11 +52,11 @@ class MachineController extends FlxGroup
 		
 
 		
-		var mod2:Module = new ConveyorEast(this,28, 14);
+		var mod2:Module = new ConveyorRight(this,28, 14);
 		moduleGrp.add(mod2);
 		moduleArr.push(mod2);
 
-		var mod3:Module = new ConveyorEast(this,29, 14);
+		var mod3:Module = new ConveyorRight(this,29, 14);
 		moduleGrp.add(mod3);
 		moduleArr.push(mod3);
 		
@@ -92,7 +92,7 @@ class MachineController extends FlxGroup
 	
 	public function addConvE()
 	{
-		var mod:Module = new ConveyorEast(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		var mod:Module = new ConveyorRight(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
@@ -104,7 +104,7 @@ class MachineController extends FlxGroup
 	}
 	public function addConvW()
 	{
-		var mod:Module = new ConveyorWest(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		var mod:Module = new ConveyorLeft(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
@@ -137,5 +137,16 @@ class MachineController extends FlxGroup
 			}
 		}
 		return null;
+	}
+	
+	public function addCrateToModule():Void
+	{
+		var module:Module = getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		if (module != null)
+		{
+			var crate:InventoryItem = new InventoryItem();
+			inventoryGrp.add(crate);
+			module.addToInventory(crate);
+		}
 	}
 }

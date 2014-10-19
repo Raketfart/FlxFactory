@@ -1,13 +1,15 @@
 package machine;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
 import inventory.InventoryItem;
 
 /**
  * ...
  * @author 
  */
-class ConveyorEast extends Module
+class ConveyorLeft extends Module
 {
 	
 	var productCounter:Int;
@@ -25,11 +27,14 @@ class ConveyorEast extends Module
 		
 		graphic.animation.play("running");
 		
-		this.connectsOutWest = false;
-		this.connectsOutEast = true;
+		graphic.setFacingFlip(FlxObject.LEFT, true, false);
+		graphic.facing = FlxObject.LEFT;
 		
-		this.connectsInWest = true;
-		this.connectsInEast = false;
+		this.connectsOutWest = true;
+		this.connectsOutEast = false;
+		
+		this.connectsInWest = false;
+		this.connectsInEast = true;
 		
 	}
 	override public function update():Void 
@@ -39,8 +44,8 @@ class ConveyorEast extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.x += .4;
-			if (item.x > graphic.x + graphic.width) // move to next module
+			item.x -= .4;
+			if (item.x < graphic.x) // move to next module
 			{				
 				if (connections.length > 0)
 				{
@@ -88,14 +93,14 @@ class ConveyorEast extends Module
 			}
 			if (!doMove)
 			{
-				item.x -= .4;
+				item.x += .4;
 			}
 		}
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.x = graphic.x;
+		item.x = graphic.x+graphic.width;
 		item.y = graphic.y;
 	}
 	

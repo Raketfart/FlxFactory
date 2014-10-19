@@ -13,8 +13,8 @@ class MapGenerator
 	static private var _dirtbeginsrow:Int = 15;
 	static private var _coalBeginRow:Int = 20;
 	static private var _coalEndRow:Int = 25;
-	static private var _silverBeginRow:Int = 25;
-	static private var _silverEndRow:Int = 30;
+	static private var _silverBeginRow:Int = 22;
+	static private var _silverEndRow:Int = 27;
 
 		
 	public static function generateWorldString(Width:Int,Height:Int):String
