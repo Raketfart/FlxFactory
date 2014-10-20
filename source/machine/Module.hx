@@ -28,10 +28,10 @@ class Module extends FlxGroup
 	private var imageLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
 	
-	public var connectsOutEast:Bool;
-	public var connectsOutWest:Bool;
-	public var connectsInEast:Bool;
-	public var connectsInWest:Bool;
+	public var connectsOutRight:Bool;
+	public var connectsOutLeft:Bool;
+	public var connectsInRight:Bool;
+	public var connectsInLeft:Bool;
 	
 		
 	public function new(Controller:MachineController, tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
@@ -78,17 +78,17 @@ class Module extends FlxGroup
 	{
 		debugClear();
 		connections = new Array<Module>();
-		if (connectsOutEast)
+		if (connectsOutRight)
 		{
-			refreshConnectionsEast();
+			refreshConnectionsRight();
 		}
-		if (connectsOutWest)
+		if (connectsOutLeft)
 		{
-			refreshConnectionsWest();
+			refreshConnectionsLeft();
 		}
 	}
 	
-	public function refreshConnectionsEast():Void 
+	public function refreshConnectionsRight():Void 
 	{				
 		var thisTileX:Int = tilePos.tileX;
 		var connTileX:Int = thisTileX +tileWidth;		
@@ -96,7 +96,7 @@ class Module extends FlxGroup
 			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
-				if (module.connectsInWest)
+				if (module.connectsInLeft && this.connectsOutRight)
 				{
 					connections.push(module);
 					debugDraw( ((connTileX - 1) * GC.tileSize) + 16 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );				
@@ -104,7 +104,7 @@ class Module extends FlxGroup
 			}
 		}		
 	}
-	public function refreshConnectionsWest():Void 
+	public function refreshConnectionsLeft():Void 
 	{
 		var thisTileX:Int = tilePos.tileX;
 		var connTileX:Int = thisTileX -1;
@@ -112,7 +112,7 @@ class Module extends FlxGroup
 			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
-				if (module.connectsInEast)
+				if (module.connectsInRight && this.connectsOutLeft)
 				{
 					connections.push(module);
 					debugDraw( ((thisTileX) * GC.tileSize) + 4 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );
@@ -129,9 +129,13 @@ class Module extends FlxGroup
 	}
 	private function debugDraw(drawX,drawY)
 	{
-		var dot:FlxSprite = new FlxSprite(drawX, drawY);
-		dot.makeGraphic(4, 4, FlxColor.GOLDEN);
-		debugLayer.add(dot);
+		if (GC.debugdraw)
+		{
+			var dot:FlxSprite = new FlxSprite(drawX, drawY);
+			dot.makeGraphic(4, 4, FlxColor.GOLDEN);
+			debugLayer.add(dot);
+		}
+		
 	}
 	
 }

@@ -51,8 +51,8 @@ class Emitter extends FlxGroup
 			_whitePixel.visible = false;
 			_emitterDirt.add(_whitePixel);
 		}
-		_emitterDirt.maxRotation = 0;
-		_emitterDirt.minRotation  = 0;
+		//_emitterDirt.maxRotation = 0;
+		//_emitterDirt.minRotation  = 0;
 		
 		/* smoke */
 		_emitterSmoke = new FlxEmitter(40, 40, 100);
@@ -84,8 +84,8 @@ class Emitter extends FlxGroup
 			_whitePixel.visible = false;
 			_emitterSmoke.add(_whitePixel);
 		}
-		_emitterSmoke.maxRotation = 0;
-		_emitterSmoke.minRotation  = 0;
+		//_emitterSmoke.maxRotation = 0;
+		//_emitterSmoke.minRotation  = 0;
 		
 	}
 	public function emit(X:Float,Y:Float):Void

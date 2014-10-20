@@ -78,6 +78,14 @@ class HUD extends FlxGroup
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		
+		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "More machines", onBtn3);
+		add(_btn2);
+		
+		nextpositionX += _cambutton.width + buttonspace;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "More crates", onBtn4);
+		add(_btn2);
+		
+		nextpositionX += _cambutton.width + buttonspace;
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
 		
 		
@@ -128,11 +136,11 @@ class HUD extends FlxGroup
 		_state.switchCam();
 		if (FlxG.camera.zoom == 1)
 		{
-			blendsprite.visible = false;
+			//blendsprite.visible = false;
 		}
 		else 
 		{
-			blendsprite.visible = true;
+			//blendsprite.visible = true;
 		}
 		
 	}
@@ -150,7 +158,14 @@ class HUD extends FlxGroup
 	{
 		_state.mapGen2();
 	}
-	
+	private function onBtn3():Void
+	{
+		_state.machineController.setupTestMachines();
+	}
+	private function onBtn4():Void
+	{
+		_state.machineController.setupMoreCrates();
+	}
 	private function onTool1():Void
 	{
 		GC.currentTool = TOOL_DIG;

@@ -30,11 +30,11 @@ class ConveyorLeft extends Module
 		graphic.setFacingFlip(FlxObject.LEFT, true, false);
 		graphic.facing = FlxObject.LEFT;
 		
-		this.connectsOutWest = true;
-		this.connectsOutEast = false;
+		this.connectsOutLeft = true;
+		this.connectsOutRight = false;
 		
-		this.connectsInWest = false;
-		this.connectsInEast = true;
+		this.connectsInLeft = false;
+		this.connectsInRight = true;
 		
 	}
 	override public function update():Void 

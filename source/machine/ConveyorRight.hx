@@ -25,11 +25,11 @@ class ConveyorRight extends Module
 		
 		graphic.animation.play("running");
 		
-		this.connectsOutWest = false;
-		this.connectsOutEast = true;
+		this.connectsOutLeft = false;
+		this.connectsOutRight = true;
 		
-		this.connectsInWest = true;
-		this.connectsInEast = false;
+		this.connectsInLeft = true;
+		this.connectsInRight = false;
 		
 	}
 	override public function update():Void 

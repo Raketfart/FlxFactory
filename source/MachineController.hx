@@ -11,11 +11,12 @@ import inventory.InventoryItem;
  */
 class MachineController extends FlxGroup
 {
-	var machineTOPRIGHT:Machine;
 	public var moduleGrp:FlxGroup;
 	public var inventoryGrp:FlxGroup;	
 	public var moduleArr:Array<Module>;
-
+	private var leftTile:Int = 4;
+	private var topTile:Int = 13;
+	
 	public function new() 
 	{
 		super();
@@ -32,61 +33,89 @@ class MachineController extends FlxGroup
 	{
 		
 		
-		var mod:Module = new Machine(this,25, 13);
+		var mod:Module = new Machine(this,leftTile, topTile);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod4:Machine = new Machine(this,33, 13);
+		var mod4:Machine = new Machine(this,leftTile+8, topTile);
 		moduleGrp.add(mod4);
 		moduleArr.push(mod4);
 		mod4.productionSpeed = .5;
 		
-		var mod22:Module = new Machine(this,25, 8);
-		moduleGrp.add(mod22);
-		moduleArr.push(mod22);
-
-		machineTOPRIGHT = new Machine(this,35, 8);
-		moduleGrp.add(machineTOPRIGHT);
-		moduleArr.push(machineTOPRIGHT);
-		
-		
-
-		
-		var mod2:Module = new ConveyorRight(this,28, 14);
+		var mod2:Module = new ConveyorRight(this,leftTile+3, topTile+1);
 		moduleGrp.add(mod2);
 		moduleArr.push(mod2);
 
-		var mod3:Module = new ConveyorRight(this,29, 14);
+		var mod3:Module = new ConveyorRight(this,leftTile+4, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorRight(this,leftTile+5, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorRight(this,leftTile+6, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorRight(this,leftTile+7, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorLeft(this,leftTile+7, topTile);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorLeft(this,leftTile+6, topTile);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorLeft(this,leftTile+5, topTile);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorLeft(this,leftTile+4, topTile);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorLeft(this,leftTile+3, topTile);
 		moduleGrp.add(mod3);
 		moduleArr.push(mod3);
 		
-		
-		
+		leftTile = leftTile +12;
+		if (leftTile > 50)
+		{
+			leftTile = 10;
+			topTile += 4;
+		}
 		//mod2.connections.push(mod3);
 		
 		//loading module types
-		var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13]);
-		moduleGrp.add(loadedMod);
-		moduleArr.push(loadedMod);
+		//var loadedMod:Module = Type.createInstance(Type.resolveClass("machine.Machine"), [this,50,13]);
+		//moduleGrp.add(loadedMod);
+		//moduleArr.push(loadedMod);
 		
 
 		
 		for (m in moduleArr)
 		{
-			m.refreshConnectionsEast();
-			m.refreshConnectionsWest();
+			m.refreshConnectionsRight();
+			m.refreshConnectionsLeft();
 		}
 		
 	}
+	public function setupMoreCrates():Void
+	{
+		for (m in moduleArr)
+		{
+			if (Std.is(m, Machine))
+			{
+					var crate:InventoryItem = new InventoryItem();
+					inventoryGrp.add(crate);
+					m.addToInventory(crate);
+							
+			}
+		}
+	}
+	
 	public function addCrate()
 	{
 		var crate:InventoryItem = new InventoryItem();
 		inventoryGrp.add(crate);
 		moduleArr[0].addToInventory(crate);
 		
-		var crate2:InventoryItem = new InventoryItem();
-		inventoryGrp.add(crate2);
-		machineTOPRIGHT.addToInventory(crate2);
 		
 	}
 	

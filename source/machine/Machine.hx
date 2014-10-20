@@ -30,10 +30,10 @@ class Machine extends Module
 		lamp.makeGraphic(2, 2, FlxColor.RED);
 		imageLayer.add(lamp);
 		
-		this.connectsOutWest = true;
-		this.connectsOutEast = true;
-		this.connectsInWest = true;
-		this.connectsInEast = true;
+		this.connectsOutLeft = true;
+		this.connectsOutRight = true;
+		this.connectsInLeft = true;
+		this.connectsInRight = true;
 	}
 	override public function update():Void 
 	{
@@ -93,7 +93,10 @@ class Machine extends Module
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
-		item.visible = false;
+		if (GC.debugdraw == false)
+		{
+			item.visible = false;
+		}
 		super.addToInventory(item);
 	}
 	override public function willAddToInventory(item:InventoryItem):Bool
