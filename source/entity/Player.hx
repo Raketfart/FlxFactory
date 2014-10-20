@@ -17,7 +17,7 @@ import openfl.geom.ColorTransform;
  */
 class Player extends FlxSprite
 {
-	public var speed:Float = 200;
+	public var speed:Float = 260;
 
 	
 	
@@ -45,7 +45,7 @@ class Player extends FlxSprite
 		
 		drag.x = 640;
 		acceleration.y = 420;
-		maxVelocity.set(120, 200);
+		maxVelocity.set(120, 260);
 		
 		
 	}

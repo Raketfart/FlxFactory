@@ -12,6 +12,7 @@ import flixel.util.FlxRandom;
 import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
+import machine.Machine;
 import openfl.Assets;
 import scene.Background;
 import scene.Emitter;
@@ -141,11 +142,11 @@ class PlayState extends FlxState
 				
 				if ( FlxG.keys.pressed.SHIFT )
 				{
-					machineController.addCrate();
+					//machineController.addCrate();
 					
 				}
 				else {
-					machineController.addMachine();
+					//machineController.addMachine();
 					
 					//var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
 					//_conveyorGroup.add(b);
@@ -157,10 +158,8 @@ class PlayState extends FlxState
 			if (isClickOnMap() == true)
 			{			
 				
-				
 				//_player.switchState(1);	
 				
-					
 			}
 			
 		}
@@ -184,6 +183,12 @@ class PlayState extends FlxState
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
 					_emitter.emitSmoke(_highlightBox.x, _highlightBox.y);
 				}
+				else if (GC.currentTool == HUD.TOOL_DECONSTRUCT &&
+						machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize)) != null)
+				{
+					machineController.removeModule();
+					_emitter.emitSmoke(_highlightBox.x, _highlightBox.y);
+				}
 			}
 		}
 		if (FlxG.mouse.justReleased)
@@ -195,15 +200,24 @@ class PlayState extends FlxState
 				
 				if (GC.currentTool == HUD.TOOL_CONV_E)
 				{
-					machineController.addConvE();					
+					if (machineController.canAddModule(1,1,worldmap.collisionMap))
+					{
+						machineController.addConvE();					
+					}
 				}
 				else if (GC.currentTool == HUD.TOOL_CONV_W)
 				{
-					machineController.addConvW();					
+					if (machineController.canAddModule(1,1,worldmap.collisionMap))
+					{
+						machineController.addConvW();			
+					}
 				}
 				else if (GC.currentTool == HUD.TOOL_MACHINE)
 				{
-					machineController.addMachine();					
+					if (machineController.canAddModule(3,2,worldmap.collisionMap))
+					{
+						machineController.addMachine();					
+					}
 				}
 				else if (GC.currentTool == HUD.TOOL_CRATE)
 				{

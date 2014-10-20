@@ -32,7 +32,7 @@ class GameClass extends FlxGame
 		
 		//super(Math.ceil(stageWidth / _ratio), Math.ceil(stageHeight / _ratio), MenuState, _ratio, fps, fps);
 		//super(Math.ceil(stageWidth), Math.ceil(stageHeight), MenuState, _ratio, fps, fps);
-		super(Math.ceil(stageWidth), Math.ceil(stageHeight), PlayState, _ratio, fps, fps);
+		super(Math.ceil(stageWidth), Math.ceil(stageHeight), PlayState, _ratio, fps, fps,true);
 		
 		// Center game on screen.
 		

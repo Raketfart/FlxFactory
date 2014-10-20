@@ -10,6 +10,7 @@ import inventory.InventoryItem;
 class Machine extends Module
 {
 	var productCounter:Float;
+	var lastOutput:Int=0;
 	var lamp:FlxSprite;
 	var lampCount:Float = 0;
 	public var productionSpeed:Float = 1;
@@ -47,18 +48,22 @@ class Machine extends Module
 			if (productCounter > 60)
 			{
 				//trace("PRODUCT COUNT DONE");
-				productCounter = 0;
+				
 				
 				var doMove:Bool = true;
 				
 				
+				if (lastOutput >= connections.length)
+				{
+					lastOutput = 0;
+				}
 				
 				if (connections.length > 0)
 				{
-					inventoryArr[0].x = connections[0].tilePos.tileX * GC.tileSize;
-					inventoryArr[0].y = connections[0].tilePos.tileY * GC.tileSize;
+					inventoryArr[0].x = connections[lastOutput].tilePos.tileX * GC.tileSize;
+					inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
 					
-					for (otheritem in connections[0].inventoryArr)
+					for (otheritem in connections[lastOutput].inventoryArr)
 					{
 						if (inventoryArr[0].overlaps(otheritem))
 						{
@@ -66,20 +71,20 @@ class Machine extends Module
 						}
 					}
 					
-					if (doMove && connections[0].willAddToInventory(inventoryArr[0]))
+					if (doMove && connections[lastOutput].willAddToInventory(inventoryArr[0]))
 					{
 						var item = getFromInventory();
 						item.visible = true;
-						connections[0].addToInventory(item);
-						lampOn();	
+						connections[lastOutput].addToInventory(item);
+						lampOn();
+						productCounter = 0;
 					} else {
 						doMove = false;
-						inventoryArr[0].x = connections[0].tilePos.tileX * GC.tileSize;
-						inventoryArr[0].y = connections[0].tilePos.tileY * GC.tileSize;
-					
+						inventoryArr[0].x = lamp.x + 10;
+						inventoryArr[0].y = lamp.y + 10;
 					}
 				}
-				
+				lastOutput+= 1;
 				
 			}
 			

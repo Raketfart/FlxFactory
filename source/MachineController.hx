@@ -1,10 +1,12 @@
 package ;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
+import flixel.tile.FlxTilemap;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRect;
 import machine.*;
 import inventory.InventoryItem;
+import scene.TileType;
 /**
  * ...
  * @author 
@@ -143,7 +145,26 @@ class MachineController extends FlxGroup
 		}
 		
 	}
-	public function addMachine()
+	public function canAddModule(width:Int, height:Int ,collMap:FlxTilemap):Bool
+	{
+		var startX:Int = Std.int(FlxG.mouse.x / GC.tileSize);
+		var startY:Int = Std.int(FlxG.mouse.y / GC.tileSize);
+		for (iy in startY...(startY + height))
+		{
+			for (ix in startX...(startX + width))
+			{
+				var tiletype:Int = collMap.getTile(ix, iy);				
+				
+				var m:Module = getModuleAt(ix,iy);
+				if (m != null || tiletype != TileType.TYPE_EMPTY)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	public function addMachine():Void
 	{
 		var mod:Module = new Machine(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		moduleGrp.add(mod);
@@ -176,6 +197,17 @@ class MachineController extends FlxGroup
 			var crate:InventoryItem = new InventoryItem();
 			inventoryGrp.add(crate);
 			module.addToInventory(crate);
+		}
+	}
+	
+	public function removeModule():Void
+	{
+		var m:Module = getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		moduleArr.remove(m);
+		m.destroy();
+		for (m in moduleArr)
+		{
+			m.refreshConnections();
 		}
 	}
 }
