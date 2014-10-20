@@ -1,5 +1,6 @@
 package entity ;
 
+
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -9,6 +10,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxRandom;
 import openfl.geom.ColorTransform;
 
+
 /**
  * ...
  * @author ...
@@ -17,6 +19,10 @@ class Player extends FlxSprite
 {
 	public var speed:Float = 200;
 
+	
+	
+	
+	
 	public function new(X:Float=0, Y:Float=0) 
     {
         super(X, Y);
@@ -85,6 +91,7 @@ class Player extends FlxSprite
 		else if (velocity.x == 0)
 		{
 			animation.play("idle");
+			
 		}
 		else
 		{

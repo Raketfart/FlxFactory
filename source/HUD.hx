@@ -30,6 +30,8 @@ class HUD extends FlxGroup
 	public static var TOOL_MACHINE = "machine";
 	public static var TOOL_CRATE = "crate";
 	
+	
+	
 	public var hudbg1:FlxSprite;
 	public var hudbg2:FlxSprite;
 	

@@ -182,7 +182,7 @@ class PlayState extends FlxState
 						tiletype == TileType.TYPE_METAL_WALL)
 				{
 					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
-					_emitter.emit(_highlightBox.x, _highlightBox.y);
+					_emitter.emitSmoke(_highlightBox.x, _highlightBox.y);
 				}
 			}
 		}
