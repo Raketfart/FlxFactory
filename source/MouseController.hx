@@ -190,13 +190,16 @@ class ToolBuild extends FlxFSMState<MouseController>
 class ToolModule extends FlxFSMState<MouseController>
 {
 	var _moduleGhost:FlxSprite;
+	var _arrowGhost:FlxSprite;
 	var _tool:String;
 	
 	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{
 		_tool = GC.currentTool;
 		
-			
+		
+		
+		
 		addgraphics(Owner);
 		
 		
@@ -206,29 +209,39 @@ class ToolModule extends FlxFSMState<MouseController>
 	}
 	private function addgraphics(Owner:MouseController)
 	{
+		_arrowGhost = new FlxSprite(0, 0);		
+		_arrowGhost.loadGraphic(AssetPaths.tiles__png,true,21,21);		
+		_arrowGhost.animation.add("pointright", [45], 1,false);		
+		_arrowGhost.animation.play("pointright");	
+		_arrowGhost.setFacingFlip(FlxObject.LEFT, true, false);
+		
 		_moduleGhost = new FlxSprite(0, 0);		
+		_moduleGhost.loadGraphic(AssetPaths.tiles__png,true,21,21);		
+		_moduleGhost.animation.add("running", [40], 1, false);		
+		_moduleGhost.animation.play("running");		
+		_moduleGhost.setFacingFlip(FlxObject.LEFT, true, false);
+		
 		_moduleGhost.alpha = .5;	
 		if (_tool == HUD.TOOL_CONV_LEFT)
 		{
-			_moduleGhost.loadGraphic(AssetPaths.tiles__png,true,21,21);		
-			_moduleGhost.animation.add("running", [40,41,42,43,44], 12, true);		
-			_moduleGhost.animation.play("running");		
-			_moduleGhost.setFacingFlip(FlxObject.LEFT, true, false);
 			_moduleGhost.facing = FlxObject.LEFT;
+			_arrowGhost.facing = FlxObject.LEFT;
+			_arrowGhost.visible = true;
 		} 
 		else if (_tool == HUD.TOOL_CONV_RIGHT)
 		{
-			_moduleGhost.loadGraphic(AssetPaths.tiles__png,true,21,21);		
-			_moduleGhost.animation.add("running", [40,41,42,43,44], 12, true);		
-			_moduleGhost.animation.play("running");		
 			_moduleGhost.facing = FlxObject.RIGHT;
+			_arrowGhost.facing = FlxObject.RIGHT;
+			_arrowGhost.visible = true;
 		}
 		else if (_tool == HUD.TOOL_MACHINE)
 		{
 			_moduleGhost.loadGraphic(AssetPaths.factory__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
+			_arrowGhost.visible = false;
 		}
 		Owner.add(_moduleGhost);
+		Owner.add(_arrowGhost);
 	}
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
@@ -246,6 +259,8 @@ class ToolModule extends FlxFSMState<MouseController>
 		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
 		_moduleGhost.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
 		_moduleGhost.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+		_arrowGhost.x = _moduleGhost.x;
+		_arrowGhost.y = _moduleGhost.y;
 		
 		if (_tool == HUD.TOOL_MACHINE)
 		{
@@ -299,6 +314,8 @@ class ToolModule extends FlxFSMState<MouseController>
 	{
 		Owner.remove(_moduleGhost);
 		_moduleGhost.destroy();
+		Owner.remove(_arrowGhost);
+		_arrowGhost.destroy();
 		
 	}
 }
