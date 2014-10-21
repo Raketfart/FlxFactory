@@ -5,7 +5,10 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
+import hud.HUD;
 import machine.ConveyorLeft;
+import machine.Machine;
+import machine.Module;
 import scene.TileType;
 import util.FlxFSM;
 
@@ -79,6 +82,10 @@ class MouseController extends FlxGroup
 		else if (ToolName == HUD.TOOL_CRATE)
 		{
 			fsm.state = new ToolModule();
+		} 
+		else if (ToolName == HUD.TOOL_CONTROL)
+		{
+			fsm.state = new ToolControl();
 		} 
 		else {
 			fsm.state = new Idle();
@@ -317,5 +324,37 @@ class ToolModule extends FlxFSMState<MouseController>
 		Owner.remove(_arrowGhost);
 		_arrowGhost.destroy();
 		
+	}
+}
+class ToolControl extends FlxFSMState<MouseController>
+{
+	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
+	{
+		//trace("Enter ToolDeconstruct");			
+		Owner.highlightBox.visible = true;
+		Owner.highlightBox.color = FlxColor.AQUAMARINE;
+	}
+	
+	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
+	{		
+		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+		if (FlxG.mouse.pressed)
+		{
+			var m:Module = Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+			if (m != null)
+			{
+				if (Std.is(m, Machine))
+				{
+					var machine:Machine = cast m;
+					Owner.state.hud.showMachineWindow(machine);
+				}
+			}
+		}
+	}
+	override public function exit(Owner:MouseController)
+	{
+		Owner.highlightBox.color = FlxColor.WHITE;
+		Owner.highlightBox.visible = false;
 	}
 }

@@ -1,4 +1,4 @@
-package ;
+package hud ;
 import flixel.addons.text.FlxTypeText;
 import flixel.FlxG;
 import flixel.FlxSprite;

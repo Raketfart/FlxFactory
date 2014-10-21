@@ -1,10 +1,11 @@
-package ;
+package hud ;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
+import machine.Machine;
 import openfl.display.BlendMode;
 
 using flixel.util.FlxSpriteUtil;
@@ -29,6 +30,7 @@ class HUD extends FlxGroup
 	public static var TOOL_CONV_LEFT = "conv-left";
 	public static var TOOL_MACHINE = "machine";
 	public static var TOOL_CRATE = "crate";
+	public static var TOOL_CONTROL = "control";
 	
 	
 	
@@ -108,7 +110,9 @@ class HUD extends FlxGroup
 		add(_tool4);
 		var _tool5:FlxButton = new FlxButton(4,250, "Crate", onToolCrate);
 		add(_tool5);
-		hudbg2.makeGraphic(100, 280, 0xff000000);
+		var _tool6:FlxButton = new FlxButton(4,280, "Control", onToolControl);
+		add(_tool6);
+		hudbg2.makeGraphic(100, 310, 0xff000000);
 		
 		
 		
@@ -208,5 +212,17 @@ class HUD extends FlxGroup
 		GC.currentTool = TOOL_CRATE;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	function onToolControl():Void
+	{
+		GC.currentTool = TOOL_CONTROL;
+		_state.mouseController.changeTool(GC.currentTool);
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	public function showMachineWindow(machine:Machine)
+	{
+		var mw:MachineWindow = new MachineWindow(this,machine);
+		add(mw);
+		
 	}
 }

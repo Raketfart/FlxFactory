@@ -42,7 +42,7 @@ class MachineController extends FlxGroup
 		var mod4:Machine = new Machine(this,leftTile+8, topTile);
 		moduleGrp.add(mod4);
 		moduleArr.push(mod4);
-		mod4.productionSpeed = .5;
+		mod4.productionSpeed = 10;
 		
 		var mod2:Module = new ConveyorRight(this,leftTile+3, topTile+1);
 		moduleGrp.add(mod2);
@@ -111,7 +111,7 @@ class MachineController extends FlxGroup
 			}
 		}
 	}
-	
+	/*
 	public function addCrate()
 	{
 		var crate:InventoryItem = new InventoryItem();
@@ -120,7 +120,7 @@ class MachineController extends FlxGroup
 		
 		
 	}
-	
+	*/
 	public function addConvE()
 	{
 		var mod:Module = new ConveyorRight(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
@@ -197,6 +197,13 @@ class MachineController extends FlxGroup
 			var crate:InventoryItem = new InventoryItem();
 			inventoryGrp.add(crate);
 			module.addToInventory(crate);
+			/*
+			if (Std.is(module, Machine))
+			{
+				var machine:Machine = cast module;
+				machine.turnOn();
+			}
+			*/
 		}
 	}
 	

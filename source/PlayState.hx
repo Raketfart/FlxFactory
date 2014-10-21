@@ -12,6 +12,7 @@ import flixel.util.FlxRandom;
 import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
+import hud.HUD;
 import machine.Machine;
 
 
@@ -40,9 +41,10 @@ class PlayState extends FlxState
 	public var machineController:MachineController;
 	public var mouseController:MouseController;
 	public var emitter:Emitter;	
+	public var hud:HUD;
 	
 	var camController:CameraController;
-	var hud:HUD;	
+	
 	
 	
 	
