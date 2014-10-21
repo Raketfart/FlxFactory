@@ -25,8 +25,8 @@ class HUD extends FlxGroup
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
 	public static var TOOL_BUILD = "build";
-	public static var TOOL_CONV_E = "conv-e";
-	public static var TOOL_CONV_W = "conv-w";
+	public static var TOOL_CONV_RIGHT = "conv-right";
+	public static var TOOL_CONV_LEFT = "conv-left";
 	public static var TOOL_MACHINE = "machine";
 	public static var TOOL_CRATE = "crate";
 	
@@ -169,37 +169,44 @@ class HUD extends FlxGroup
 	private function onTool1():Void
 	{
 		GC.currentTool = TOOL_DIG;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onTool2():Void
 	{
 		GC.currentTool = TOOL_DECONSTRUCT;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onTool3():Void
 	{
 		GC.currentTool = TOOL_BUILD;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onToolCW():Void
 	{
-		GC.currentTool = TOOL_CONV_W;
+		GC.currentTool = TOOL_CONV_LEFT;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	private function onToolCE():Void
 	{
-		GC.currentTool = TOOL_CONV_E;
+		GC.currentTool = TOOL_CONV_RIGHT;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	
 	private function onToolMachine():Void
 	{
 		GC.currentTool = TOOL_MACHINE;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 	function onToolCrate():Void
 	{
 		GC.currentTool = TOOL_CRATE;
+		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
 }

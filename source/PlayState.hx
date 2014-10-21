@@ -13,6 +13,9 @@ import flixel.util.FlxRect;
 import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
 import machine.Machine;
+
+
+
 import openfl.Assets;
 import scene.Background;
 import scene.Emitter;
@@ -30,15 +33,17 @@ class PlayState extends FlxState
 {
 	
 	
-	private var _highlightBox:FlxSprite;
+	
 	public var player:Player;	
 	//public var _collisionMap:FlxTilemap;
 	public var worldmap:WorldMap;
 	public var machineController:MachineController;
+	public var mouseController:MouseController;
+	public var emitter:Emitter;	
 	
 	var camController:CameraController;
 	var hud:HUD;	
-	var _emitter:Emitter;	
+	
 	
 	
 	
@@ -57,16 +62,11 @@ class PlayState extends FlxState
 		
 		machineController.setupTestMachines();
 		
-		_highlightBox = new FlxSprite(0, 0);
-		_highlightBox.makeGraphic(GC.tileSize, GC.tileSize, FlxColor.TRANSPARENT);
-		FlxSpriteUtil.drawRect(_highlightBox, 0, 0, GC.tileSize - 1, GC.tileSize - 1, FlxColor.TRANSPARENT, { thickness: 1, color: FlxColor.RED });
-		add(_highlightBox);
-		
 		player = new Player(64, 64);
 		add(player);
 		
-		_emitter = new Emitter();
-		add(_emitter);
+		emitter = new Emitter();
+		add(emitter);
 		
 		hud = new HUD(this);
 		add(hud);
@@ -76,6 +76,9 @@ class PlayState extends FlxState
 		
 		camController = new CameraController(this);
 		add(camController);
+		
+		mouseController = new MouseController(this);
+		add(mouseController);
 		
 		super.create();
 		
@@ -133,111 +136,7 @@ class PlayState extends FlxState
 	
 	
 	
-	private function checkMouseClicks():Void
-	{
-		if (FlxG.mouse.justPressedRight)
-		{ 
-			if (isClickOnMap() == true)
-			{
-				
-				if ( FlxG.keys.pressed.SHIFT )
-				{
-					//machineController.addCrate();
-					
-				}
-				else {
-					//machineController.addMachine();
-					
-					//var b:Conveyor = new Conveyor(_highlightBox.x, _highlightBox.y);
-					//_conveyorGroup.add(b);
-				}
-			}
-		}
-		if (FlxG.mouse.justPressed)
-		{
-			if (isClickOnMap() == true)
-			{			
-				
-				//_player.switchState(1);	
-				
-			}
-			
-		}
-		if (FlxG.mouse.pressed)
-		{
-			var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-			if (isClickOnMap() == true)
-			{
-				if (GC.currentTool == HUD.TOOL_DIG && TileType.isTileDiggable(tiletype))
-				{					
-					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
-					_emitter.emit(_highlightBox.x, _highlightBox.y);
-				} 
-				else if (GC.currentTool == HUD.TOOL_BUILD && tiletype==TileType.TYPE_EMPTY)
-				{
-					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
-				}
-				else if (GC.currentTool == HUD.TOOL_DECONSTRUCT &&
-						tiletype == TileType.TYPE_METAL_WALL)
-				{
-					worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
-					_emitter.emitSmoke(_highlightBox.x, _highlightBox.y);
-				}
-				else if (GC.currentTool == HUD.TOOL_DECONSTRUCT &&
-						machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize)) != null)
-				{
-					machineController.removeModule();
-					_emitter.emitSmoke(_highlightBox.x, _highlightBox.y);
-				}
-			}
-		}
-		if (FlxG.mouse.justReleased)
-		{		
-			if (isClickOnMap() == true)
-			{	
-				var tiletype:Int = worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-				//worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), FlxG.keys.pressed.SHIFT ? 0 : TileType.TYPE_METAL_WALL);
-				
-				if (GC.currentTool == HUD.TOOL_CONV_E)
-				{
-					if (machineController.canAddModule(1,1,worldmap.collisionMap))
-					{
-						machineController.addConvE();					
-					}
-				}
-				else if (GC.currentTool == HUD.TOOL_CONV_W)
-				{
-					if (machineController.canAddModule(1,1,worldmap.collisionMap))
-					{
-						machineController.addConvW();			
-					}
-				}
-				else if (GC.currentTool == HUD.TOOL_MACHINE)
-				{
-					if (machineController.canAddModule(3,2,worldmap.collisionMap))
-					{
-						machineController.addMachine();					
-					}
-				}
-				else if (GC.currentTool == HUD.TOOL_CRATE)
-				{
-					machineController.addCrateToModule();					
-				}
-				
-				
-				if (FlxG.keys.pressed.SHIFT && FlxG.mouse.justPressed)
-				{
-					_emitter.emit(_highlightBox.x, _highlightBox.y);
-				}
-			}
-		}
-		
-		if (FlxG.mouse.justReleased || FlxG.mouse.justReleasedRight)
-		{
-			
-		}
-	}
-	private function isClickOnMap():Bool
+	public function isClickOnMap():Bool
 	{
 		//if not over hud
 		if (!hud.hudbg1.overlapsPoint(new FlxPoint(FlxG.mouse.x, FlxG.mouse.y), true)
@@ -257,12 +156,12 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
 		
-		checkMouseClicks();
+		
 		
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
 		FlxG.collide(worldmap.collisionMap,player);
-		FlxG.collide(worldmap.collisionMap,_emitter);
+		FlxG.collide(worldmap.collisionMap,emitter);
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
@@ -275,8 +174,6 @@ class PlayState extends FlxState
 			player.updateMovementControls();
 		}
 		
-		_highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		_highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
 		
 		super.update();
 		
