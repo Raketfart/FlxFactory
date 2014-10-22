@@ -2,6 +2,7 @@ package machine;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import hud.MachineWindow;
 import inventory.InventoryItem;
 import machine.machinestates.BootUp;
 import machine.machinestates.PowerOff;
@@ -26,11 +27,13 @@ class Machine extends Module
 	public var power:Float = 0;
 	public var bootSpeed:Float = 20;
 		
-	public var productionSpeed:Float = 25;
+	public var productionSpeed:Float = 100;
 	public var currentProductionCompletion:Float = 0;
 	public var currentSpeedPercent:Float = 0.1;
 		
 	public var fsm:FlxFSM<Machine>;
+	
+	public var window:MachineWindow;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		
@@ -75,10 +78,9 @@ class Machine extends Module
 	{
 		super.update();
 		
-		fsm.update(FlxG.elapsed);
-		
-		
+		fsm.update(FlxG.elapsed);		
 	}
+	
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		if (GC.debugdraw == false)
@@ -173,6 +175,13 @@ class Machine extends Module
 	{
 		fsm.state = new BootUp();
 	}
-	
+	public function attachWindow(Window:MachineWindow):Void
+	{
+		window = Window;
+	}
+	public function detachWindow():Void
+	{
+		window = null;
+	}
 	
 }

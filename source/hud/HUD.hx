@@ -31,11 +31,13 @@ class HUD extends FlxGroup
 	public static var TOOL_MACHINE = "machine";
 	public static var TOOL_CRATE = "crate";
 	public static var TOOL_CONTROL = "control";
+	public static var TOOL_WINDOW = "window";
 	
 	
 	
 	public var hudbg1:FlxSprite;
 	public var hudbg2:FlxSprite;
+
 	
 	public function new(State:PlayState) 
 	{
@@ -96,21 +98,21 @@ class HUD extends FlxGroup
 		_helperText = new FlxText(4, 40, 220, "Tool: dig");
 		add(_helperText);
 		
-		var _tool1:FlxButton = new FlxButton(4,70, "DIG", onTool1);
+		var _tool1:FlxButton = new FlxButton(4,60, "DIG", onTool1);
 		add(_tool1);
-		var _tool2:FlxButton = new FlxButton(4,100, "DECONSTRUCT", onTool2);
+		var _tool2:FlxButton = new FlxButton(4,80, "DECONSTRUCT", onTool2);
 		add(_tool2);
-		var _tool3:FlxButton = new FlxButton(4,130, "BUILD", onTool3);
+		var _tool3:FlxButton = new FlxButton(4,100, "BUILD", onTool3);
 		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,160, "ConvRight", onToolCE);
+		var _tool3:FlxButton = new FlxButton(4,120, "ConvRight", onToolCE);
 		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,190, "ConvLeft", onToolCW);
+		var _tool3:FlxButton = new FlxButton(4,140, "ConvLeft", onToolCW);
 		add(_tool3);
-		var _tool4:FlxButton = new FlxButton(4,220, "Machine", onToolMachine);
+		var _tool4:FlxButton = new FlxButton(4,160, "Machine", onToolMachine);
 		add(_tool4);
-		var _tool5:FlxButton = new FlxButton(4,250, "Crate", onToolCrate);
+		var _tool5:FlxButton = new FlxButton(4,180, "Crate", onToolCrate);
 		add(_tool5);
-		var _tool6:FlxButton = new FlxButton(4,280, "Control", onToolControl);
+		var _tool6:FlxButton = new FlxButton(4,200, "Control", onToolControl);
 		add(_tool6);
 		hudbg2.makeGraphic(100, 310, 0xff000000);
 		
@@ -223,6 +225,7 @@ class HUD extends FlxGroup
 	{
 		var mw:MachineWindow = new MachineWindow(this,machine);
 		add(mw);
+		
 		
 	}
 }

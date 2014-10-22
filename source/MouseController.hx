@@ -87,6 +87,10 @@ class MouseController extends FlxGroup
 		{
 			fsm.state = new ToolControl();
 		} 
+		else if (ToolName == HUD.TOOL_WINDOW)
+		{
+			fsm.state = new ToolWindow();
+		} 
 		else {
 			fsm.state = new Idle();
 		}
@@ -97,6 +101,17 @@ class Idle extends FlxFSMState<MouseController>
 	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{
 		//trace("Enter Idle");				
+	}
+	
+	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
+	{					
+	}
+}
+class ToolWindow extends FlxFSMState<MouseController>
+{
+	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
+	{
+					
 	}
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
@@ -204,14 +219,7 @@ class ToolModule extends FlxFSMState<MouseController>
 	{
 		_tool = GC.currentTool;
 		
-		
-		
-		
 		addgraphics(Owner);
-		
-		
-		
-		
 		
 	}
 	private function addgraphics(Owner:MouseController)
@@ -257,7 +265,8 @@ class ToolModule extends FlxFSMState<MouseController>
 		{
 			Owner.remove(_moduleGhost);
 			_moduleGhost.destroy();	
-			
+			Owner.remove(_arrowGhost);
+			_arrowGhost.destroy();
 			_tool = GC.currentTool;
 			addgraphics(Owner);
 		}
@@ -331,15 +340,15 @@ class ToolControl extends FlxFSMState<MouseController>
 	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{
 		//trace("Enter ToolDeconstruct");			
-		Owner.highlightBox.visible = true;
-		Owner.highlightBox.color = FlxColor.AQUAMARINE;
+		//Owner.highlightBox.visible = true;
+		//Owner.highlightBox.color = FlxColor.AQUAMARINE;
 	}
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
 		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
 		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		if (FlxG.mouse.pressed)
+		if (FlxG.mouse.pressed && Owner.state.isClickOnMap() == true)
 		{
 			var m:Module = Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 			if (m != null)
@@ -348,13 +357,14 @@ class ToolControl extends FlxFSMState<MouseController>
 				{
 					var machine:Machine = cast m;
 					Owner.state.hud.showMachineWindow(machine);
+					Owner.changeTool(HUD.TOOL_WINDOW);
 				}
 			}
 		}
 	}
 	override public function exit(Owner:MouseController)
 	{
-		Owner.highlightBox.color = FlxColor.WHITE;
-		Owner.highlightBox.visible = false;
+		//Owner.highlightBox.color = FlxColor.WHITE;
+		//Owner.highlightBox.visible = false;
 	}
 }
