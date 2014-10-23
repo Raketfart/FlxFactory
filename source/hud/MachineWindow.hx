@@ -5,12 +5,15 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.group.FlxTypedGroup;
 import flixel.system.layer.frames.FlxFrame;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import hud.FlipButton;
 import hud.HUDTypedText;
 import machine.Machine;
 
@@ -81,18 +84,18 @@ class MachineWindow extends FlxGroup
 		lamp3.animation.add("flashyellow", [51,53], 3, true);
 		_elements.add(lamp3);
 		
-		var btn1:FlxButton = new FlxButton(10,150, "Turn on", onTurnOn);
+		var btn1:FlxButton = new FlxButton(10, 150, "Turn on", onTurnOn);		
 		_elements.add(btn1);
 		var btn1:FlxButton = new FlxButton(10,180, "Close", onClose);
 		_elements.add(btn1);
 		
-		var on:FlxSprite = new FlxSprite (60, 30);
+		var onBtnGraphics:FlxSprite = new FlxSprite (60, 30);
 		var off:FlxSprite = new FlxSprite (60, 55);
-		on.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
-		on.animation.frameIndex = 46;
+		onBtnGraphics.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
+		onBtnGraphics.animation.frameIndex = 46;
 		off.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
 		off.animation.frameIndex = 47;
-		_elements.add(on);
+		//_elements.add(onBtnGraphics);
 		_elements.add(off);
 		
 		screenbg = new FlxSprite(bg1.width-20-111, 35);
@@ -122,6 +125,14 @@ class MachineWindow extends FlxGroup
 		
 		//var htt:HUDTypedText = new HUDTypedText();
 		//add(htt);
+		/*
+		var onBtn:FlxButtonPlus = new FlxButtonPlus(10, 10, onTurnOn, "On", 21, 21);
+		onBtn.loadButtonGraphic(onBtnGraphics,onBtnGraphics);
+		_elements.add(onBtn);
+		onBtn.setAll("scrollFactor", new FlxPoint(0, 0));
+		*/
+		createbutton(50, 100, "STATS", AssetPaths.btn_redpush__png, onTurnOn);	
+		createflipbutton(80, 100, "POWER",AssetPaths.btn_redflip__png, onTurnOn,onTurnOff);	
 		
 		_machine.attachWindow(this);
 		
@@ -139,7 +150,10 @@ class MachineWindow extends FlxGroup
 	{
 		var max:Float = gaugebg.x+42;
 		var min:Float = gaugebg.x+30;
-		
+		if (_machine.power == 0)
+		{
+			max = min = gaugebg.x-8;
+		}
 		if (gaugeArrow.x < min)
 		{
 			gaugeArrow.x += 1;
@@ -148,7 +162,7 @@ class MachineWindow extends FlxGroup
 		{
 			gaugeArrow.x -= 1;
 		}
-		else {
+		else if (max != min) {
 			gaugeArrow.x += FlxRandom.intRanged( -1, 1);
 		}
 	}
@@ -170,6 +184,11 @@ class MachineWindow extends FlxGroup
 		_machine.turnOn();
 		
 	}
+	private function onTurnOff():Void
+	{
+		_machine.turnOff();
+		
+	}
 	private function onClose():Void
 	{
 		_machine.detachWindow();
@@ -178,4 +197,20 @@ class MachineWindow extends FlxGroup
 	}
 	
 	
+	
+	private function createbutton(X:Float,Y:Float,txt:String,graphics:Dynamic,triggerFunk:Dynamic):Void
+	{
+		var mBut = new ImageButton(X, Y, graphics, triggerFunk); 
+		_elements.add(mBut);
+			
+	}
+	private function createflipbutton(X:Float,Y:Float,txt:String,graphics:Dynamic,triggerFunkOn:Dynamic,triggerFunkOff:Dynamic):Void
+	{
+		var txt:FlxText = new FlxText(X, Y, 0, txt);
+		txt.color = FlxColor.BLACK;		
+		_elements.add(txt);
+		var mBut = new FlipButton(X+(txt.width/2)-11, Y+14, graphics, triggerFunkOn, triggerFunkOff); 
+		_elements.add(mBut);
+			
+	}
 }

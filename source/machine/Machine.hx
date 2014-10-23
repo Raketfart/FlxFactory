@@ -175,6 +175,10 @@ class Machine extends Module
 	{
 		fsm.state = new BootUp();
 	}
+	public function turnOff():Void
+	{
+		fsm.state = new PowerOff();
+	}
 	public function attachWindow(Window:MachineWindow):Void
 	{
 		window = Window;

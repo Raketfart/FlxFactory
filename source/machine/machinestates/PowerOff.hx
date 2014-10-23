@@ -8,7 +8,8 @@ class PowerOff extends FlxFSMState<Machine>
 {
 	override public function enter(Owner:Machine, FSM:FlxFSM<Machine>)
 	{
-		//trace("Enter PowerOff");		
+		//trace("Enter PowerOff");	
+		Owner.power = 0;
 		Owner.lampPowerOff.color = FlxColor.RED;
 	}
 	
@@ -32,5 +33,7 @@ class PowerOff extends FlxFSMState<Machine>
 		win.lamp2.animation.play("black");
 		win.lamp3.animation.play("black");
 		win.cogs.animation.play("stopped");
+		win.moveGauge();
+		win.bootProgressBar.visible = false;
 	}
 }

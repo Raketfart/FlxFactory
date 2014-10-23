@@ -21,7 +21,7 @@ class HUD extends FlxGroup
 	var _helperText:FlxText;
 	var _cambutton:FlxButton;	
 	var htt:HUDTypedText;
-	var blendsprite:FlxSprite;
+	//var blendsprite:FlxSprite;
 		
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
@@ -44,7 +44,7 @@ class HUD extends FlxGroup
 		super();
 		
 		_state = State;
-		
+		/*
 		blendsprite= new FlxSprite(0,0);
 		blendsprite.loadGraphic(AssetPaths.blendoverlay__png,false);
 		add(blendsprite);
@@ -52,7 +52,7 @@ class HUD extends FlxGroup
 		blendsprite.setPosition(-250, -160);
 		blendsprite.blend = BlendMode.MULTIPLY;
 		blendsprite.visible = false;
-		
+		*/
 		hudbg1 = new FlxSprite(0, 0);
 		add(hudbg1);
 		

@@ -1,6 +1,7 @@
 package;
 
 import entity.Player;
+import flixel.addons.ui.FlxButtonPlus;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
