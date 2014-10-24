@@ -14,12 +14,12 @@ import flixel.util.FlxPoint;
 /**
  * A simple button class that calls a function when clicked by the mouse.
  */
-class FlipButton<T:FlxSprite> extends FlxSprite
+class FlipButton extends FlxSprite
 {
 	/**
 	 * The label that appears on the button. Can be any FlxSprite.
 	 */
-	public var label(default, set):T;
+	//public var label(default, set):T;
 	/**
 	 * What offsets the label should have for each status.
 	 */
@@ -81,7 +81,7 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 	 * @param	Y			The Y position of the button.
 	 * @param	OnClick		The function to call whenever the button is clicked.
 	 */
-	public function new(X:Float = 0, Y:Float = 0, graphics:Dynamic, ?OnClickOn:Void->Void, ?OnClickOff:Void->Void)
+	public function new(X:Float = 0, Y:Float = 0, graphics:Dynamic, ?OnClickOn:Void->Void, ?OnClickOff:Void->Void,  isFlipped:Bool = false)
 	{
 		super(X, Y);
 		
@@ -98,7 +98,12 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 		labelOffsets = [FlxPoint.get(), FlxPoint.get(), FlxPoint.get(0, 1)];
 		
 		status = FlxButton.NORMAL;
-		statusFlip = FlxButton.NORMAL;
+		if (isFlipped)
+		{
+			statusFlip = FlxButton.PRESSED;
+		} else {
+			statusFlip = FlxButton.NORMAL;
+		}
 		
 		// Since this is a UI element, the default scrollFactor is (0, 0)
 		scrollFactor.set();
@@ -113,7 +118,6 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 	 */
 	override public function destroy():Void
 	{
-		label = FlxDestroyUtil.destroy(label);
 		
 		onUp = FlxDestroyUtil.destroy(onUp);
 		onDown = FlxDestroyUtil.destroy(onDown);
@@ -166,7 +170,7 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 			nextFrame = status;
 		} else {
 			nextFrame = statusFlip;
-		}
+		}		
 		//animation.frameIndex = nextFrame;
 		animation.frameIndex = nextFrame;
 	}
@@ -178,11 +182,7 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 	{
 		super.draw();
 		
-		if (label != null && label.visible)
-		{
-			label.cameras = cameras;
-			label.draw();
-		}
+		
 	}
 	
 	#if !FLX_NO_DEBUG
@@ -328,7 +328,7 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 			_pressedMouse = false;
 			_pressedTouch = null;
 			onTurnoff.fire();
-		}		
+		}				
 		// Order matters here, because onUp.fire() could cause a state change and destroy this object.
 		onUp.fire();
 	}
@@ -363,23 +363,11 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 		onOut.fire();
 	}
 	
-	private function set_label(Value:T):T
-	{
-		if (Value != null)
-		{
-			// use the same FlxPoint object for both
-			Value.scrollFactor.put();
-			Value.scrollFactor = scrollFactor;
-		}
-		return label = Value;
-	}
+	
 	
 	private function set_status(Value:Int):Int
 	{
-		if ((labelAlphas.length > Value) && (label != null)) 
-		{
-			label.alpha = alpha * labelAlphas[Value];
-		}
+		
 		return status = Value;
 	}
 	
@@ -387,10 +375,6 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 	{
 		super.set_x(Value);
 		
-		if (label != null) // Label positioning
-		{
-			label.x = x + labelOffsets[status].x;	
-		}
 		return x;
 	}
 	
@@ -398,10 +382,7 @@ class FlipButton<T:FlxSprite> extends FlxSprite
 	{	
 		super.set_y(Value);
 		
-		if (label != null) // Label positioning
-		{
-			label.y = y + labelOffsets[status].y;			
-		}
+		
 		return y;
 	}
 }

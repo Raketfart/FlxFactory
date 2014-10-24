@@ -33,13 +33,30 @@ class MachineController extends FlxGroup
 	
 	public function setupTestMachines():Void
 	{
-		
-		
-		var mod:Module = new Machine(this,leftTile, topTile);
+		//DIGGER
+		var mod:Module = new MachineProducer(this,leftTile+18, topTile);
+		moduleGrp.add(mod);
+		moduleArr.push(mod);
+		var mod3:Module = new ConveyorRight(this,leftTile+20, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorRight(this,leftTile+21, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new ConveyorRight(this,leftTile+22, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod:Module = new MachineProcessor(this,leftTile+23, topTile);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod4:Machine = new Machine(this,leftTile+8, topTile);
+		
+		//Reg machine
+		var mod:Module = new MachineProcessor(this,leftTile, topTile);
+		moduleGrp.add(mod);
+		moduleArr.push(mod);
+		
+		var mod4:Machine = new MachineProcessor(this,leftTile+8, topTile);
 		moduleGrp.add(mod4);
 		moduleArr.push(mod4);
 		mod4.productionSpeed = 10;
@@ -166,7 +183,7 @@ class MachineController extends FlxGroup
 	}
 	public function addMachine():Void
 	{
-		var mod:Module = new Machine(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		var mod:Module = new MachineProcessor(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		

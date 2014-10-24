@@ -55,7 +55,7 @@ class BootUp extends FlxFSMState<Machine>
 		
 		win.cogs.animation.play("stopped");
 		win.bootProgressBar.visible = true;
-		
+		win.moveGauge(false);
 	}
 	
 }

@@ -22,7 +22,7 @@ class Module extends FlxGroup
 	public static var idcounter:Int = 0;
 	public var tileWidth:Int;
 	public var tileHeight:Int;
-	private var _controller:MachineController;
+	public var controller:MachineController;
 	public var tileRect:TileRect;
 	
 	private var imageLayer:FlxGroup;
@@ -37,7 +37,7 @@ class Module extends FlxGroup
 	public function new(Controller:MachineController, tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
 		super();
-		_controller = Controller;
+		controller = Controller;
 		tilePos = new TilePos(tileX,tileY);
 		
 		tileWidth = TileWidth;
@@ -93,7 +93,7 @@ class Module extends FlxGroup
 		var thisTileX:Int = tilePos.tileX;
 		var connTileX:Int = thisTileX +tileWidth;		
 		for (iy in 0...tileHeight) {			
-			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
+			var module:Module = controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
 				if (module.connectsInLeft && this.connectsOutRight)
@@ -109,7 +109,7 @@ class Module extends FlxGroup
 		var thisTileX:Int = tilePos.tileX;
 		var connTileX:Int = thisTileX -1;
 		for (iy in 0...tileHeight) {
-			var module:Module = _controller.getModuleAt(connTileX, (tilePos.tileY + iy));
+			var module:Module = controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)
 			{
 				if (module.connectsInRight && this.connectsOutLeft)

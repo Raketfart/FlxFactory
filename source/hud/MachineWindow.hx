@@ -34,8 +34,9 @@ class MachineWindow extends FlxGroup
 	
 	var _elements : FlxTypedGroup<FlxSprite>;	
 	var screenbg:FlxSprite;
-	var gaugebg:FlxSprite;
+	public var gaugebg:FlxSprite;
 	public var gaugeArrow:FlxSprite;
+	public var powerButton:FlipButton;
 	
 	public function new(hud:HUD,machine:Machine) 
 	{
@@ -57,47 +58,18 @@ class MachineWindow extends FlxGroup
 		lamp1.animation.frameIndex = 50;		
 		add(lamp1);
 		*/
-		lamp1 = new FlxSprite(bg1.width-101, 10);
-		lamp1.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
-		lamp1.animation.add("red", [50], 1, false);
-		lamp1.animation.add("yellow", [51], 1, false);
-		lamp1.animation.add("green", [52], 1, false);
-		lamp1.animation.add("black", [53], 1, false);
-		lamp1.animation.add("flashyellow", [51,53], 3, true);
+		lamp1 = createlamp(bg1.width-101,10);
 		_elements.add(lamp1);
 		
-		lamp2 = new FlxSprite(bg1.width-71, 10);
-		lamp2.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
-		lamp2.animation.add("red", [50], 1, false);
-		lamp2.animation.add("yellow", [51], 1, false);
-		lamp2.animation.add("green", [52], 1, false);
-		lamp2.animation.add("black", [53], 1, false);
-		lamp2.animation.add("flashyellow", [51,53], 3, true);
+		lamp2 = createlamp(bg1.width-71,10);
 		_elements.add(lamp2);
 		
-		lamp3 = new FlxSprite(bg1.width-41, 10);
-		lamp3.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
-		lamp3.animation.add("red", [50], 1, false);
-		lamp3.animation.add("yellow", [51], 1, false);
-		lamp3.animation.add("green", [52], 1, false);
-		lamp3.animation.add("black", [53], 1, false);
-		lamp3.animation.add("flashyellow", [51,53], 3, true);
+		lamp3 = createlamp(bg1.width-41,10);
 		_elements.add(lamp3);
 		
-		var btn1:FlxButton = new FlxButton(10, 150, "Turn on", onTurnOn);		
-		_elements.add(btn1);
 		var btn1:FlxButton = new FlxButton(10,180, "Close", onClose);
 		_elements.add(btn1);
-		
-		var onBtnGraphics:FlxSprite = new FlxSprite (60, 30);
-		var off:FlxSprite = new FlxSprite (60, 55);
-		onBtnGraphics.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
-		onBtnGraphics.animation.frameIndex = 46;
-		off.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
-		off.animation.frameIndex = 47;
-		//_elements.add(onBtnGraphics);
-		_elements.add(off);
-		
+				
 		screenbg = new FlxSprite(bg1.width-20-111, 35);
 		screenbg.loadGraphic(AssetPaths.mwin_screenlarge__png, false);		
 		_elements.add(screenbg);
@@ -116,24 +88,22 @@ class MachineWindow extends FlxGroup
 		_elements.add(cogs);
 		
 		gaugebg = new FlxSprite(screenbg.x, screenbg.y + screenbg.height+10);
-		gaugebg.loadGraphic(AssetPaths.mwin_gauge_bg__png, false);		
+		gaugebg.loadGraphic(AssetPaths.mwin_gauge_bg__png, false, 55, 22);		
+		gaugebg.animation.add("stopped", [0], 1, false);
+		gaugebg.animation.add("running", [1], 1, false);
 		_elements.add(gaugebg);
 		gaugeArrow = new FlxSprite (gaugebg.x-8, gaugebg.y);
 		gaugeArrow.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
 		gaugeArrow.animation.frameIndex = 48;
 		_elements.add(gaugeArrow);
 		
-		//var htt:HUDTypedText = new HUDTypedText();
-		//add(htt);
-		/*
-		var onBtn:FlxButtonPlus = new FlxButtonPlus(10, 10, onTurnOn, "On", 21, 21);
-		onBtn.loadButtonGraphic(onBtnGraphics,onBtnGraphics);
-		_elements.add(onBtn);
-		onBtn.setAll("scrollFactor", new FlxPoint(0, 0));
-		*/
 		createbutton(50, 100, "STATS", AssetPaths.btn_redpush__png, onTurnOn);	
-		createflipbutton(80, 100, "POWER",AssetPaths.btn_redflip__png, onTurnOn,onTurnOff);	
+		powerButton = createflipbutton(80, 100, "POWER",AssetPaths.btn_redflip__png, onTurnOn,onTurnOff);	
 		
+		if (_machine.power == 100)
+		{
+			initRunning();
+		}
 		_machine.attachWindow(this);
 		
 		for (item in _elements.members)		
@@ -146,11 +116,22 @@ class MachineWindow extends FlxGroup
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 	}
 	
-	public function moveGauge()
+	private function initRunning():Void
 	{
+		gaugeArrow.x = gaugebg.x + FlxRandom.intRanged( 30, 42);
+		
+	}
+	public function moveGauge(on:Bool=false)
+	{
+		if (on)
+		{
+			gaugebg.animation.play("running");
+		} else {
+			gaugebg.animation.play("stopped");
+		}
 		var max:Float = gaugebg.x+42;
 		var min:Float = gaugebg.x+30;
-		if (_machine.power == 0)
+		if (on == false)
 		{
 			max = min = gaugebg.x-8;
 		}
@@ -196,21 +177,30 @@ class MachineWindow extends FlxGroup
 		this.destroy();
 	}
 	
-	
-	
+	private function createlamp(X:Float,Y:Float):FlxSprite
+	{
+		var lamp:FlxSprite = new FlxSprite(X, Y);
+		lamp.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
+		lamp.animation.add("red", [50], 1, false);
+		lamp.animation.add("yellow", [51], 1, false);
+		lamp.animation.add("green", [52], 1, false);
+		lamp.animation.add("black", [53], 1, false);
+		lamp.animation.add("flashyellow", [51,53], 3, true);
+		return lamp;
+	}
 	private function createbutton(X:Float,Y:Float,txt:String,graphics:Dynamic,triggerFunk:Dynamic):Void
 	{
 		var mBut = new ImageButton(X, Y, graphics, triggerFunk); 
-		_elements.add(mBut);
-			
+		_elements.add(mBut);		
 	}
-	private function createflipbutton(X:Float,Y:Float,txt:String,graphics:Dynamic,triggerFunkOn:Dynamic,triggerFunkOff:Dynamic):Void
+	private function createflipbutton(X:Float,Y:Float,txt:String,graphics:Dynamic,triggerFunkOn:Dynamic,triggerFunkOff:Dynamic):FlipButton
 	{
 		var txt:FlxText = new FlxText(X, Y, 0, txt);
 		txt.color = FlxColor.BLACK;		
 		_elements.add(txt);
-		var mBut = new FlipButton(X+(txt.width/2)-11, Y+14, graphics, triggerFunkOn, triggerFunkOff); 
+		var mBut:FlipButton = new FlipButton(X + (txt.width / 2) - 11, Y + 14, graphics, triggerFunkOn, triggerFunkOff,(_machine.power > 0)); 
 		_elements.add(mBut);
-			
+		
+		return mBut;
 	}
 }

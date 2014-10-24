@@ -11,6 +11,7 @@ class PowerOff extends FlxFSMState<Machine>
 		//trace("Enter PowerOff");	
 		Owner.power = 0;
 		Owner.lampPowerOff.color = FlxColor.RED;
+		
 	}
 	
 	override public function update(elapsed:Float, Owner:Machine, FSM:FlxFSM<Machine>)
@@ -33,7 +34,7 @@ class PowerOff extends FlxFSMState<Machine>
 		win.lamp2.animation.play("black");
 		win.lamp3.animation.play("black");
 		win.cogs.animation.play("stopped");
-		win.moveGauge();
-		win.bootProgressBar.visible = false;
+		win.moveGauge(false);
+		win.bootProgressBar.visible = false;		
 	}
 }

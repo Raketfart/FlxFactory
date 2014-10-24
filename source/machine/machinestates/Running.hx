@@ -15,7 +15,7 @@ class Running extends FlxFSMState<Machine>
 	override public function update(elapsed:Float, Owner:Machine, FSM:FlxFSM<Machine>)
 	{		
 	
-		Owner.doWork();
+		Owner.doProcessing();
 		
 		if (Owner.window != null)
 		{
@@ -36,6 +36,6 @@ class Running extends FlxFSMState<Machine>
 		win.lamp3.animation.play("green");
 		win.cogs.animation.play("running");
 		win.bootProgressBar.visible = false;
-		win.moveGauge();
+		win.moveGauge(true);
 	}
 }

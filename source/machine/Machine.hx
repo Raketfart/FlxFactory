@@ -19,6 +19,7 @@ class Machine extends Module
 	
 	var lampOutput:FlxSprite;
 	var lampOutputCount:Float = 0;
+	public var baseImage:FlxSprite;
 	
 	public var lampPowerOff:FlxSprite;	
 	public var lampPowerBoot:FlxSprite;
@@ -35,33 +36,30 @@ class Machine extends Module
 	
 	public var window:MachineWindow;
 	
-	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
+	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0,TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
-		super(Controller,tileX, tileY,3,2);
+		super(Controller,tileX, tileY,TileWidth,TileHeight);
 		
-		/*
-		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
-		base.makeGraphic(GC.tileSize*TileWidth, GC.tileSize*TileHeight, FlxColor.GRAY);
-		imageLayer.add(base);*/
-		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
-		base.loadGraphic(AssetPaths.factory__png);
-		imageLayer.add(base);
+		baseImage = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
+		//base.loadGraphic(AssetPaths.factory__png);
+		imageLayer.add(baseImage);
 		
-		lampOutput = new FlxSprite(base.x+14, base.y+10);
+		
+		lampOutput = new FlxSprite(baseImage.x+14, baseImage.y+10);
 		lampOutput.makeGraphic(2, 2, FlxColor.RED);
 		imageLayer.add(lampOutput);
 		
-		lampPowerOff = new FlxSprite(base.x+20, base.y+15);
+		lampPowerOff = new FlxSprite(baseImage.x+20, baseImage.y+15);
 		lampPowerOff.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerOff.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerOff);
 		
-		lampPowerBoot = new FlxSprite(base.x+26, base.y+15);
+		lampPowerBoot = new FlxSprite(baseImage.x+26, baseImage.y+15);
 		lampPowerBoot.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerBoot.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerBoot);
 		
-		lampPowerOn = new FlxSprite(base.x+32, base.y+15);
+		lampPowerOn = new FlxSprite(baseImage.x+32, baseImage.y+15);
 		lampPowerOn.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerOn.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerOn);
@@ -101,7 +99,7 @@ class Machine extends Module
 		}
 	}
 	
-	public function doWork():Void
+	public function doProcessing():Void
 	{
 	
 		if (inventoryArr.length > 0)

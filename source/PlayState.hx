@@ -15,6 +15,7 @@ import flixel.util.loaders.CachedGraphics;
 import flixel.util.loaders.TextureRegion;
 import hud.HUD;
 import machine.Machine;
+import openfl.system.System;
 
 
 
@@ -189,7 +190,10 @@ class PlayState extends FlxState
 		camController.switchCam();
 		
 	}
-	
+	public function quitGame():Void
+	{
+		System.exit(0);
+	}
 	
 	public function resetGame():Void
 	{
