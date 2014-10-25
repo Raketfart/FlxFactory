@@ -44,7 +44,14 @@ class ConveyorUp extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.y -= .4;
+			var orgX:Float = item.x;
+			var orgY:Float = item.y;
+			if (item.x < this.graphic.x + (this.tileWidth * GC.tileSize / 2))
+			{
+				item.x += .4;
+			} else {
+				item.y -= .4;
+			}
 			if (item.y < graphic.y) // move to next module
 			{				
 				if (connections.length > 0)
@@ -93,13 +100,15 @@ class ConveyorUp extends Module
 			}
 			if (!doMove)
 			{
-				item.y += .4;
+				item.y = orgY;
+				item.x = orgX;
 			}
 		}
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
+		item.color = FlxColor.RED;
 		//item.x = graphic.x+(graphic.width/2);
 		//item.y = graphic.y+graphic.height;
 	}

@@ -26,7 +26,7 @@ class Machine extends Module
 	public var lampPowerOn:FlxSprite;
 	
 	public var power:Float = 0;
-	public var bootSpeed:Float = 20;
+	public var bootSpeed:Float = 80;
 		
 	public var productionSpeed:Float = 100;
 	public var currentProductionCompletion:Float = 0;

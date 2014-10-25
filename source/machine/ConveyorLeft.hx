@@ -100,8 +100,8 @@ class ConveyorLeft extends Module
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.x = graphic.x+graphic.width;
-		item.y = graphic.y;
+		//item.x = graphic.x+graphic.width;
+		//item.y = graphic.y;
 	}
 	
 	
