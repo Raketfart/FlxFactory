@@ -28,6 +28,7 @@ class HUD extends FlxGroup
 	public static var TOOL_BUILD = "build";
 	public static var TOOL_CONV_RIGHT = "conv-right";
 	public static var TOOL_CONV_LEFT = "conv-left";
+	public static var TOOL_CONV_UP = "conv-up";
 	public static var TOOL_MACHINE = "machine";
 	public static var TOOL_CRATE = "crate";
 	public static var TOOL_CONTROL = "control";
@@ -108,11 +109,13 @@ class HUD extends FlxGroup
 		add(_tool3);
 		var _tool3:FlxButton = new FlxButton(4,140, "ConvLeft", onToolCW);
 		add(_tool3);
-		var _tool4:FlxButton = new FlxButton(4,160, "Machine", onToolMachine);
+		var _tool3:FlxButton = new FlxButton(4,160, "ConvUp", onToolCU);
+		add(_tool3);
+		var _tool4:FlxButton = new FlxButton(4,180, "Machine", onToolMachine);
 		add(_tool4);
-		var _tool5:FlxButton = new FlxButton(4,180, "Crate", onToolCrate);
+		var _tool5:FlxButton = new FlxButton(4,200, "Crate", onToolCrate);
 		add(_tool5);
-		var _tool6:FlxButton = new FlxButton(4,200, "Control", onToolControl);
+		var _tool6:FlxButton = new FlxButton(4,220, "Control", onToolControl);
 		add(_tool6);
 		hudbg2.makeGraphic(100, 310, 0xff000000);
 		
@@ -202,7 +205,12 @@ class HUD extends FlxGroup
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	
+	private function onToolCU():Void
+	{
+		GC.currentTool = TOOL_CONV_UP;
+		_state.mouseController.changeTool(GC.currentTool);
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
 	private function onToolMachine():Void
 	{
 		GC.currentTool = TOOL_MACHINE;

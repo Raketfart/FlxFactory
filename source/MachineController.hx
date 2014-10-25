@@ -49,7 +49,18 @@ class MachineController extends FlxGroup
 		var mod:Module = new MachineProcessor(this,leftTile+23, topTile);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
-		
+		var mod3:Module = new ConveyorRight(this,leftTile+26, topTile+1);
+		moduleGrp.add(mod3);
+		moduleArr.push(mod3);
+		var modup:Module = new ConveyorUp(this,leftTile+27, topTile+1);
+		moduleGrp.add(modup);
+		moduleArr.push(modup);
+		var modup:Module = new ConveyorUp(this,leftTile+27, topTile);
+		moduleGrp.add(modup);
+		moduleArr.push(modup);
+		var modup:Module = new ConveyorUp(this,leftTile+27, topTile-1);
+		moduleGrp.add(modup);
+		moduleArr.push(modup);
 		
 		//Reg machine
 		var mod:Module = new MachineProcessor(this,leftTile, topTile);
@@ -110,8 +121,7 @@ class MachineController extends FlxGroup
 		
 		for (m in moduleArr)
 		{
-			m.refreshConnectionsRight();
-			m.refreshConnectionsLeft();
+			m.refreshConnections();
 		}
 		
 	}
@@ -121,10 +131,9 @@ class MachineController extends FlxGroup
 		{
 			if (Std.is(m, Machine))
 			{
-					var crate:InventoryItem = new InventoryItem();
-					inventoryGrp.add(crate);
-					m.addToInventory(crate);
-							
+				var crate:InventoryItem = new InventoryItem();
+				inventoryGrp.add(crate);
+				m.addToInventory(crate);							
 			}
 		}
 	}
@@ -153,6 +162,18 @@ class MachineController extends FlxGroup
 	public function addConvW()
 	{
 		var mod:Module = new ConveyorLeft(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		moduleGrp.add(mod);
+		moduleArr.push(mod);
+		
+		for (m in moduleArr)
+		{
+			m.refreshConnections();
+		}
+		
+	}
+	public function addConvU()
+	{
+		var mod:Module = new ConveyorUp(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		

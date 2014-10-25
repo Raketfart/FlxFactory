@@ -28,10 +28,14 @@ class Module extends FlxGroup
 	private var imageLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
 	
-	public var connectsOutRight:Bool;
-	public var connectsOutLeft:Bool;
-	public var connectsInRight:Bool;
-	public var connectsInLeft:Bool;
+	public var connectsOutRight:Bool = false;
+	public var connectsOutLeft:Bool = false;
+	public var connectsOutUp:Bool = false;
+	public var connectsOutDown:Bool = false;
+	public var connectsInRight:Bool = false;
+	public var connectsInLeft:Bool = false;	
+	public var connectsInUp:Bool = false;
+	public var connectsInDown:Bool = false;
 	
 		
 	public function new(Controller:MachineController, tileX:Int = 0, tileY:Int = 0, TileWidth:Int = 1, TileHeight:Int = 1) 
@@ -86,6 +90,10 @@ class Module extends FlxGroup
 		{
 			refreshConnectionsLeft();
 		}
+		if (connectsOutUp)
+		{
+			refreshConnectionsUp();
+		}
 	}
 	
 	public function refreshConnectionsRight():Void 
@@ -116,6 +124,22 @@ class Module extends FlxGroup
 				{
 					connections.push(module);
 					debugDraw( ((thisTileX) * GC.tileSize) + 4 , ((tilePos.tileY + iy) * GC.tileSize) + 9 );
+				}
+			}
+		}	
+	}
+	public function refreshConnectionsUp():Void 
+	{
+		var thisTileY:Int = tilePos.tileY;
+		var connTileY:Int = thisTileY -1;
+		for (ix in 0...tileWidth) {
+			var module:Module = controller.getModuleAt((tilePos.tileX + ix), connTileY );
+			if (module != null)
+			{
+				if (module.connectsInDown && this.connectsOutUp)
+				{
+					connections.push(module);
+					debugDraw( ((tilePos.tileX+ix) * GC.tileSize) + 9 , (tilePos.tileY * GC.tileSize) + 4 );
 				}
 			}
 		}	

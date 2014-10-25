@@ -7,7 +7,7 @@ import inventory.InventoryItem;
  * ...
  * @author 
  */
-class ConveyorRight extends Module
+class ConveyorUp extends Module
 {
 	
 	var productCounter:Int;
@@ -21,7 +21,7 @@ class ConveyorRight extends Module
 		graphic.loadGraphic(AssetPaths.tiles__png,true,21,21);
 		imageLayer.add(graphic);
 		
-		graphic.animation.add("running", [40,41,42,43,44], 12, true);
+		graphic.animation.add("running", [60], 12, true);
 		
 		graphic.animation.play("running");
 		
@@ -31,6 +31,11 @@ class ConveyorRight extends Module
 		this.connectsInLeft = true;
 		this.connectsInRight = false;
 		
+		this.connectsInLeft = true;
+		this.connectsInRight = true;
+		this.connectsInDown = true;
+		this.connectsOutUp = true;
+		
 	}
 	override public function update():Void 
 	{
@@ -39,8 +44,8 @@ class ConveyorRight extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.x += .4;
-			if (item.x > graphic.x + graphic.width) // move to next module
+			item.y -= .4;
+			if (item.y < graphic.y) // move to next module
 			{				
 				if (connections.length > 0)
 				{
@@ -82,20 +87,21 @@ class ConveyorRight extends Module
 							doMove = false;
 						}
 					}
-				}				
+				}
+				
 				
 			}
 			if (!doMove)
 			{
-				item.x -= .4;
+				item.y += .4;
 			}
 		}
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.x = graphic.x;
-		item.y = graphic.y;
+		//item.x = graphic.x+(graphic.width/2);
+		//item.y = graphic.y+graphic.height;
 	}
 	
 	
