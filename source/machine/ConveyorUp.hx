@@ -21,7 +21,7 @@ class ConveyorUp extends Module
 		graphic.loadGraphic(AssetPaths.tiles__png,true,21,21);
 		imageLayer.add(graphic);
 		
-		graphic.animation.add("running", [60], 12, true);
+		graphic.animation.add("running", [60,61,62,63,64,65], 12, true);
 		
 		graphic.animation.play("running");
 		

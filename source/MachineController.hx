@@ -13,8 +13,9 @@ import scene.TileType;
  */
 class MachineController extends FlxGroup
 {
-	public var moduleGrp:FlxGroup;
+	public var conveyorGrp:FlxGroup;
 	public var inventoryGrp:FlxGroup;	
+	public var machineGrp:FlxGroup;	
 	public var moduleArr:Array<Module>;
 	private var leftTile:Int = 4;
 	private var topTile:Int = 13;
@@ -24,85 +25,86 @@ class MachineController extends FlxGroup
 		super();
 		
 		moduleArr = new Array<Module>();
-		moduleGrp = new FlxGroup();
-		add(moduleGrp);
+		conveyorGrp = new FlxGroup();
+		add(conveyorGrp);
 		inventoryGrp = new FlxGroup();
 		add(inventoryGrp);
-		
+		machineGrp = new FlxGroup();
+		add(machineGrp);
 	}
 	
 	public function setupTestMachines():Void
 	{
 		//DIGGER & up conveyor
 		var mod:Module = new MachineProducer(this,leftTile+18, topTile);
-		moduleGrp.add(mod);
+		machineGrp.add(mod);
 		moduleArr.push(mod);
 		var mod3:Module = new ConveyorRight(this,leftTile+20, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorRight(this,leftTile+21, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorRight(this,leftTile+22, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
-		var mod:Module = new MachineProcessor(this,leftTile+23, topTile);
-		moduleGrp.add(mod);
+		var mod:Module = new MachineStamper(this,leftTile+23, topTile);
+		machineGrp.add(mod);
 		moduleArr.push(mod);
 		var mod3:Module = new ConveyorRight(this,leftTile+26, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var modup:Module = new ConveyorUp(this,leftTile+27, topTile+1);
-		moduleGrp.add(modup);
+		conveyorGrp.add(modup);
 		moduleArr.push(modup);
 		var modup:Module = new ConveyorUp(this,leftTile+27, topTile);
-		moduleGrp.add(modup);
+		conveyorGrp.add(modup);
 		moduleArr.push(modup);
 		var modup:Module = new ConveyorUp(this,leftTile+27, topTile-1);
-		moduleGrp.add(modup);
+		conveyorGrp.add(modup);
 		moduleArr.push(modup);
 		//DIGGER & up conveyor
 		
 		//Reg machine and stamper
 		var mod:Module = new MachineProcessor(this,leftTile, topTile);
-		moduleGrp.add(mod);
+		machineGrp.add(mod);
 		moduleArr.push(mod);
 		
 		var mod4:Machine = new MachineStamper(this,leftTile+8, topTile);
-		moduleGrp.add(mod4);
+		machineGrp.add(mod4);
 		moduleArr.push(mod4);
 		mod4.productionSpeed = 40;
 		
 		var mod2:Module = new ConveyorRight(this,leftTile+3, topTile+1);
-		moduleGrp.add(mod2);
+		conveyorGrp.add(mod2);
 		moduleArr.push(mod2);
 
 		var mod3:Module = new ConveyorRight(this,leftTile+4, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorRight(this,leftTile+5, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorRight(this,leftTile+6, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorRight(this,leftTile+7, topTile+1);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+7, topTile);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+6, topTile);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+5, topTile);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+4, topTile);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+3, topTile);
-		moduleGrp.add(mod3);
+		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
 		
 		leftTile = leftTile +12;
@@ -151,7 +153,7 @@ class MachineController extends FlxGroup
 	public function addConvE()
 	{
 		var mod:Module = new ConveyorRight(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-		moduleGrp.add(mod);
+		conveyorGrp.add(mod);
 		moduleArr.push(mod);
 		
 		for (m in moduleArr)
@@ -163,7 +165,7 @@ class MachineController extends FlxGroup
 	public function addConvW()
 	{
 		var mod:Module = new ConveyorLeft(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-		moduleGrp.add(mod);
+		conveyorGrp.add(mod);
 		moduleArr.push(mod);
 		
 		for (m in moduleArr)
@@ -175,7 +177,7 @@ class MachineController extends FlxGroup
 	public function addConvU()
 	{
 		var mod:Module = new ConveyorUp(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-		moduleGrp.add(mod);
+		conveyorGrp.add(mod);
 		moduleArr.push(mod);
 		
 		for (m in moduleArr)
@@ -187,7 +189,7 @@ class MachineController extends FlxGroup
 	public function addConvD()
 	{
 		var mod:Module = new ConveyorDown(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-		moduleGrp.add(mod);
+		conveyorGrp.add(mod);
 		moduleArr.push(mod);
 		
 		for (m in moduleArr)
@@ -218,7 +220,7 @@ class MachineController extends FlxGroup
 	public function addMachine():Void
 	{
 		var mod:Module = new MachineProcessor(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-		moduleGrp.add(mod);
+		machineGrp.add(mod);
 		moduleArr.push(mod);
 		
 		for (m in moduleArr)

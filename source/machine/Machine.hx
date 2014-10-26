@@ -45,21 +45,21 @@ class Machine extends Module
 		imageLayer.add(baseImage);
 		
 		
-		lampOutput = new FlxSprite(baseImage.x+14, baseImage.y+10);
+		lampOutput = new FlxSprite(baseImage.x+14, baseImage.y+30);
 		lampOutput.makeGraphic(2, 2, FlxColor.RED);
 		imageLayer.add(lampOutput);
 		
-		lampPowerOff = new FlxSprite(baseImage.x+20, baseImage.y+15);
+		lampPowerOff = new FlxSprite(baseImage.x+20, baseImage.y+35);
 		lampPowerOff.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerOff.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerOff);
 		
-		lampPowerBoot = new FlxSprite(baseImage.x+26, baseImage.y+15);
+		lampPowerBoot = new FlxSprite(baseImage.x+26, baseImage.y+35);
 		lampPowerBoot.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerBoot.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerBoot);
 		
-		lampPowerOn = new FlxSprite(baseImage.x+32, baseImage.y+15);
+		lampPowerOn = new FlxSprite(baseImage.x+32, baseImage.y+35);
 		lampPowerOn.makeGraphic(2, 2, FlxColor.WHITE);
 		lampPowerOn.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerOn);
@@ -105,8 +105,8 @@ class Machine extends Module
 		if (inventoryArr.length > 0)
 		{
 			
-			inventoryArr[0].x = lampOutput.x + 10;
-			inventoryArr[0].y = lampOutput.y + 10;
+			inventoryArr[0].x = baseImage.x + 30;
+			inventoryArr[0].y = baseImage.y + 20;
 			
 			currentProductionCompletion += productionSpeed * FlxG.elapsed;
 			//trace("compl " + currentProductionCompletion);
@@ -122,9 +122,14 @@ class Machine extends Module
 				
 				if (connections.length > 0)
 				{
-					inventoryArr[0].x = connections[lastOutput].tilePos.tileX * GC.tileSize;
-					inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
-					
+					if (connections[lastOutput].tilePos.tileX < this.tilePos.tileX) //left of machine
+					{
+						inventoryArr[0].x = (connections[lastOutput].tilePos.tileX+connections[lastOutput].tileWidth) * GC.tileSize;
+						inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
+					} else {
+						inventoryArr[0].x = connections[lastOutput].tilePos.tileX * GC.tileSize;
+						inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
+					}
 					for (otheritem in connections[lastOutput].inventoryArr)
 					{
 						if (inventoryArr[0].overlaps(otheritem))
@@ -142,8 +147,9 @@ class Machine extends Module
 						currentProductionCompletion = 0;
 					} else {
 						doMove = false;
-						inventoryArr[0].x = lampOutput.x + 10;
-						inventoryArr[0].y = lampOutput.y + 10;
+						inventoryArr[0].x = baseImage.x + 30;
+						inventoryArr[0].y = baseImage.y + 20;
+			
 					}
 				}
 				lastOutput+= 1;

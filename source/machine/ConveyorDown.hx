@@ -23,7 +23,7 @@ class ConveyorDown extends Module
 		imageLayer.add(graphic);
 		graphic.setFacingFlip(FlxObject.DOWN, false, true);
 		graphic.facing = FlxObject.DOWN;
-		graphic.animation.add("running", [60], 12, true);
+		graphic.animation.add("running", [60,61,62,63,64,65], 12, true);
 		
 		graphic.animation.play("running");
 		

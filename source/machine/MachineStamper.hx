@@ -22,8 +22,10 @@ class MachineStamper extends Machine
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		
 		
-		
 		super(Controller,tileX, tileY,3,2);
+		stamper = new FlxSprite(tileX*GC.tileSize+17, tileY*GC.tileSize+13);
+		stamper.loadGraphic(AssetPaths.factoryStamper_2__png);
+		imageBackLayer.add(stamper);
 		/*
 		var base:FlxSprite = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		base.loadGraphic(AssetPaths.factory__png);
@@ -31,9 +33,7 @@ class MachineStamper extends Machine
 		*/
 		baseImage.loadGraphic(AssetPaths.factoryStamper_1__png);
 		
-		stamper = new FlxSprite(tileX*GC.tileSize+17, tileY*GC.tileSize+13);
-		stamper.loadGraphic(AssetPaths.factoryStamper_2__png);
-		imageLayer.add(stamper);
+		
 		
 		tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { ease: FlxEase.expoOut, complete: stampDown} );
 	}
@@ -44,6 +44,6 @@ class MachineStamper extends Machine
 	}
 	public function stampUp(tween:FlxTween ):Void 
 	{
-		tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { startDelay: 1, ease: FlxEase.expoOut, complete: stampDown} );
+		tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { startDelay: .2, ease: FlxEase.expoOut, complete: stampDown} );
 	}
 }
