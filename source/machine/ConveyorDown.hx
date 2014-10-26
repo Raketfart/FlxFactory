@@ -54,7 +54,7 @@ class ConveyorDown extends Module
 			} else {
 				item.y += .4;
 			}
-			if (item.y < graphic.y+graphic.height) // move to next module
+			if (item.y > graphic.y+graphic.height) // move to next module
 			{				
 				if (connections.length > 0)
 				{

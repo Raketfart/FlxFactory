@@ -37,6 +37,7 @@ class ConveyorLeft extends Module
 		this.connectsInRight = true;
 		
 		this.connectsInDown = true;
+		this.connectsInUp = true;
 		
 	}
 	override public function update():Void 

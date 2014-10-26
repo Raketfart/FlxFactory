@@ -33,7 +33,7 @@ class MachineController extends FlxGroup
 	
 	public function setupTestMachines():Void
 	{
-		//DIGGER
+		//DIGGER & up conveyor
 		var mod:Module = new MachineProducer(this,leftTile+18, topTile);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
@@ -61,16 +61,17 @@ class MachineController extends FlxGroup
 		var modup:Module = new ConveyorUp(this,leftTile+27, topTile-1);
 		moduleGrp.add(modup);
 		moduleArr.push(modup);
+		//DIGGER & up conveyor
 		
-		//Reg machine
+		//Reg machine and stamper
 		var mod:Module = new MachineProcessor(this,leftTile, topTile);
 		moduleGrp.add(mod);
 		moduleArr.push(mod);
 		
-		var mod4:Machine = new MachineProcessor(this,leftTile+8, topTile);
+		var mod4:Machine = new MachineStamper(this,leftTile+8, topTile);
 		moduleGrp.add(mod4);
 		moduleArr.push(mod4);
-		mod4.productionSpeed = 10;
+		mod4.productionSpeed = 40;
 		
 		var mod2:Module = new ConveyorRight(this,leftTile+3, topTile+1);
 		moduleGrp.add(mod2);
