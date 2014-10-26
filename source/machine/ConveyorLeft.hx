@@ -36,6 +36,8 @@ class ConveyorLeft extends Module
 		this.connectsInLeft = false;
 		this.connectsInRight = true;
 		
+		this.connectsInDown = true;
+		
 	}
 	override public function update():Void 
 	{
@@ -44,7 +46,15 @@ class ConveyorLeft extends Module
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
-			item.x -= .4;
+			var orgX:Float = item.x;
+			var orgY:Float = item.y;
+		
+			if (item.y > this.graphic.y )
+			{
+				item.y -= .4;
+			} else {
+				item.x -= .4;
+			}
 			if (item.x < graphic.x) // move to next module
 			{				
 				if (connections.length > 0)
@@ -93,13 +103,18 @@ class ConveyorLeft extends Module
 			}
 			if (!doMove)
 			{
-				item.x += .4;
+				item.y = orgY;
+				item.x = orgX;
 			}
 		}
 	}
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
+		if (GC.debugdraw)
+		{
+			item.color = FlxColor.BLUE;
+		}
 		//item.x = graphic.x+graphic.width;
 		//item.y = graphic.y;
 	}

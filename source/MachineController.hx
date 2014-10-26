@@ -183,6 +183,18 @@ class MachineController extends FlxGroup
 		}
 		
 	}
+	public function addConvD()
+	{
+		var mod:Module = new ConveyorDown(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		moduleGrp.add(mod);
+		moduleArr.push(mod);
+		
+		for (m in moduleArr)
+		{
+			m.refreshConnections();
+		}
+		
+	}
 	public function canAddModule(width:Int, height:Int ,collMap:FlxTilemap):Bool
 	{
 		var startX:Int = Std.int(FlxG.mouse.x / GC.tileSize);

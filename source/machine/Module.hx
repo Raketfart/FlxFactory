@@ -94,6 +94,10 @@ class Module extends FlxGroup
 		{
 			refreshConnectionsUp();
 		}
+		if (connectsOutDown)
+		{
+			refreshConnectionsDown();
+		}
 	}
 	
 	public function refreshConnectionsRight():Void 
@@ -140,6 +144,22 @@ class Module extends FlxGroup
 				{
 					connections.push(module);
 					debugDraw( ((tilePos.tileX+ix) * GC.tileSize) + 9 , (tilePos.tileY * GC.tileSize) + 4 );
+				}
+			}
+		}	
+	}
+	public function refreshConnectionsDown():Void 
+	{
+		var thisTileY:Int = tilePos.tileY;
+		var connTileY:Int = thisTileY +1;
+		for (ix in 0...tileWidth) {
+			var module:Module = controller.getModuleAt((tilePos.tileX + ix), connTileY );
+			if (module != null)
+			{
+				if (module.connectsInUp && this.connectsOutDown)
+				{
+					connections.push(module);
+					debugDraw( ((tilePos.tileX+ix) * GC.tileSize) + 9 , (tilePos.tileY * GC.tileSize) + GC.tileSize-4 );
 				}
 			}
 		}	

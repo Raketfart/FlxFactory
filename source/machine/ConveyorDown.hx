@@ -1,4 +1,5 @@
 package machine;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import inventory.InventoryItem;
@@ -7,7 +8,7 @@ import inventory.InventoryItem;
  * ...
  * @author 
  */
-class ConveyorRight extends Module
+class ConveyorDown extends Module
 {
 	
 	var productCounter:Int;
@@ -20,40 +21,40 @@ class ConveyorRight extends Module
 		graphic = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		graphic.loadGraphic(AssetPaths.tiles__png,true,21,21);
 		imageLayer.add(graphic);
-		
-		graphic.animation.add("running", [40,41,42,43,44], 12, true);
+		graphic.setFacingFlip(FlxObject.DOWN, false, true);
+		graphic.facing = FlxObject.DOWN;
+		graphic.animation.add("running", [60], 12, true);
 		
 		graphic.animation.play("running");
 		
 		this.connectsOutLeft = false;
-		this.connectsOutRight = true;
+		this.connectsOutRight = false;
 		
 		this.connectsInLeft = true;
-		this.connectsInRight = false;
-		
-		this.connectsInDown = true;
+		this.connectsInRight = true;
+		this.connectsOutDown = true;
+		this.connectsInUp = true;
 		
 	}
 	override public function update():Void 
 	{
 		super.update();
 		//trace(this.ID + " : inv " + inventoryArr.length);
-			
-		
 		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
 			var orgX:Float = item.x;
 			var orgY:Float = item.y;
-		
-			if (item.y > this.graphic.y )
+			if (item.x < this.graphic.x + (this.tileWidth * GC.tileSize / 2)-1)
 			{
-				item.y -= .4;
-			} else {
 				item.x += .4;
+			} else if (item.x > this.graphic.x + (this.tileWidth * GC.tileSize / 2)+1)
+			{
+				item.x -= .4;
+			} else {
+				item.y += .4;
 			}
-			
-			if (item.x > graphic.x + graphic.width) // move to next module
+			if (item.y < graphic.y+graphic.height) // move to next module
 			{				
 				if (connections.length > 0)
 				{
@@ -95,7 +96,8 @@ class ConveyorRight extends Module
 							doMove = false;
 						}
 					}
-				}				
+				}
+				
 				
 			}
 			if (!doMove)
@@ -110,10 +112,10 @@ class ConveyorRight extends Module
 		super.addToInventory(item);
 		if (GC.debugdraw)
 		{
-			item.color = FlxColor.PURPLE;
+			item.color = FlxColor.RED;
 		}
-		//item.x = graphic.x;
-		//item.y = graphic.y;
+		//item.x = graphic.x+(graphic.width/2);
+		//item.y = graphic.y+graphic.height;
 	}
 	
 	

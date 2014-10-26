@@ -75,6 +75,10 @@ class MouseController extends FlxGroup
 		{
 			fsm.state = new ToolModule();
 		} 
+		else if (ToolName == HUD.TOOL_CONV_DOWN)
+		{
+			fsm.state = new ToolModule();
+		} 
 		else if (ToolName == HUD.TOOL_MACHINE)
 		{
 			fsm.state = new ToolModule();
@@ -259,6 +263,12 @@ class ToolModule extends FlxFSMState<MouseController>
 			_arrowGhost.facing = FlxObject.RIGHT;
 			_arrowGhost.visible = true;
 		}
+		else if (_tool == HUD.TOOL_CONV_DOWN)
+		{
+			_moduleGhost.facing = FlxObject.RIGHT;
+			_arrowGhost.facing = FlxObject.RIGHT;
+			_arrowGhost.visible = true;
+		}
 		else if (_tool == HUD.TOOL_MACHINE)
 		{
 			_moduleGhost.loadGraphic(AssetPaths.factory__png);
@@ -323,6 +333,13 @@ class ToolModule extends FlxFSMState<MouseController>
 					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
 					{
 						Owner.state.machineController.addConvU();			
+					}
+				}
+				else if (GC.currentTool == HUD.TOOL_CONV_DOWN)
+				{
+					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+					{
+						Owner.state.machineController.addConvD();			
 					}
 				}
 				else if (GC.currentTool == HUD.TOOL_MACHINE)

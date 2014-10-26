@@ -26,10 +26,7 @@ class ConveyorUp extends Module
 		graphic.animation.play("running");
 		
 		this.connectsOutLeft = false;
-		this.connectsOutRight = true;
-		
-		this.connectsInLeft = true;
-		this.connectsInRight = false;
+		this.connectsOutRight = false;
 		
 		this.connectsInLeft = true;
 		this.connectsInRight = true;
@@ -46,9 +43,12 @@ class ConveyorUp extends Module
 			var doMove:Bool = true;
 			var orgX:Float = item.x;
 			var orgY:Float = item.y;
-			if (item.x < this.graphic.x + (this.tileWidth * GC.tileSize / 2))
+			if (item.x < this.graphic.x + (this.tileWidth * GC.tileSize / 2)-1)
 			{
 				item.x += .4;
+			} else if (item.x > this.graphic.x + (this.tileWidth * GC.tileSize / 2)+1)
+			{
+				item.x -= .4;
 			} else {
 				item.y -= .4;
 			}
@@ -108,7 +108,10 @@ class ConveyorUp extends Module
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		super.addToInventory(item);
-		item.color = FlxColor.RED;
+		if (GC.debugdraw)
+		{
+			item.color = FlxColor.RED;
+		}
 		//item.x = graphic.x+(graphic.width/2);
 		//item.y = graphic.y+graphic.height;
 	}
