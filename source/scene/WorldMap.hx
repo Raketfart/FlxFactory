@@ -26,10 +26,10 @@ class WorldMap extends FlxGroup
 		super();
 				
 		collisionMap = new FlxTilemap();				
-		collisionMap.loadMap(MapGenerator.generateWorldString(mapWidth,mapHeight),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
+		collisionMap.loadMap(MapGenerator.generateWorldString(mapWidth,mapHeight),AssetPaths.tiles_map__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
 		
 		backgroundMap = new FlxTilemap();				
-		backgroundMap.loadMap(MapGenerator.generateWorldString(mapWidth,mapHeight),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
+		backgroundMap.loadMap(MapGenerator.generateWorldString(mapWidth,mapHeight),AssetPaths.tiles_map__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
 		
 		
 		MapGenerator.generateWorld(collisionMap);

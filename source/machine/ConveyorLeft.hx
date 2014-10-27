@@ -20,7 +20,7 @@ class ConveyorLeft extends Module
 		super(Controller,tileX, tileY);
 		
 		graphic = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
-		graphic.loadGraphic(AssetPaths.tiles__png,true,21,21);
+		graphic.loadGraphic(AssetPaths.tiles_item__png,true,21,21);
 		imageLayer.add(graphic);
 		
 		graphic.animation.add("running", [40,41,42,43,44], 12, true);

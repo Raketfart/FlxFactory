@@ -25,7 +25,7 @@ class Module extends FlxGroup
 	public var controller:MachineController;
 	public var tileRect:TileRect;
 	
-	private var imageBackLayer:FlxGroup;
+	//private var imageBackLayer:FlxGroup;
 	private var imageLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
 	
@@ -56,8 +56,8 @@ class Module extends FlxGroup
 		
 		tileRect = new TileRect(tileX, tileY, TileWidth, TileHeight);
 		
-		imageBackLayer = new FlxGroup();
-		add(imageBackLayer);
+		//imageBackLayer = new FlxGroup();
+		//add(imageBackLayer);
 		imageLayer = new FlxGroup();
 		add(imageLayer);
 		debugLayer = new FlxGroup();

@@ -35,15 +35,15 @@ class MachineProducer extends Machine
 	{
 		if (inventoryArr.length <= 0)
 		{
-			var crate:InventoryItem = new InventoryItem();
+			var crate:InventoryItem = new InventoryItem(InventoryItem.INV_IRON_RAW);
 			this.controller.inventoryGrp.add(crate);
 			this.addToInventory(crate);
 		}	
 		if (inventoryArr.length > 0)
 		{
 			
-			inventoryArr[0].x = lampOutput.x + 10;
-			inventoryArr[0].y = lampOutput.y + 10;
+			inventoryArr[0].x = baseImage.x + 10;
+			inventoryArr[0].y = baseImage.y + 10;
 			
 			currentProductionCompletion += productionSpeed * FlxG.elapsed;
 			//trace("compl " + currentProductionCompletion);
@@ -80,8 +80,8 @@ class MachineProducer extends Machine
 						currentProductionCompletion = 0;
 					} else {
 						doMove = false;
-						inventoryArr[0].x = lampOutput.x + 10;
-						inventoryArr[0].y = lampOutput.y + 10;
+						inventoryArr[0].x = baseImage.x + 10;
+						inventoryArr[0].y = baseImage.y + 10;
 					}
 				}
 				lastOutput+= 1;

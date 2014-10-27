@@ -30,7 +30,9 @@ class HUD extends FlxGroup
 	public static var TOOL_CONV_LEFT = "conv-left";
 	public static var TOOL_CONV_UP = "conv-up";
 	public static var TOOL_CONV_DOWN = "conv-down";
-	public static var TOOL_MACHINE = "machine";
+	public static var TOOL_MACHINE1 = "machine1";
+	public static var TOOL_MACHINE2 = "machine2";
+	public static var TOOL_MACHINE3 = "machine3";
 	public static var TOOL_CRATE = "crate";
 	public static var TOOL_CONTROL = "control";
 	public static var TOOL_WINDOW = "window";
@@ -92,34 +94,59 @@ class HUD extends FlxGroup
 		add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "Machines On", onBtn5);
+		add(_btn2);
+		
+		nextpositionX += _cambutton.width + buttonspace;
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
 		
 		
 		hudbg1.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
 		
-		_helperText = new FlxText(4, 40, 220, "Tool: dig");
+		_helperText = new FlxText(4, 35, 220, "Tool: ");
 		add(_helperText);
 		
-		var _tool1:FlxButton = new FlxButton(4,60, "DIG", onTool1);
+		buttonspace = 0;
+		var nextpositionY:Float = 50;
+		
+		var _tool1:FlxButton = new FlxButton(4,nextpositionY, "DIG", onTool1);
 		add(_tool1);
-		var _tool2:FlxButton = new FlxButton(4,80, "DECONSTRUCT", onTool2);
+		nextpositionY += _tool1.height + buttonspace;		
+		var _tool2:FlxButton = new FlxButton(4,nextpositionY, "DECONSTRUCT", onTool2);
 		add(_tool2);
-		var _tool3:FlxButton = new FlxButton(4,100, "BUILD", onTool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "BUILD", onTool3);
 		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,120, "ConvRight", onToolCE);
-		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,140, "ConvLeft", onToolCW);
-		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,160, "ConvUp", onToolCU);
-		add(_tool3);
-		var _tool3:FlxButton = new FlxButton(4,180, "ConvDown", onToolCD);
-		add(_tool3);
-		var _tool4:FlxButton = new FlxButton(4,200, "Machine", onToolMachine);
-		add(_tool4);
-		var _tool5:FlxButton = new FlxButton(4,220, "Crate", onToolCrate);
-		add(_tool5);
-		var _tool6:FlxButton = new FlxButton(4,240, "Control", onToolControl);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool6:FlxButton = new FlxButton(4,nextpositionY, "Control", onToolControl);
 		add(_tool6);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvRight", onToolCE);
+		add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvLeft", onToolCW);
+		add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvUp", onToolCU);
+		add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvDown", onToolCD);
+		add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "Machine", onToolMachine1);
+		add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineDig", onToolMachine2);
+		add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineStamp", onToolMachine3);
+		add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool5:FlxButton = new FlxButton(4,nextpositionY, "Crate", onToolCrate);
+		add(_tool5);
+		nextpositionY += _tool1.height + buttonspace;
+		
+		
 		hudbg2.makeGraphic(100, 310, 0xff000000);
 		
 		
@@ -178,6 +205,10 @@ class HUD extends FlxGroup
 	{
 		_state.machineController.setupMoreCrates();
 	}
+	private function onBtn5():Void
+	{
+		_state.machineController.turnOnMachines();
+	}
 	private function onTool1():Void
 	{
 		GC.currentTool = TOOL_DIG;
@@ -220,9 +251,21 @@ class HUD extends FlxGroup
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	private function onToolMachine():Void
+	private function onToolMachine1():Void
 	{
-		GC.currentTool = TOOL_MACHINE;
+		GC.currentTool = TOOL_MACHINE1;
+		_state.mouseController.changeTool(GC.currentTool);
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	private function onToolMachine2():Void
+	{
+		GC.currentTool = TOOL_MACHINE2;
+		_state.mouseController.changeTool(GC.currentTool);
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
+	private function onToolMachine3():Void
+	{
+		GC.currentTool = TOOL_MACHINE3;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}

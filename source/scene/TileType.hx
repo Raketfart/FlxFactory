@@ -21,6 +21,7 @@ class TileType
 	
 	public static inline var TYPE_DIRT_GRASS:Int = 3;
 	public static inline var TYPE_DIRT_FLOOR:Int = 10;
+	public static inline var TYPE_EMPTY_FLOOR:Int = 20;
 	
 	public static inline var BG_DIRT_SOLID:Int = 16;
 	public static inline var BG_DIRT_GRASS:Int = 17;
@@ -30,6 +31,7 @@ class TileType
 	public static inline var BG_WALL_RIGHT:Int = 13;
 	public static inline var BG_ROOF1:Int = 14;
 	public static inline var BG_ROOF2:Int = 15;
+	
 	
 	public static function isTileDiggable(tiletype:Int):Bool
 	{
@@ -45,6 +47,10 @@ class TileType
 		   case TYPE_DIRT_COAL:
 				return true;
 		   case TYPE_DIRT_GRASS:
+				return true;
+		   case TYPE_EMPTY_FLOOR:
+				return true;
+		   case TYPE_DIRT_FLOOR:
 				return true;
 		   default:
 			  return false;

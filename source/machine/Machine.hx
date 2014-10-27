@@ -83,7 +83,7 @@ class Machine extends Module
 	{
 		if (GC.debugdraw == false)
 		{
-			item.visible = false;
+			//item.visible = false;
 		}
 		super.addToInventory(item);
 	}
@@ -141,7 +141,8 @@ class Machine extends Module
 					if (doMove && connections[lastOutput].willAddToInventory(inventoryArr[0]))
 					{
 						var item = getFromInventory();
-						item.visible = true;
+						transformItem(item);
+						//item.visible = true;
 						connections[lastOutput].addToInventory(item);
 						lampOn();
 						currentProductionCompletion = 0;
@@ -190,6 +191,30 @@ class Machine extends Module
 	public function detachWindow():Void
 	{
 		window = null;
+	}
+	public function transformItem(item:InventoryItem):Void
+	{
+		if (item.invType == InventoryItem.INV_IRON_RAW)
+		{			
+			item.setInvType(InventoryItem.INV_IRON_BAR);
+		} 
+		else if (item.invType == InventoryItem.INV_IRON_BAR)
+		{			
+			item.setInvType(InventoryItem.INV_IRON_CYLINDER);
+		}
+		else if (item.invType == InventoryItem.INV_COPPER_RAW)
+		{			
+			item.setInvType(InventoryItem.INV_COPPER_BAR);
+		}
+		else if (item.invType == InventoryItem.INV_COPPER_BAR)
+		{			
+			item.setInvType(InventoryItem.INV_COPPER_CYLINDER);
+		}		
+		else 
+		{			
+			item.setInvType(InventoryItem.INV_CRATE);
+		}
+
 	}
 	
 }

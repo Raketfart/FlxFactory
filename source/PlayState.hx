@@ -95,28 +95,7 @@ class PlayState extends FlxState
 	}
 	//{ region Setup
 	function setupMap() 
-	{		/*
-		//tile space helper
-		var cached:CachedGraphics = FlxG.bitmap.add(AssetPaths.pixelspritesheet_trans__png);
-		// top left corner of the first tile
-		var startX:Int = 2;
-		var startY:Int = 2;
-		// tile size
-		var tileWidth:Int = 21;
-		var tileHeight:Int = 21;
-		// tile spacing
-		var spacingX:Int = 2;
-		var spacingY:Int = 2;
-		// end of tiles
-		var width:Int = cached.bitmap.width - startX;
-		var height:Int = cached.bitmap.height - startY;
-		// define region
-		var textureRegion:TextureRegion = new TextureRegion(cached, startX, startY, tileWidth, tileHeight, spacingX, spacingY, width, height);
-		*/
-		
-		//_collisionMap = new FlxTilemap();				
-		//_collisionMap.loadMap(Assets.getText(AssetPaths.worldmap__txt),AssetPaths.tiles__png, GC.tileSize, GC.tileSize, FlxTilemap.OFF);		
-		//add(_collisionMap);
+	{
 		
 		worldmap = new WorldMap();
 		add(worldmap);

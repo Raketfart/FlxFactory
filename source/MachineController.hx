@@ -4,6 +4,7 @@ import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRect;
+import hud.HUD;
 import machine.*;
 import inventory.InventoryItem;
 import scene.TileType;
@@ -27,8 +28,12 @@ class MachineController extends FlxGroup
 		moduleArr = new Array<Module>();
 		conveyorGrp = new FlxGroup();
 		add(conveyorGrp);
+		
+		
+		
 		inventoryGrp = new FlxGroup();
 		add(inventoryGrp);
+		
 		machineGrp = new FlxGroup();
 		add(machineGrp);
 	}
@@ -91,9 +96,9 @@ class MachineController extends FlxGroup
 		var mod3:Module = new ConveyorRight(this,leftTile+7, topTile+1);
 		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
-		var mod3:Module = new ConveyorLeft(this,leftTile+7, topTile);
-		conveyorGrp.add(mod3);
-		moduleArr.push(mod3);
+		//var mod3:Module = new ConveyorLeft(this,leftTile+7, topTile);
+		//conveyorGrp.add(mod3);
+		//moduleArr.push(mod3);
 		var mod3:Module = new ConveyorLeft(this,leftTile+6, topTile);
 		conveyorGrp.add(mod3);
 		moduleArr.push(mod3);
@@ -217,9 +222,21 @@ class MachineController extends FlxGroup
 		}
 		return true;
 	}
-	public function addMachine():Void
+	public function addMachine(MachineType:String):Void
 	{
-		var mod:Module = new MachineProcessor(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		var mod:Module;
+		if (MachineType == HUD.TOOL_MACHINE3)
+		{
+			 mod = new MachineStamper(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		} 
+		else if (MachineType == HUD.TOOL_MACHINE2)
+		{
+			 mod = new MachineProducer(this, Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		}
+		else
+		{
+			 mod = new MachineProcessor(this, Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		}
 		machineGrp.add(mod);
 		moduleArr.push(mod);
 		
@@ -268,6 +285,18 @@ class MachineController extends FlxGroup
 		for (m in moduleArr)
 		{
 			m.refreshConnections();
+		}
+	}
+	
+	public function turnOnMachines():Void
+	{
+		for (m in moduleArr)
+		{
+			if (Std.is(m, Machine))
+			{				
+				var machine:Machine = cast m;
+				machine.turnOn();
+			}
 		}
 	}
 }

@@ -114,7 +114,12 @@ class MapGenerator
 		{
 			collMap.setTile(ix, _dirtbeginsrow, TileType.TYPE_DIRT_FLOOR);		
 		}
-		for (iy in _dirtbeginsrow-4..._dirtbeginsrow) {
+		for (ix in 20...60)
+		{
+			collMap.setTile(ix, _dirtbeginsrow - 5, TileType.TYPE_EMPTY_FLOOR);		
+			collMap.setTile(ix, _dirtbeginsrow - 10, TileType.TYPE_EMPTY_FLOOR);					
+		}
+		for (iy in _dirtbeginsrow-13..._dirtbeginsrow) {
 			for (ix in 20...60)
 			{		
 				if (ix == 20)

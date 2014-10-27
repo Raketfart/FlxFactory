@@ -52,12 +52,7 @@ class MachineWindow extends FlxGroup
 		bg1.loadGraphic(AssetPaths.mwin_bg__png, false);		
 		_elements.add(bg1);
 		
-		/*
-		var lamp1:FlxSprite = new FlxSprite(210, 50);
-		lamp1.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
-		lamp1.animation.frameIndex = 50;		
-		add(lamp1);
-		*/
+		
 		lamp1 = createlamp(bg1.width-101,10);
 		_elements.add(lamp1);
 		
@@ -93,7 +88,7 @@ class MachineWindow extends FlxGroup
 		gaugebg.animation.add("running", [1], 1, false);
 		_elements.add(gaugebg);
 		gaugeArrow = new FlxSprite (gaugebg.x-8, gaugebg.y);
-		gaugeArrow.loadGraphic(AssetPaths.tiles__png, false, 21, 21);
+		gaugeArrow.loadGraphic(AssetPaths.tiles_item__png, false, 21, 21);
 		gaugeArrow.animation.frameIndex = 48;
 		_elements.add(gaugeArrow);
 		
@@ -180,7 +175,7 @@ class MachineWindow extends FlxGroup
 	private function createlamp(X:Float,Y:Float):FlxSprite
 	{
 		var lamp:FlxSprite = new FlxSprite(X, Y);
-		lamp.loadGraphic(AssetPaths.tiles__png, false, 21, 21);		
+		lamp.loadGraphic(AssetPaths.tiles_item__png, false, 21, 21);		
 		lamp.animation.add("red", [50], 1, false);
 		lamp.animation.add("yellow", [51], 1, false);
 		lamp.animation.add("green", [52], 1, false);
