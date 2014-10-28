@@ -5,8 +5,10 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
+import hud.HudText;
 import machine.Machine;
 import openfl.display.BlendMode;
+
 
 using flixel.util.FlxSpriteUtil;
 /**
@@ -21,6 +23,8 @@ class HUD extends FlxGroup
 	var _helperText:FlxText;
 	var _cambutton:FlxButton;	
 	var htt:HUDTypedText;
+	var _debugGrp:FlxGroup;
+	var hudtext:HudText;
 	//var blendsprite:FlxSprite;
 		
 	public static var TOOL_DIG = "dig";
@@ -33,6 +37,8 @@ class HUD extends FlxGroup
 	public static var TOOL_MACHINE1 = "machine1";
 	public static var TOOL_MACHINE2 = "machine2";
 	public static var TOOL_MACHINE3 = "machine3";
+	public static var TOOL_MACHINE4 = "machine4";
+	
 	public static var TOOL_CRATE = "crate";
 	public static var TOOL_CONTROL = "control";
 	public static var TOOL_WINDOW = "window";
@@ -46,6 +52,9 @@ class HUD extends FlxGroup
 	public function new(State:PlayState) 
 	{
 		super();
+		
+		
+		
 		
 		_state = State;
 		/*
@@ -63,39 +72,58 @@ class HUD extends FlxGroup
 		hudbg2 = new FlxSprite(0, 0);
 		add(hudbg2);
 		
+		
+		_debugGrp = new FlxGroup();
+		
+		
 		var buttonspace:Float = 4;
 		var nextpositionX:Float = buttonspace;
 		
 		_cambutton = new FlxButton(nextpositionX, 6, "CAM", onCam); 		
 		add(_cambutton);
 		
-		nextpositionX += _cambutton.width + buttonspace;
+		nextpositionX = 120;
 		
-		_resetButton = new FlxButton(nextpositionX, 6, "Reset", onReset); 
-		add(_resetButton);
+		var debugButton:FlxButton = new FlxButton(nextpositionX, 6, "debug", onToggleDebug); 
+		add(debugButton);
 		
+		var nextpositionY:Float = 6 + debugButton.height;
+		
+		_resetButton = new FlxButton(nextpositionX, nextpositionY, "Reset", onReset); 
+		_debugGrp.add(_resetButton);
+		nextpositionY += debugButton.height;
 		//nextpositionX += _cambutton.width + buttonspace;
 		
 		//var _btn1:FlxButton = new FlxButton(nextpositionX, 6, "Generate1", onBtn1);
 		//add(_btn1);
 		
-		nextpositionX += _cambutton.width + buttonspace;
+		//nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "MapGen Ore", onBtn2);
-		add(_btn2);
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MapGen Ore", onBtn2);
+		_debugGrp.add(_btn2);
 		
-		nextpositionX += _cambutton.width + buttonspace;
 		
-		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "More machines", onBtn3);
-		add(_btn2);
 		
-		nextpositionX += _cambutton.width + buttonspace;
-		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "More crates", onBtn4);
-		add(_btn2);
-		
-		nextpositionX += _cambutton.width + buttonspace;
-		var _btn2:FlxButton = new FlxButton(nextpositionX,6, "Machines On", onBtn5);
-		add(_btn2);
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "More machines", onBtn3);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "More crates", onBtn4);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Machines On", onBtn5);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Gamespeed+", onSpeedUp);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Gamespeed-", onSpeedDown);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Money+", onMoneyPlus);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Money-", onMoneyMinus);
+		_debugGrp.add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
@@ -107,7 +135,7 @@ class HUD extends FlxGroup
 		add(_helperText);
 		
 		buttonspace = 0;
-		var nextpositionY:Float = 50;
+		nextpositionY = 50;
 		
 		var _tool1:FlxButton = new FlxButton(4,nextpositionY, "DIG", onTool1);
 		add(_tool1);
@@ -142,6 +170,9 @@ class HUD extends FlxGroup
 		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineStamp", onToolMachine3);
 		add(_tool4);
 		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineSmelt", onToolMachine4);
+		add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
 		var _tool5:FlxButton = new FlxButton(4,nextpositionY, "Crate", onToolCrate);
 		add(_tool5);
 		nextpositionY += _tool1.height + buttonspace;
@@ -149,16 +180,22 @@ class HUD extends FlxGroup
 		
 		hudbg2.makeGraphic(100, 310, 0xff000000);
 		
+		hudtext = new HudText();
+		add(hudtext);
 		
-		
-		
+		add(_debugGrp);
+		onToggleDebug();
+			
 		//htt = new HUDTypedText();
 		//add(htt);
 		
-		GC.currentTool = TOOL_DIG;
+		//_debugGrp.setAll("x", -10);
+		
+		//GC.currentTool = TOOL_DIG;
 		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
-		
+		_debugGrp.setAll("scrollFactor", new FlxPoint(0, 0));
+		hudtext.setAll("scrollFactor", new FlxPoint(0, 0));
 	}
 	
 	
@@ -183,6 +220,21 @@ class HUD extends FlxGroup
 		}
 		
 	}
+	private function onToggleDebug():Void
+	{
+		if (_debugGrp.visible == true)
+		{
+			_debugGrp.visible = false;
+			_debugGrp.setAll("x", -200);
+		}
+		else
+		{
+			_debugGrp.setAll("x", 120);
+			_debugGrp.visible = true;
+		}
+	}
+	
+	
 	
 	private function onReset():Void
 	{
@@ -269,6 +321,12 @@ class HUD extends FlxGroup
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
+	private function onToolMachine4():Void
+	{
+		GC.currentTool = TOOL_MACHINE4;
+		_state.mouseController.changeTool(GC.currentTool);
+		_helperText.text = "Tool: " + GC.currentTool;
+	}
 	function onToolCrate():Void
 	{
 		GC.currentTool = TOOL_CRATE;
@@ -288,4 +346,21 @@ class HUD extends FlxGroup
 		
 		
 	}
+	function onSpeedUp():Void
+	{
+		GC.gamespeed += 1;
+	}
+	function onSpeedDown():Void
+	{
+		GC.gamespeed -= 1;
+	}
+	function onMoneyPlus():Void
+	{
+		Accountant.moneyGain(1000);
+	}
+	function onMoneyMinus():Void
+	{
+		Accountant.moneyLose(100);
+	}
+	
 }

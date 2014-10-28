@@ -225,7 +225,11 @@ class MachineController extends FlxGroup
 	public function addMachine(MachineType:String):Void
 	{
 		var mod:Module;
-		if (MachineType == HUD.TOOL_MACHINE3)
+		if (MachineType == HUD.TOOL_MACHINE4)
+		{
+			 mod = new MachineSmelter(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+		} 
+		else if (MachineType == HUD.TOOL_MACHINE3)
 		{
 			 mod = new MachineStamper(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		} 

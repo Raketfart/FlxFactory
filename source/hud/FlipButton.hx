@@ -193,10 +193,7 @@ class FlipButton extends FlxSprite
 	{
 		super.drawDebug();
 		
-		if (label != null) 
-		{
-			label.drawDebug();
-		}
+		
 	}
 	#end
 	

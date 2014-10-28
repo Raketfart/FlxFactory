@@ -47,13 +47,14 @@ class PlayState extends FlxState
 	
 	var camController:CameraController;
 	
-	
+	private var _gameTimer:Float;
 	
 	
 	
 	override public function create():Void
 	{
 		FlxRandom.globalSeed = 123321;
+		_gameTimer = 0;
 		
 		var background:Background = new Background();
 		add(background);
@@ -157,6 +158,13 @@ class PlayState extends FlxState
 			player.updateMovementControls();
 		}
 		
+		_gameTimer += FlxG.elapsed*GC.gamespeed;		
+		if (_gameTimer > 1) 
+		{			
+			Accountant.tick();	
+			_gameTimer -= 1;
+			FlxG.watch.add(this,"_gameTimer");
+		}
 		
 		super.update();
 		

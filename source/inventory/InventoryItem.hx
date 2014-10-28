@@ -18,6 +18,9 @@ class InventoryItem extends FlxSprite
 	public static var INV_COPPER_BAR = 6;
 	public static var INV_COPPER_CYLINDER = 7;
 	
+	public static var INV_PART_IRON_HEAD = 8;
+	public static var INV_PART_IRON_BODY = 9;
+	
 	public var invType:Int;
 	
 	public function new(InvType:Int = 0, X:Float=0, Y:Float=0) 

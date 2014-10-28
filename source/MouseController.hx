@@ -79,7 +79,7 @@ class MouseController extends FlxGroup
 		{
 			fsm.state = new ToolModule();
 		} 
-		else if (ToolName == HUD.TOOL_MACHINE1 || ToolName == HUD.TOOL_MACHINE2 || ToolName == HUD.TOOL_MACHINE3)
+		else if (ToolName == HUD.TOOL_MACHINE1 || ToolName == HUD.TOOL_MACHINE2 || ToolName == HUD.TOOL_MACHINE3 || ToolName == HUD.TOOL_MACHINE4)
 		{
 			fsm.state = new ToolModule();
 		} 
@@ -287,6 +287,12 @@ class ToolModule extends FlxFSMState<MouseController>
 			_moduleGhost.facing = FlxObject.RIGHT;			
 			_arrowGhost.visible = false;
 		}
+		else if (_tool == HUD.TOOL_MACHINE4)
+		{			
+			_moduleGhost.loadGraphic(AssetPaths.factory__png);
+			_moduleGhost.facing = FlxObject.RIGHT;			
+			_arrowGhost.visible = false;
+		}
 		Owner.add(_moduleGhost);
 		Owner.add(_arrowGhost);
 	}
@@ -310,7 +316,7 @@ class ToolModule extends FlxFSMState<MouseController>
 		_arrowGhost.x = _moduleGhost.x;
 		_arrowGhost.y = _moduleGhost.y;
 		
-		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE2 || _tool == HUD.TOOL_MACHINE3)
+		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE2 || _tool == HUD.TOOL_MACHINE3 || _tool == HUD.TOOL_MACHINE4)
 		{
 			if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
 			{
@@ -354,7 +360,7 @@ class ToolModule extends FlxFSMState<MouseController>
 						Owner.state.machineController.addConvD();			
 					}
 				}
-				else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE2 || GC.currentTool == HUD.TOOL_MACHINE3)
+				else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE2 || GC.currentTool == HUD.TOOL_MACHINE3 || GC.currentTool == HUD.TOOL_MACHINE4)
 				{
 					if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
 					{

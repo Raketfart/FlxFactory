@@ -202,6 +202,10 @@ class Machine extends Module
 		{			
 			item.setInvType(InventoryItem.INV_IRON_CYLINDER);
 		}
+		else if (item.invType == InventoryItem.INV_IRON_CYLINDER)
+		{			
+			item.setInvType(InventoryItem.INV_PART_IRON_HEAD);
+		}
 		else if (item.invType == InventoryItem.INV_COPPER_RAW)
 		{			
 			item.setInvType(InventoryItem.INV_COPPER_BAR);
