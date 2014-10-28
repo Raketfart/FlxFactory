@@ -5,6 +5,7 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import hud.HudText;
 import inventory.InventoryItem;
 import inventory.SlotContainer;
@@ -157,6 +158,9 @@ class HUD extends FlxGroup
 		nextpositionY += _btn2.height;
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Save", onSave);
 		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Add to inv", onAddToInv);
+		_debugGrp.add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
@@ -214,8 +218,6 @@ class HUD extends FlxGroup
 		_buildGrp.setAll("scrollFactor", new FlxPoint(0, 0));
 		hudtext.setAll("scrollFactor", new FlxPoint(0, 0));
 		
-		
-		slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
 		
 	}
 	
@@ -413,5 +415,10 @@ class HUD extends FlxGroup
 	{
 		var save:SaveHandler = new save.SaveHandler(GC.state);
 		
+	}
+	function onAddToInv():Void
+	{	
+		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
+		slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
 	}
 }

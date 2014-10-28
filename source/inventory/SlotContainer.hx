@@ -61,7 +61,15 @@ class SlotContainer extends FlxGroup
 	}
 	public function addItem(item:InventoryItem):Void
 	{
-		_slots[0].addItem(item);
+		for (slot in _slots)
+		{
+			if (slot.willAccept(item))
+			{
+				slot.addItem(item);
+				break;
+			}
+		}
+		
 	}
 	
 	public function removeItem(item:InventoryItem):Void

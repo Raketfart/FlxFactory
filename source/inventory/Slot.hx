@@ -14,6 +14,7 @@ class Slot extends FlxGroup
 
 	public var id:String;		
 	public var item:InventoryItem;
+	public var itemCount:Int;
 	
 	public var x:Float;
 	public var y:Float;
@@ -35,7 +36,7 @@ class Slot extends FlxGroup
 		
 		txt = new FlxText(x, y, 50, id);
 		add(txt);
-		
+		itemCount = 0;
 		
 		
 	}
@@ -46,19 +47,49 @@ class Slot extends FlxGroup
 			item.y = y + GC.tileSize;
 		}
 	}
+	public function willAccept(Item:InventoryItem):Bool
+	{
+		if (item != null)
+		{
+			if (item.invType == Item.invType)
+			{
+				return true;
+			}
+		} else {
+			return true;
+		}
+		return false;
+	}
 	public function addItem(Item:InventoryItem):Void
 	{
-		item = Item;
-		item.x = x+GC.tileSize;
-		item.y = y+GC.tileSize;
-		add(item);
-		item.scrollFactor.set(0, 0);
+		if (itemCount > 0)
+		{
+			itemCount++;
+		}
+		else if (itemCount == 0)
+		{
+			item = Item;
+			item.x = x+GC.tileSize;
+			item.y = y+GC.tileSize;
+			add(item);
+			item.scrollFactor.set(0, 0);
+			itemCount++;
+		}
+		txt.text = Std.string(itemCount);
 	}
 	
 	public function removeItem():Void
-	{
-		remove(item);
-		item = null;		
+	{		
+		if (itemCount > 0)
+		{
+			itemCount--;
+		}
+		else if (itemCount == 0)
+		{
+			remove(item);
+			item = null;		
+		}
+		txt.text = Std.string(itemCount);
 	}
 	public function hasItem():Bool
 	{
