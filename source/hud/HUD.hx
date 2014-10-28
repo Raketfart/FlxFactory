@@ -6,8 +6,11 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
 import hud.HudText;
+import inventory.InventoryItem;
+import inventory.SlotContainer;
 import machine.Machine;
 import openfl.display.BlendMode;
+import save.SaveHandler;
 
 
 using flixel.util.FlxSpriteUtil;
@@ -26,6 +29,7 @@ class HUD extends FlxGroup
 	var _debugGrp:FlxGroup;
 	var _buildGrp:FlxGroup;
 	var hudtext:HudText;
+	public var slotContainer:SlotContainer;
 	//var blendsprite:FlxSprite;
 		
 	public static var TOOL_NONE = "none";
@@ -150,6 +154,9 @@ class HUD extends FlxGroup
 		nextpositionY += _btn2.height;
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Money-", onMoneyMinus);
 		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Save", onSave);
+		_debugGrp.add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
@@ -197,10 +204,19 @@ class HUD extends FlxGroup
 		
 		//GC.currentTool = TOOL_DIG;
 		
+		slotContainer = new SlotContainer(10, 10,10,FlxG.height-GC.tileSize*2-10);
+		add(slotContainer);
+		slotContainer.stickToBottom(FlxG.height);
+		slotContainer.setAll("scrollFactor", new FlxPoint(0, 0));
+		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		_debugGrp.setAll("scrollFactor", new FlxPoint(0, 0));
 		_buildGrp.setAll("scrollFactor", new FlxPoint(0, 0));
 		hudtext.setAll("scrollFactor", new FlxPoint(0, 0));
+		
+		
+		slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
+		
 	}
 	
 	
@@ -217,13 +233,14 @@ class HUD extends FlxGroup
 		_state.switchCam();
 		if (FlxG.camera.zoom == 1)
 		{
-			//blendsprite.visible = false;
+			//blendsprite.visible = false;			
+			slotContainer.stickToBottom(FlxG.height);
 		}
 		else 
 		{
-			//blendsprite.visible = true;
+			//blendsprite.visible = true;			
+			slotContainer.stickToBottom(FlxG.height/2);
 		}
-		
 	}
 	private function onToggleDebug():Void
 	{
@@ -391,5 +408,10 @@ class HUD extends FlxGroup
 	{
 		var ding:Ding = new Ding(X,Y, txt, true);
 		this.add(ding);
+	}
+	function onSave():Void
+	{
+		var save:SaveHandler = new save.SaveHandler(GC.state);
+		
 	}
 }

@@ -1,4 +1,5 @@
 package ;
+import classes.TilePos;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
@@ -155,6 +156,24 @@ class MachineController extends FlxGroup
 		
 	}
 	*/
+	
+	/**
+	 * Add generic module from loading
+	 * @param	ClassName
+	 * @param	Tilepos
+	 */
+	public function addModule(ClassName:String,Tilepos:TilePos) 
+	{
+		var loadedMod:Module = Type.createInstance(Type.resolveClass(ClassName), [this,Tilepos.tileX,Tilepos.tileY]);
+		
+		conveyorGrp.add(loadedMod);
+		moduleArr.push(loadedMod);
+		
+		for (m in moduleArr)
+		{
+			m.refreshConnections();
+		}
+	}
 	public function addConvE()
 	{
 		var mod:Module = new ConveyorRight(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
