@@ -75,6 +75,7 @@ class PlayState extends FlxState
 		
 		hud = new HUD(this);
 		add(hud);
+		GC.hud = hud;
 		
 		FlxG.worldBounds.width = worldmap.mapWidth * GC.tileSize + 20;
 		FlxG.worldBounds.height = worldmap.mapHeight * GC.tileSize+20;

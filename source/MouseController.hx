@@ -208,6 +208,7 @@ class ToolBuild extends FlxFSMState<MouseController>
 			if (tiletype==TileType.TYPE_EMPTY)
 			{
 				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
+				GC.hud.addDing(Std.int(FlxG.mouse.x / GC.tileSize) * GC.tileSize, Std.int(FlxG.mouse.y / GC.tileSize) * GC.tileSize, "*");
 			}			
 		}
 	}

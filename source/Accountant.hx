@@ -37,7 +37,7 @@ class Accountant
 		money -= amount;
 	}
 	public static function moneyGain(amount:Int) {
-		money += amount;
+		money += amount;		
 	}
 	
 /**

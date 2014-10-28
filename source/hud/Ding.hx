@@ -1,6 +1,8 @@
 package hud;
+import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
+import flixel.util.FlxPoint;
 
 /**
  * ...
@@ -12,20 +14,30 @@ class Ding extends FlxGroup
 	private var _startX:Float;
 	private var _startY:Float;
 	private var txt:FlxText;
+	private var speedY:Float;
 	
-	public function new(X:Float, Y:Float, text:String) 
+	public function new(X:Float, Y:Float, text:String, doScroll:Bool = true) 
 	{
 		
 		super();
 		
 		txt = new FlxText(X, Y, 100, text);
 		add(txt);
-		txt.velocity.y = -90;
+		speedY = -200;
+		if (doScroll == false)
+		{
+			txt.scrollFactor.set(0,0);
+		}
 	}
 	override public function update():Void
 	{
-		txt.velocity.y += 2;
-		if (txt.velocity.y > 40) {
+		var dt:Float = FlxG.elapsed;
+		
+		txt.y += speedY * dt;
+		
+		speedY *= .90;
+				
+		if (speedY > -20) {
 			this.kill();
 		}
 		super.update();

@@ -28,26 +28,26 @@ class HudText extends FlxGroup
 	{
 		_shownMoney = Accountant.money;
 
-		var dynX= 250;
-		var dynY = 6;		
+		var dynX= 280;
+		var dynY = 16;		
 		
 		textMoney = new FlxText(dynX, dynY, 120, "0");
 		//textMoney.setFormat(null, 16, 0xd8eba2, "right", 0x131c1b);		
 		add(textMoney);
 		
-		dynX += 50;
+		dynX += 40;
 		
 		textTime = new FlxText(dynX, dynY, 90, "x");
 		textTime.setFormat(null, 8, 0xd8eba2, "left", 0x131c1b);		
 		add(textTime);
 				
-		dynX += 100;
+		dynX += 80;
 		
 		textStockCap = new FlxText(dynX, dynY, 150, "-");
 		textStockCap.setFormat(null, 8, 0x999999, "left", 0);		
 		add(textStockCap);
 			
-		dynX += 100;
+		dynX += 90;
 		
 		testStatusText = new FlxText(dynX, dynY, 120, "-");
 		testStatusText.setFormat(null, 8, 0x999999, "left", 0);		
@@ -78,7 +78,8 @@ class HudText extends FlxGroup
 		textMoney.text = "" + _shownMoney;
 		textTime.text = "M" + Accountant.monthCount + " W" + Accountant.weekCount + " D" + Accountant.dayCount + " H" + Accountant.hourCount + "";
 		
-		textStockCap.text = "Capacity: " + (Accountant.stockCurrent) +"/"+ Accountant.stockCapacity;			
+		textStockCap.text = "Capacity: " + (Accountant.stockCurrent) +"/" + Accountant.stockCapacity;			
+		testStatusText.text = "Speed " + GC.gamespeed;
 	}
 	
 	

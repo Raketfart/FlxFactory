@@ -1,4 +1,5 @@
 package ;
+import hud.HUD;
 
 /**
  * ...
@@ -11,6 +12,7 @@ class GC
 	static public var tileSize:Int = 21;
 	static public var currentTool:String = "";
 	static public var debugdraw:Bool = false;
-	
+
+	static public var hud:HUD;
 	
 }

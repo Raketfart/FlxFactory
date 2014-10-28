@@ -24,6 +24,7 @@ class HUD extends FlxGroup
 	var _cambutton:FlxButton;	
 	var htt:HUDTypedText;
 	var _debugGrp:FlxGroup;
+	var _buildGrp:FlxGroup;
 	var hudtext:HudText;
 	//var blendsprite:FlxSprite;
 		
@@ -74,6 +75,7 @@ class HUD extends FlxGroup
 		
 		
 		_debugGrp = new FlxGroup();
+		_buildGrp = new FlxGroup();
 		
 		
 		var buttonspace:Float = 4;
@@ -82,7 +84,39 @@ class HUD extends FlxGroup
 		_cambutton = new FlxButton(nextpositionX, 6, "CAM", onCam); 		
 		add(_cambutton);
 		
-		nextpositionX = 120;
+		
+		nextpositionX = 90;
+		buttonspace = 0;
+		
+		var debugButton:FlxButton = new FlxButton(nextpositionX, 6, "Build", onToggleBuild); 
+		add(debugButton);		
+		var nextpositionY:Float = 6 + debugButton.height;				
+		var _tool1:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvRight", onToolCE);
+		_buildGrp.add(_tool1);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvLeft", onToolCW);
+		_buildGrp.add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvUp", onToolCU);
+		_buildGrp.add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool3:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvDown", onToolCD);
+		_buildGrp.add(_tool3);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Machine", onToolMachine1);
+		_buildGrp.add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineDig", onToolMachine2);
+		_buildGrp.add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineStamp", onToolMachine3);
+		_buildGrp.add(_tool4);
+		nextpositionY += _tool1.height + buttonspace;
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineSmelt", onToolMachine4);
+		_buildGrp.add(_tool4);
+		nextpositionY += debugButton.height;
+		
+		nextpositionX = 180;
 		
 		var debugButton:FlxButton = new FlxButton(nextpositionX, 6, "debug", onToggleDebug); 
 		add(debugButton);
@@ -92,18 +126,9 @@ class HUD extends FlxGroup
 		_resetButton = new FlxButton(nextpositionX, nextpositionY, "Reset", onReset); 
 		_debugGrp.add(_resetButton);
 		nextpositionY += debugButton.height;
-		//nextpositionX += _cambutton.width + buttonspace;
-		
-		//var _btn1:FlxButton = new FlxButton(nextpositionX, 6, "Generate1", onBtn1);
-		//add(_btn1);
-		
-		//nextpositionX += _cambutton.width + buttonspace;
-		
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MapGen Ore", onBtn2);
 		_debugGrp.add(_btn2);
-		
-		
-		
+		nextpositionY += _btn2.height;
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "More machines", onBtn3);
 		_debugGrp.add(_btn2);
 		nextpositionY += _btn2.height;
@@ -129,7 +154,7 @@ class HUD extends FlxGroup
 		//_helperText = new FlxText(nextpositionX , 8, 220, "Click to place tiles, shift-click to remove\nArrow keys / WASD to move");
 		
 		
-		hudbg1.makeGraphic(Std.int(nextpositionX)+100, 30, 0xff000000);
+		hudbg1.makeGraphic(FlxG.width, 30, 0xff000000);
 		
 		_helperText = new FlxText(4, 35, 220, "Tool: ");
 		add(_helperText);
@@ -149,30 +174,6 @@ class HUD extends FlxGroup
 		var _tool6:FlxButton = new FlxButton(4,nextpositionY, "Control", onToolControl);
 		add(_tool6);
 		nextpositionY += _tool1.height + buttonspace;
-		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvRight", onToolCE);
-		add(_tool3);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvLeft", onToolCW);
-		add(_tool3);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvUp", onToolCU);
-		add(_tool3);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool3:FlxButton = new FlxButton(4,nextpositionY, "ConvDown", onToolCD);
-		add(_tool3);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "Machine", onToolMachine1);
-		add(_tool4);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineDig", onToolMachine2);
-		add(_tool4);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineStamp", onToolMachine3);
-		add(_tool4);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(4,nextpositionY, "MachineSmelt", onToolMachine4);
-		add(_tool4);
-		nextpositionY += _tool1.height + buttonspace;
 		var _tool5:FlxButton = new FlxButton(4,nextpositionY, "Crate", onToolCrate);
 		add(_tool5);
 		nextpositionY += _tool1.height + buttonspace;
@@ -184,7 +185,9 @@ class HUD extends FlxGroup
 		add(hudtext);
 		
 		add(_debugGrp);
+		add(_buildGrp);
 		onToggleDebug();
+		onToggleBuild();
 			
 		//htt = new HUDTypedText();
 		//add(htt);
@@ -195,6 +198,7 @@ class HUD extends FlxGroup
 		
 		this.setAll("scrollFactor", new FlxPoint(0, 0));
 		_debugGrp.setAll("scrollFactor", new FlxPoint(0, 0));
+		_buildGrp.setAll("scrollFactor", new FlxPoint(0, 0));
 		hudtext.setAll("scrollFactor", new FlxPoint(0, 0));
 	}
 	
@@ -229,11 +233,23 @@ class HUD extends FlxGroup
 		}
 		else
 		{
-			_debugGrp.setAll("x", 120);
+			_debugGrp.setAll("x", 180);
 			_debugGrp.visible = true;
 		}
 	}
-	
+	private function onToggleBuild():Void
+	{
+		if (_buildGrp.visible == true)
+		{
+			_buildGrp.visible = false;
+			_buildGrp.setAll("x", -200);
+		}
+		else
+		{
+			_buildGrp.setAll("x", 90);
+			_buildGrp.visible = true;
+		}
+	}
 	
 	
 	private function onReset():Void
@@ -356,11 +372,22 @@ class HUD extends FlxGroup
 	}
 	function onMoneyPlus():Void
 	{
-		Accountant.moneyGain(1000);
+		var amount:Int = 1000;
+		addDingNoScroll(200, 200, "+" + amount);
+		Accountant.moneyGain(amount);
 	}
 	function onMoneyMinus():Void
 	{
 		Accountant.moneyLose(100);
 	}
-	
+	function addDingNoScroll(X:Float,Y:Float,txt:String):Void
+	{
+		var ding:Ding = new Ding(X,Y, txt, false);
+		this.add(ding);
+	}
+	public function addDing(X:Float,Y:Float,txt:String):Void
+	{
+		var ding:Ding = new Ding(X,Y, txt, true);
+		this.add(ding);
+	}
 }
