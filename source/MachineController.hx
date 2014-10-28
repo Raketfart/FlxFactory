@@ -278,7 +278,9 @@ class MachineController extends FlxGroup
 				machine.turnOn();
 			}
 			*/
+			GC.state.emitter.emitSmokeBlack((module.tilePos.tileX+Std.int(module.tileWidth/2))*GC.tileSize,module.tilePos.tileY*GC.tileSize);
 		}
+		
 	}
 	
 	public function removeModule():Void

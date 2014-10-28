@@ -294,6 +294,10 @@ class ToolModule extends FlxFSMState<MouseController>
 			_moduleGhost.facing = FlxObject.RIGHT;			
 			_arrowGhost.visible = false;
 		}
+		else {
+			_moduleGhost.visible = false;
+			_arrowGhost.visible = false;
+		}
 		Owner.add(_moduleGhost);
 		Owner.add(_arrowGhost);
 	}

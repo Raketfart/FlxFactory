@@ -1,10 +1,12 @@
 package;
 
 import entity.Player;
+import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.ui.FlxButtonPlus;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
@@ -45,6 +47,8 @@ class PlayState extends FlxState
 	public var emitter:Emitter;	
 	public var hud:HUD;
 	
+	public var collideGrp:FlxGroup;
+	
 	var camController:CameraController;
 	
 	private var _gameTimer:Float;
@@ -59,23 +63,30 @@ class PlayState extends FlxState
 		var background:Background = new Background();
 		add(background);
 		
-	
+		collideGrp = new FlxGroup();
+		
 		setupMap();
+		
+		
 		
 		machineController = new MachineController();
 		add(machineController);
 		
 		machineController.setupTestMachines();
 		
+		
+		emitter = new Emitter(collideGrp);
+		add(emitter);
+		
+		
 		player = new Player(64, 64);
 		add(player);
-		
-		emitter = new Emitter();
-		add(emitter);
+		collideGrp.add(player);
 		
 		hud = new HUD(this);
 		add(hud);
 		GC.hud = hud;
+		GC.state = this;
 		
 		FlxG.worldBounds.width = worldmap.mapWidth * GC.tileSize + 20;
 		FlxG.worldBounds.height = worldmap.mapHeight * GC.tileSize+20;
@@ -145,8 +156,9 @@ class PlayState extends FlxState
 		
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
-		FlxG.collide(worldmap.collisionMap,player);
-		FlxG.collide(worldmap.collisionMap,emitter);
+		//FlxG.collide(worldmap.collisionMap,player);
+		FlxG.collide(worldmap.collisionMap,collideGrp);
+		//FlxG.collide(worldmap.collisionMap,emitter);
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
@@ -164,7 +176,7 @@ class PlayState extends FlxState
 		{			
 			Accountant.tick();	
 			_gameTimer -= 1;
-			FlxG.watch.add(this,"_gameTimer");
+			//FlxG.watch.add(this,"_gameTimer");
 		}
 		
 		super.update();

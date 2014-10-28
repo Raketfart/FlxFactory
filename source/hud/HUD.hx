@@ -28,6 +28,7 @@ class HUD extends FlxGroup
 	var hudtext:HudText;
 	//var blendsprite:FlxSprite;
 		
+	public static var TOOL_NONE = "none";
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
 	public static var TOOL_BUILD = "build";
@@ -234,8 +235,10 @@ class HUD extends FlxGroup
 		else
 		{
 			_debugGrp.setAll("x", 180);
-			_debugGrp.visible = true;
+			_debugGrp.visible = true;			
+			_state.mouseController.changeTool(TOOL_NONE);
 		}
+		
 	}
 	private function onToggleBuild():Void
 	{
@@ -248,6 +251,7 @@ class HUD extends FlxGroup
 		{
 			_buildGrp.setAll("x", 90);
 			_buildGrp.visible = true;
+			_state.mouseController.changeTool(TOOL_NONE);
 		}
 	}
 	
@@ -358,9 +362,7 @@ class HUD extends FlxGroup
 	public function showMachineWindow(machine:Machine)
 	{
 		var mw:MachineWindow = new MachineWindow(this,machine);
-		add(mw);
-		
-		
+		add(mw);		
 	}
 	function onSpeedUp():Void
 	{
@@ -373,7 +375,7 @@ class HUD extends FlxGroup
 	function onMoneyPlus():Void
 	{
 		var amount:Int = 1000;
-		addDingNoScroll(200, 200, "+" + amount);
+		addDingNoScroll(hudtext.textMoney.x, hudtext.textMoney.y, "+" + amount);
 		Accountant.moneyGain(amount);
 	}
 	function onMoneyMinus():Void
