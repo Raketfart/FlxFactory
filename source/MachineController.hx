@@ -32,11 +32,12 @@ class MachineController extends FlxGroup
 		
 		
 		
-		inventoryGrp = new FlxGroup();
-		add(inventoryGrp);
 		
 		machineGrp = new FlxGroup();
 		add(machineGrp);
+		
+		inventoryGrp = new FlxGroup();
+		add(inventoryGrp);
 	}
 	
 	public function setupTestMachines():Void
@@ -244,15 +245,15 @@ class MachineController extends FlxGroup
 	public function addMachine(MachineType:String):Void
 	{
 		var mod:Module;
-		if (MachineType == HUD.TOOL_MACHINE4)
+		if (MachineType == HUD.TOOL_MACHINE_SMELT)
 		{
 			 mod = new MachineSmelter(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		} 
-		else if (MachineType == HUD.TOOL_MACHINE3)
+		else if (MachineType == HUD.TOOL_MACHINE_STAMP)
 		{
 			 mod = new MachineStamper(this,Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		} 
-		else if (MachineType == HUD.TOOL_MACHINE2)
+		else if (MachineType == HUD.TOOL_MACHINE_DIG)
 		{
 			 mod = new MachineProducer(this, Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
 		}
@@ -297,7 +298,7 @@ class MachineController extends FlxGroup
 				machine.turnOn();
 			}
 			*/
-			GC.state.emitter.emitSmokeBlack((module.tilePos.tileX+Std.int(module.tileWidth/2))*GC.tileSize,module.tilePos.tileY*GC.tileSize);
+			
 		}
 		
 	}

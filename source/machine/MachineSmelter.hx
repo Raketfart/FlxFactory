@@ -31,6 +31,7 @@ class MachineSmelter extends Machine
 		imageLayer.add(flames);
 		flames.animation.play("flames");
 		
+		
 	}
 	
 	

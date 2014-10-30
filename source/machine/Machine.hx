@@ -5,6 +5,7 @@ import flixel.util.FlxColor;
 import hud.MachineWindow;
 import inventory.InventoryItem;
 import machine.machinestates.BootUp;
+import machine.machinestates.BreakDown;
 import machine.machinestates.PowerOff;
 import util.FlxFSM;
 
@@ -24,10 +25,11 @@ class Machine extends Module
 	public var lampPowerOff:FlxSprite;	
 	public var lampPowerBoot:FlxSprite;
 	public var lampPowerOn:FlxSprite;
-	
+		
 	public var power:Float = 0;
 	public var bootSpeed:Float = 80;
-		
+	public var condition:Float = 100;
+	
 	public var productionSpeed:Float = 100;
 	public var currentProductionCompletion:Float = 0;
 	public var currentSpeedPercent:Float = 0.1;
@@ -36,9 +38,15 @@ class Machine extends Module
 	
 	public var window:MachineWindow;
 	
+	var middleX:Float;
+	var hasTransformed:Bool;
+	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0,TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
 		super(Controller,tileX, tileY,TileWidth,TileHeight);
+		
+		hasTransformed = false;
+		middleX = tileX * GC.tileSize+31;
 		
 		baseImage = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		//base.loadGraphic(AssetPaths.factory__png);
@@ -64,10 +72,14 @@ class Machine extends Module
 		lampPowerOn.color = FlxColor.BLACK;
 		imageLayer.add(lampPowerOn);
 		
-		this.connectsOutLeft = true;
-		this.connectsOutRight = true;
+		moveDirectionX = 1;
+		moveDirectionY = 0;
+		this.connectsOutLeft = false;
+		this.connectsOutRight = true;		
 		this.connectsInLeft = true;
-		this.connectsInRight = true;
+		this.connectsInRight = false;		
+		this.connectsInDown = false;
+		this.connectsInUp = false;
 		
 		fsm = new FlxFSM<Machine>(this, new PowerOff());
 		
@@ -101,63 +113,94 @@ class Machine extends Module
 	
 	public function doProcessing():Void
 	{
-	
-		if (inventoryArr.length > 0)
+		var targetOut:Float;
+		var currentTarget:Float;
+		if (moveDirectionX == 1)
+		{	//right
+			targetOut = baseImage.x + baseImage.width;
+		}
+		else
+		{	//left
+			targetOut = baseImage.x;
+		}
+		if (hasTransformed == false)
 		{
+			currentTarget = middleX;
+		} else {
+			currentTarget = targetOut;
+		}
+		
+		for (item in inventoryArr) 
+		{					
 			
-			inventoryArr[0].x = baseImage.x + 30;
-			inventoryArr[0].y = baseImage.y + 20;
-			
-			currentProductionCompletion += productionSpeed * FlxG.elapsed;
-			//trace("compl " + currentProductionCompletion);
-			if (currentProductionCompletion > 100)
+			var doMove:Bool = true;
+			var orgX:Float = item.x;
+			var orgY:Float = item.y;
+			if (item.x != currentTarget)			
 			{
-				
-				var doMove:Bool = true;
-				
-				if (lastOutput >= connections.length)
-				{
-					lastOutput = 0;
-				}
-				
+				moveItem(item, FlxG.elapsed, currentTarget, 0);					
+			}
+			else if (currentProductionCompletion < 100)
+			{				
+				currentProductionCompletion += productionSpeed * FlxG.elapsed;								
+			} 			
+			else if (hasTransformed == false && currentProductionCompletion >= 100)
+			{
+				hasTransformed = true;
+				doTransform(item);			
+			}
+			
+			if (item.x == targetOut) // move to next module
+			{								
 				if (connections.length > 0)
 				{
-					if (connections[lastOutput].tilePos.tileX < this.tilePos.tileX) //left of machine
+					if (doesItemOverlap(item, connections[0].inventoryArr))
 					{
-						inventoryArr[0].x = (connections[lastOutput].tilePos.tileX+connections[lastOutput].tileWidth) * GC.tileSize;
-						inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
-					} else {
-						inventoryArr[0].x = connections[lastOutput].tilePos.tileX * GC.tileSize;
-						inventoryArr[0].y = connections[lastOutput].tilePos.tileY * GC.tileSize;
-					}
-					for (otheritem in connections[lastOutput].inventoryArr)
-					{
-						if (inventoryArr[0].overlaps(otheritem))
-						{
-							doMove = false;
-						}
+						doMove = false;						
 					}
 					
-					if (doMove && connections[lastOutput].willAddToInventory(inventoryArr[0]))
+					if (doMove && connections[0].willAddToInventory(item))
 					{
 						var item = getFromInventory();
-						transformItem(item);
-						//item.visible = true;
-						connections[lastOutput].addToInventory(item);
-						lampOn();
+						connections[0].addToInventory(item);
 						currentProductionCompletion = 0;
+						hasTransformed = false;
+						//item.visible = true;
+						lampOn();
+						
+						//wear and tear
+						condition-=1;
+						
 					} else {
 						doMove = false;
-						inventoryArr[0].x = baseImage.x + 30;
-						inventoryArr[0].y = baseImage.y + 20;
-			
 					}
+				} else {
+					doMove = false;
 				}
-				lastOutput+= 1;
 				
+			} else { // move in this module
+				if (doesItemOverlap(item, inventoryArr))
+				{
+					doMove = false;					
+				}				
+				if (connections.length > 0)
+				{
+					if (doesItemOverlap(item, connections[0].inventoryArr))
+					{
+						doMove = false;						
+					}					
+				}				
+				
+			}
+			if (!doMove)
+			{
+				item.y = orgY;
+				item.x = orgX;
 			}
 			
 		}
+		
+		
 		if (lampOutputCount > 0)
 		{
 			lampOutputCount --;
@@ -183,6 +226,11 @@ class Machine extends Module
 	public function turnOff():Void
 	{
 		fsm.state = new PowerOff();
+	}
+	public function breakDown() 
+	{
+		condition = 0;
+		//fsm.state = new BreakDown();
 	}
 	public function attachWindow(Window:MachineWindow):Void
 	{
@@ -220,5 +268,11 @@ class Machine extends Module
 		}
 
 	}
+	public function doTransform(item:InventoryItem)
+	{
+		transformItem(item);	
+	}
+	
+	
 	
 }

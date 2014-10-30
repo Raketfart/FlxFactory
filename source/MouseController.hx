@@ -79,7 +79,7 @@ class MouseController extends FlxGroup
 		{
 			fsm.state = new ToolModule();
 		} 
-		else if (ToolName == HUD.TOOL_MACHINE1 || ToolName == HUD.TOOL_MACHINE2 || ToolName == HUD.TOOL_MACHINE3 || ToolName == HUD.TOOL_MACHINE4)
+		else if (ToolName == HUD.TOOL_MACHINE1 || ToolName == HUD.TOOL_MACHINE_DIG || ToolName == HUD.TOOL_MACHINE_STAMP || ToolName == HUD.TOOL_MACHINE_SMELT)
 		{
 			fsm.state = new ToolModule();
 		} 
@@ -276,19 +276,19 @@ class ToolModule extends FlxFSMState<MouseController>
 			_moduleGhost.facing = FlxObject.RIGHT;			
 			_arrowGhost.visible = false;
 		}
-		else if (_tool == HUD.TOOL_MACHINE2)
+		else if (_tool == HUD.TOOL_MACHINE_DIG)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factoryDrill__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
 			_arrowGhost.visible = false;
 		}
-		else if (_tool == HUD.TOOL_MACHINE3)
+		else if (_tool == HUD.TOOL_MACHINE_STAMP)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factoryStamper_1__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
 			_arrowGhost.visible = false;
 		}
-		else if (_tool == HUD.TOOL_MACHINE4)
+		else if (_tool == HUD.TOOL_MACHINE_SMELT)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factory__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
@@ -321,9 +321,17 @@ class ToolModule extends FlxFSMState<MouseController>
 		_arrowGhost.x = _moduleGhost.x;
 		_arrowGhost.y = _moduleGhost.y;
 		
-		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE2 || _tool == HUD.TOOL_MACHINE3 || _tool == HUD.TOOL_MACHINE4)
+		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE_STAMP || _tool == HUD.TOOL_MACHINE_SMELT)
 		{
 			if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+			{
+				_moduleGhost.color = FlxColor.GREEN;			
+			} else {
+				_moduleGhost.color = FlxColor.RED;
+			}
+		} else if ( _tool == HUD.TOOL_MACHINE_DIG )
+		{
+			if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
 			{
 				_moduleGhost.color = FlxColor.GREEN;			
 			} else {
@@ -365,9 +373,16 @@ class ToolModule extends FlxFSMState<MouseController>
 						Owner.state.machineController.addConvD();			
 					}
 				}
-				else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE2 || GC.currentTool == HUD.TOOL_MACHINE3 || GC.currentTool == HUD.TOOL_MACHINE4)
+				else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE_STAMP || GC.currentTool == HUD.TOOL_MACHINE_SMELT)
 				{
 					if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+					{
+						Owner.state.machineController.addMachine( GC.currentTool );					
+					}
+				}
+				else if (GC.currentTool == HUD.TOOL_MACHINE_DIG)
+				{
+					if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
 					{
 						Owner.state.machineController.addMachine( GC.currentTool );					
 					}

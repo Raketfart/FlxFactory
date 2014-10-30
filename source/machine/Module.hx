@@ -25,6 +25,9 @@ class Module extends FlxGroup
 	public var controller:MachineController;
 	public var tileRect:TileRect;
 	
+	public var moveSpeed:Float;
+	public var moveDirectionX:Int;
+	public var moveDirectionY:Int;
 	//private var imageBackLayer:FlxGroup;
 	private var imageLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
@@ -51,6 +54,10 @@ class Module extends FlxGroup
 		idcounter++;
 		this.ID = idcounter;
 		
+		moveSpeed = 24;
+		moveDirectionX = 1;
+		moveDirectionY = 0;
+		
 		connections = new Array<Module>();
 		inventoryArr = new Array<InventoryItem>();
 		
@@ -64,13 +71,45 @@ class Module extends FlxGroup
 		add(debugLayer);
 		
 	}
+	public function moveItem(item:InventoryItem,dt:Float,maxX:Float,maxY:Float)
+	{
+		if (moveDirectionX == 1) //right
+		{
+			item.x += moveSpeed * moveDirectionX * dt;
+			if (item.x > maxX)
+			{
+				item.x = maxX;
+			}
+		} else if (moveDirectionX == -1) { //left
+			item.x += moveSpeed * moveDirectionX * dt;
+			if (item.x < maxX)
+			{
+				item.x = maxX;
+			}
+		}
+	}
+	public function doesItemOverlap(item:InventoryItem,itemArr:Array<InventoryItem>):Bool
+	{
+		for (otheritem in itemArr)
+		{
+			if (item != otheritem)
+			{
+				if (item.overlaps(otheritem))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public function willAddToInventory(item:InventoryItem):Bool
 	{
 		return true;
 	}	
 	public function addToInventory(item:InventoryItem):Void 
 	{
-		inventoryArr.push(item);				
+		inventoryArr.push(item);		
 	}
 	public function getFromInventory():InventoryItem 
 	{

@@ -42,9 +42,9 @@ class HUD extends FlxGroup
 	public static var TOOL_CONV_UP = "conv-up";
 	public static var TOOL_CONV_DOWN = "conv-down";
 	public static var TOOL_MACHINE1 = "machine1";
-	public static var TOOL_MACHINE2 = "machine2";
-	public static var TOOL_MACHINE3 = "machine3";
-	public static var TOOL_MACHINE4 = "machine4";
+	public static var TOOL_MACHINE_DIG = "machinedig";
+	public static var TOOL_MACHINE_STAMP = "machinestamp";
+	public static var TOOL_MACHINE_SMELT = "machinesmelt";
 	
 	public static var TOOL_CRATE = "crate";
 	public static var TOOL_CONTROL = "control";
@@ -112,13 +112,13 @@ class HUD extends FlxGroup
 		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Machine", onToolMachine1);
 		_buildGrp.add(_tool4);
 		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineDig", onToolMachine2);
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineDig", onToolMachineDig);
 		_buildGrp.add(_tool4);
 		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineStamp", onToolMachine3);
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineStamp", onToolMachineStamp);
 		_buildGrp.add(_tool4);
 		nextpositionY += _tool1.height + buttonspace;
-		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineSmelt", onToolMachine4);
+		var _tool4:FlxButton = new FlxButton(nextpositionX,nextpositionY, "MachineSmelt", onToolMachineSmelt);
 		_buildGrp.add(_tool4);
 		nextpositionY += debugButton.height;
 		
@@ -160,6 +160,9 @@ class HUD extends FlxGroup
 		_debugGrp.add(_btn2);
 		nextpositionY += _btn2.height;
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Add to inv", onAddToInv);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Take from inv", onTakeFromInv);
 		_debugGrp.add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
@@ -348,21 +351,21 @@ class HUD extends FlxGroup
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	private function onToolMachine2():Void
+	private function onToolMachineDig():Void
 	{
-		GC.currentTool = TOOL_MACHINE2;
+		GC.currentTool = TOOL_MACHINE_DIG;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	private function onToolMachine3():Void
+	private function onToolMachineStamp():Void
 	{
-		GC.currentTool = TOOL_MACHINE3;
+		GC.currentTool = TOOL_MACHINE_STAMP;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	private function onToolMachine4():Void
+	private function onToolMachineSmelt():Void
 	{
-		GC.currentTool = TOOL_MACHINE4;
+		GC.currentTool = TOOL_MACHINE_SMELT;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
@@ -420,5 +423,10 @@ class HUD extends FlxGroup
 	{	
 		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
 		slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
+	}
+	function onTakeFromInv():Void
+	{	
+		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
+		slotContainer.removeItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
 	}
 }

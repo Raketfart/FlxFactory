@@ -36,5 +36,6 @@ class PowerOff extends FlxFSMState<Machine>
 		win.cogs.animation.play("stopped");
 		win.moveGauge(false);
 		win.bootProgressBar.visible = false;		
+		win.screentext.text = "";
 	}
 }

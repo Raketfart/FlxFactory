@@ -17,9 +17,15 @@ class Running extends FlxFSMState<Machine>
 	
 		Owner.doProcessing();
 		
+		if (Owner.condition <= 0)
+		{
+			Owner.condition = 0;
+			Owner.power = 0;
+			FSM.state = new BreakDown();	
+		}
 		if (Owner.window != null)
 		{
-			updateWindow(Owner.window);			
+			updateWindow(Owner.window,Owner);			
 		}
 		
 	}
@@ -29,7 +35,7 @@ class Running extends FlxFSMState<Machine>
 		Owner.lampPowerOn.color = FlxColor.BLACK;
 	}
 	
-	function updateWindow(win:MachineWindow)
+	function updateWindow(win:MachineWindow, Owner:Machine)
 	{
 		win.lamp1.animation.play("green");
 		win.lamp2.animation.play("green");
@@ -37,5 +43,6 @@ class Running extends FlxFSMState<Machine>
 		win.cogs.animation.play("running");
 		win.bootProgressBar.visible = false;
 		win.moveGauge(true);
+		win.screentext.text = "CONDITION: " + Owner.condition + "%";
 	}
 }

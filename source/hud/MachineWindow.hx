@@ -38,6 +38,8 @@ class MachineWindow extends FlxGroup
 	public var gaugeArrow:FlxSprite;
 	public var powerButton:FlipButton;
 	
+	public var screentext:FlxText;
+	
 	public function new(hud:HUD,machine:Machine) 
 	{
 		_machine = machine;
@@ -75,6 +77,10 @@ class MachineWindow extends FlxGroup
 		_elements.add(bootProgressBar);
 		bootProgressBar.visible = false;
 		
+		screentext = new FlxText(screenbg.x + 10, screenbg.y + 10, 90, "");
+		screentext.setFormat(null, 8, 0xff1d931d,"left");
+		_elements.add(screentext);
+		
 		cogs = new FlxSprite(bg1.width-20-35, screenbg.y+screenbg.height+10);
 		cogs.loadGraphic(AssetPaths.mwin_cogs__png, true, 35, 83);		
 		cogs.animation.add("stopped", [0], 12, false);
@@ -92,15 +98,17 @@ class MachineWindow extends FlxGroup
 		gaugeArrow.animation.frameIndex = 48;
 		_elements.add(gaugeArrow);
 		
-		createbutton(40, 20, "PLUS", AssetPaths.btn_redpush__png, onTurnOn);	
-		createbutton(40, 50, "Minus", AssetPaths.btn_grayplus__png, onTurnOn);	
+		createbutton(90, 20, "-", AssetPaths.btn_redpush__png, onFixBreakDown);	
 		
-		createbutton(100, 50, "", AssetPaths.btn_arrow_left__png, onTurnOn);	
-		createbutton(120, 30, "", AssetPaths.btn_arrow_up__png, onTurnOn);	
-		createbutton(140, 50, "", AssetPaths.btn_arrow_right__png, onTurnOn);	
-		createbutton(120, 50, "", AssetPaths.btn_arrow_down__png, onTurnOn);	
+		createbutton(90, 60, "fix", AssetPaths.btn_grayplus__png, onFixBreakDown);	
+		createbutton(90, 100, "break", AssetPaths.btn_grayminus__png, onBreakDown);	
 		
-		powerButton = createflipbutton(80, 100, "POWER",AssetPaths.btn_redflip__png, onTurnOn,onTurnOff);	
+		createbutton(150, 50, "", AssetPaths.btn_arrow_left__png, onTurnOn);	
+		createbutton(170, 30, "", AssetPaths.btn_arrow_up__png, onTurnOn);	
+		createbutton(190, 50, "", AssetPaths.btn_arrow_right__png, onTurnOn);	
+		createbutton(170, 50, "", AssetPaths.btn_arrow_down__png, onTurnOn);	
+		
+		powerButton = createflipbutton(130, 100, "POWER",AssetPaths.btn_redflip__png, onTurnOn,onTurnOff);	
 		
 		if (_machine.power == 100)
 		{
@@ -167,9 +175,20 @@ class MachineWindow extends FlxGroup
 		_machine.turnOn();
 		
 	}
+
 	private function onTurnOff():Void
 	{
 		_machine.turnOff();
+		
+	}
+	private function onBreakDown():Void
+	{
+		_machine.breakDown();
+		
+	}
+	private function onFixBreakDown():Void
+	{
+		_machine.condition+=5;
 		
 	}
 	private function onClose():Void

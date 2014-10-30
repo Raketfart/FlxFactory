@@ -17,14 +17,13 @@ import util.FlxFSM;
 class MachineStamper extends Machine
 {
 	var stamper:FlxSprite;
-	private var tween:FlxTween;
-	var hasStampChanged:Bool;
+	private var tween:FlxTween;	
 	var hasStamped:Bool;
-	var stampX:Float;
+	
+	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		
-		//ONLY LEFT TO RIGHT!!!!
-		
+		//ONLY LEFT TO RIGHT!!!!		
 		super(Controller,tileX, tileY,3,2);
 		stamper = new FlxSprite(tileX*GC.tileSize+17, tileY*GC.tileSize+13);
 		stamper.loadGraphic(AssetPaths.factoryStamper_2__png, true, 28, 14);
@@ -40,53 +39,76 @@ class MachineStamper extends Machine
 		*/
 		baseImage.loadGraphic(AssetPaths.factoryStamper_1__png);
 		hasStamped = false;
-		hasStampChanged = false;
-		stampX = tileX * GC.tileSize+31;
+		hasTransformed = false;
+		middleX = tileX * GC.tileSize+31;
+		
+		//moveSpeed = 24;
+		moveDirectionX = 1;
+		moveDirectionY = 0;
+		this.connectsOutLeft = false;
+		this.connectsOutRight = true;		
+		this.connectsInLeft = true;
+		this.connectsInRight = false;		
+		this.connectsInDown = false;
+		this.connectsInUp = false;
 		
 		//tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { ease: FlxEase.expoOut, complete: stampDown} );
 	}
 	override public function doProcessing():Void
 	{
 		//no super!!!!!!!
+		var targetOut:Float;
+		var currentTarget:Float;
+		if (moveDirectionX == 1)
+		{	//right
+			targetOut = baseImage.x + baseImage.width;
+		}
+		else
+		{	//left
+			targetOut = baseImage.x;
+		}
+		if (hasStamped == false)
+		{
+			currentTarget = middleX;
+		} else {
+			currentTarget = targetOut;
+		}
 		
-		for (item in inventoryArr) {
+		for (item in inventoryArr) 
+		{			
 			var doMove:Bool = true;
 			var orgX:Float = item.x;
 			var orgY:Float = item.y;
 			
-			if (hasStamped || item.x < stampX)
+			if (hasStamped || item.x != currentTarget)
 			{
-				item.x += .4;
-			} else if (hasStamped == false && stamper.animation.name=="idle")
+				moveItem(item, FlxG.elapsed, currentTarget, 0);				
+			} 			
+			else if (hasStamped == false && stamper.animation.name=="idle")
 			{
 				stamper.animation.play("movedown");				
-			} else if (stamper.animation.finished  && hasStampChanged == false) {
-				//item.setInvType(InventoryItem.INV_STEEL_CYLINDER);
+			} 
+			else if (stamper.animation.finished  && hasTransformed == false) 
+			{
 				transformItem(item);
-				hasStampChanged = true;
+				hasTransformed = true;
 				stamper.animation.play("moveup");
-			} else if (stamper.animation.finished) {
+			}
+			else if (stamper.animation.finished) 
+			{
 				stamper.animation.play("idle");
-				//item.setframe(InventoryItem.INV_STEEL_CYLINDER);
 				hasStamped = true;
 			}
-			//currentProductionCompletion += productionSpeed * FlxG.elapsed;
-			//if (currentProductionCompletion > 100)
-			//{
-				
-			//}
-			if (item.x > baseImage.x + baseImage.width) // move to next module
-			{				
-				
+			
+			if (item.x == targetOut) // move to next module
+			{								
 				if (connections.length > 0)
 				{
-					for (otheritem in connections[0].inventoryArr)
+					if (doesItemOverlap(item, connections[0].inventoryArr))
 					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
+						doMove = false;						
 					}
+					
 					if (doMove && connections[0].willAddToInventory(item))
 					{
 						var item = getFromInventory();
@@ -96,6 +118,9 @@ class MachineStamper extends Machine
 						lampOn();
 						currentProductionCompletion = 0;
 						
+						//wear and tear
+						condition-=1;
+						
 					} else {
 						doMove = false;
 					}
@@ -104,26 +129,16 @@ class MachineStamper extends Machine
 				}
 				
 			} else { // move in this module
-				
-				for (otheritem in inventoryArr)
+				if (doesItemOverlap(item, inventoryArr))
 				{
-					if (item != otheritem)
-					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
-					}
-				}
+					doMove = false;					
+				}				
 				if (connections.length > 0)
 				{
-					for (otheritem in connections[0].inventoryArr)
+					if (doesItemOverlap(item, connections[0].inventoryArr))
 					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
-					}
+						doMove = false;						
+					}					
 				}				
 				
 			}
@@ -136,10 +151,6 @@ class MachineStamper extends Machine
 		}
 		
 		
-		
-			
-			
-		
 		if (lampOutputCount > 0)
 		{
 			lampOutputCount --;
@@ -151,8 +162,9 @@ class MachineStamper extends Machine
 	override public function addToInventory(item:InventoryItem):Void 
 	{
 		hasStamped = false;
-		hasStampChanged = false;
+		hasTransformed = false;
 		super.addToInventory(item);
+		item.color = FlxColor.RED;
 	}
 	
 	/*

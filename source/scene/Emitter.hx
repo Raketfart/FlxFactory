@@ -110,7 +110,6 @@ class Emitter extends FlxGroup
 			_whitePixel = new FlxParticle();
 			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
 			_whitePixel.animation.frameIndex = 8;	
-			_whitePixel.animation.play("d");
 			_whitePixel.acceleration.y = 10; 						
 			_whitePixel.acceleration.x = -100; 									
 			_whitePixel.visible = false;
@@ -139,6 +138,10 @@ class Emitter extends FlxGroup
 		_emitterSmokeBlack.x = X;
 		_emitterSmokeBlack.y = Y;
 		//_emitter.start(false, 1, 0.01,10,3);
-		_emitterSmokeBlack.start(false, 0.3, 0.05,100,.4);
+		_emitterSmokeBlack.start(false, 0.3, 0.05,0,.4);
+	}
+	public function stopSmokeBlack():Void
+	{		
+		_emitterSmokeBlack.start(false, 0.1, 0.05,1,.2);		
 	}
 }

@@ -74,7 +74,14 @@ class SlotContainer extends FlxGroup
 	
 	public function removeItem(item:InventoryItem):Void
 	{
-		
+		for (slot in _slots)
+		{
+			if (slot.hasItem(item))
+			{
+				slot.removeItem();
+				break;
+			}
+		}
 	}
 	
 }

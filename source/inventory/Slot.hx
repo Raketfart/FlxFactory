@@ -80,26 +80,27 @@ class Slot extends FlxGroup
 	
 	public function removeItem():Void
 	{		
-		if (itemCount > 0)
+		if (itemCount > 1)
 		{
 			itemCount--;
 		}
-		else if (itemCount == 0)
+		else if (itemCount == 1)
 		{
+			itemCount = 0;
 			remove(item);
 			item = null;		
 		}
 		txt.text = Std.string(itemCount);
 	}
-	public function hasItem():Bool
+	public function hasItem(Item:InventoryItem):Bool
 	{
-		if (item == null)
+		if (item != null)
 		{
-			return false;
+			if (item.invType == Item.invType)
+			{
+				return true;
+			}			
 		}
-		else
-		{
-			return true;
-		}
+		return false;
 	}
 }
