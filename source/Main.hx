@@ -45,8 +45,7 @@ class Main extends Sprite
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
-		
+		}		
 		setupGame();
 	}
 	
@@ -63,7 +62,6 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
-
 		//addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 		addChild(new GameClass());
 		

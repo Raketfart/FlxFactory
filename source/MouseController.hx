@@ -3,10 +3,10 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
+import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import hud.HUD;
-import machine.ConveyorLeft;
 import machine.Machine;
 import machine.Module;
 import scene.TileType;
@@ -23,6 +23,7 @@ class MouseController extends FlxGroup
 	
 	public var highlightBox:FlxSprite;
 	public var state:PlayState;
+	public var buildDirection:Int = FlxObject.RIGHT;
 	
 	public function new(State:PlayState ) 
 	{		
@@ -63,11 +64,7 @@ class MouseController extends FlxGroup
 		{
 			fsm.state = new ToolBuild();
 		} 
-		else if (ToolName == HUD.TOOL_CONV_RIGHT)
-		{
-			fsm.state = new ToolModule();
-		} 
-		else if (ToolName == HUD.TOOL_CONV_LEFT)
+		else if (ToolName == HUD.TOOL_CONVEYOR)
 		{
 			fsm.state = new ToolModule();
 		} 
@@ -238,6 +235,7 @@ class ToolModule extends FlxFSMState<MouseController>
 		_arrowGhost.animation.add("pointright", [45], 1,false);		
 		_arrowGhost.animation.play("pointright");	
 		_arrowGhost.setFacingFlip(FlxObject.LEFT, true, false);
+		_arrowGhost.setFacingFlip(FlxObject.RIGHT, false, false);
 		
 		_moduleGhost = new FlxSprite(0, 0);		
 		_moduleGhost.loadGraphic(AssetPaths.tiles_item__png,true,21,21);		
@@ -246,13 +244,7 @@ class ToolModule extends FlxFSMState<MouseController>
 		_moduleGhost.setFacingFlip(FlxObject.LEFT, true, false);
 		
 		_moduleGhost.alpha = .5;	
-		if (_tool == HUD.TOOL_CONV_LEFT)
-		{
-			_moduleGhost.facing = FlxObject.LEFT;
-			_arrowGhost.facing = FlxObject.LEFT;
-			_arrowGhost.visible = true;
-		} 
-		else if (_tool == HUD.TOOL_CONV_RIGHT)
+		if (_tool == HUD.TOOL_CONVEYOR)
 		{
 			_moduleGhost.facing = FlxObject.RIGHT;
 			_arrowGhost.facing = FlxObject.RIGHT;
@@ -274,25 +266,29 @@ class ToolModule extends FlxFSMState<MouseController>
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factory__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
-			_arrowGhost.visible = false;
+			_arrowGhost.visible = true;
+			_arrowGhost.facing = FlxObject.RIGHT;
 		}
 		else if (_tool == HUD.TOOL_MACHINE_DIG)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factoryDrill__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
-			_arrowGhost.visible = false;
+			_arrowGhost.visible = true;
+			_arrowGhost.facing = FlxObject.RIGHT;
 		}
 		else if (_tool == HUD.TOOL_MACHINE_STAMP)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factoryStamper_1__png);
-			_moduleGhost.facing = FlxObject.RIGHT;			
-			_arrowGhost.visible = false;
+			_moduleGhost.facing = FlxObject.RIGHT;						
+			_arrowGhost.visible = true;
+			_arrowGhost.facing = FlxObject.RIGHT;
 		}
 		else if (_tool == HUD.TOOL_MACHINE_SMELT)
 		{			
 			_moduleGhost.loadGraphic(AssetPaths.factory__png);
 			_moduleGhost.facing = FlxObject.RIGHT;			
-			_arrowGhost.visible = false;
+			_arrowGhost.visible = true;
+			_arrowGhost.facing = FlxObject.RIGHT;
 		}
 		else {
 			_moduleGhost.visible = false;
@@ -321,6 +317,16 @@ class ToolModule extends FlxFSMState<MouseController>
 		_arrowGhost.x = _moduleGhost.x;
 		_arrowGhost.y = _moduleGhost.y;
 		
+		if (FlxG.keys.anyJustPressed(["R"]))
+		{				
+			if (Owner.buildDirection == FlxObject.RIGHT)
+			{
+				Owner.buildDirection = FlxObject.LEFT;					
+			} else {
+				Owner.buildDirection = FlxObject.RIGHT;					
+			}
+		}
+		_arrowGhost.facing = Owner.buildDirection;
 		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE_STAMP || _tool == HUD.TOOL_MACHINE_SMELT)
 		{
 			if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
@@ -330,7 +336,7 @@ class ToolModule extends FlxFSMState<MouseController>
 				_moduleGhost.color = FlxColor.RED;
 			}
 		} else if ( _tool == HUD.TOOL_MACHINE_DIG )
-		{
+		{			
 			if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
 			{
 				_moduleGhost.color = FlxColor.GREEN;			
@@ -345,20 +351,13 @@ class ToolModule extends FlxFSMState<MouseController>
 			{	
 				var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
 				
-				if (GC.currentTool == HUD.TOOL_CONV_RIGHT)
+				if (GC.currentTool == HUD.TOOL_CONVEYOR)
 				{
 					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
 					{
-						Owner.state.machineController.addConvE();					
+						Owner.state.machineController.addConveyor(Owner.buildDirection);					
 					}
-				}
-				else if (GC.currentTool == HUD.TOOL_CONV_LEFT)
-				{
-					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
-					{
-						Owner.state.machineController.addConvW();			
-					}
-				}
+				}				
 				else if (GC.currentTool == HUD.TOOL_CONV_UP)
 				{
 					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
@@ -377,14 +376,14 @@ class ToolModule extends FlxFSMState<MouseController>
 				{
 					if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
 					{
-						Owner.state.machineController.addMachine( GC.currentTool );					
+						Owner.state.machineController.addMachine( GC.currentTool,Owner.buildDirection );					
 					}
 				}
 				else if (GC.currentTool == HUD.TOOL_MACHINE_DIG)
 				{
 					if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
 					{
-						Owner.state.machineController.addMachine( GC.currentTool );					
+						Owner.state.machineController.addMachine( GC.currentTool,Owner.buildDirection );					
 					}
 				}
 				else if (GC.currentTool == HUD.TOOL_CRATE)

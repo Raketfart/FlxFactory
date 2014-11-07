@@ -1,5 +1,6 @@
 package machine;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import hud.MachineWindow;
@@ -51,6 +52,9 @@ class Machine extends Module
 		baseImage = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		//base.loadGraphic(AssetPaths.factory__png);
 		imageLayer.add(baseImage);
+		baseImage.setFacingFlip(FlxObject.LEFT, true, false);
+		baseImage.setFacingFlip(FlxObject.RIGHT, false, false);
+		baseImage.facing = FlxObject.RIGHT;
 		
 		
 		lampOutput = new FlxSprite(baseImage.x+14, baseImage.y+30);
@@ -110,7 +114,28 @@ class Machine extends Module
 			return true;
 		}
 	}
-	
+	public function setDirectionX(direction:Int)
+	{
+		if (direction == 1) //right
+		{
+			moveDirectionX = 1;			
+			this.connectsOutLeft = false;
+			this.connectsOutRight = true;		
+			this.connectsInLeft = true;
+			this.connectsInRight = false;		
+			baseImage.facing = FlxObject.RIGHT;
+		} else {
+			moveDirectionX = -1;			
+			this.connectsOutLeft = true;
+			this.connectsOutRight = false;		
+			this.connectsInLeft = false;
+			this.connectsInRight = true;
+			baseImage.facing = FlxObject.LEFT;
+		}
+		moveDirectionY = 0;
+		this.connectsInDown = false;
+		this.connectsInUp = false;
+	}
 	public function doProcessing():Void
 	{
 		var targetOut:Float;

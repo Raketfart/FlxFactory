@@ -160,8 +160,10 @@ class Module extends FlxGroup
 	}
 	public function refreshConnectionsLeft():Void 
 	{
+		
 		var thisTileX:Int = tilePos.tileX;
 		var connTileX:Int = thisTileX -1;
+		
 		for (iy in 0...tileHeight) {
 			var module:Module = controller.getModuleAt(connTileX, (tilePos.tileY + iy));
 			if (module != null)

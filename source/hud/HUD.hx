@@ -37,8 +37,9 @@ class HUD extends FlxGroup
 	public static var TOOL_DIG = "dig";
 	public static var TOOL_DECONSTRUCT = "deconstruct";
 	public static var TOOL_BUILD = "build";
-	public static var TOOL_CONV_RIGHT = "conv-right";
-	public static var TOOL_CONV_LEFT = "conv-left";
+	public static var TOOL_CONVEYOR = "conveyor";
+	//public static var TOOL_CONV_RIGHT = "conv-right";
+	//public static var TOOL_CONV_LEFT = "conv-left";
 	public static var TOOL_CONV_UP = "conv-up";
 	public static var TOOL_CONV_DOWN = "conv-down";
 	public static var TOOL_MACHINE1 = "machine1";
@@ -97,11 +98,8 @@ class HUD extends FlxGroup
 		var debugButton:FlxButton = new FlxButton(nextpositionX, 6, "Build", onToggleBuild); 
 		add(debugButton);		
 		var nextpositionY:Float = 6 + debugButton.height;				
-		var _tool1:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvRight", onToolCE);
+		var _tool1:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Conveyor", onToolConv);
 		_buildGrp.add(_tool1);
-		nextpositionY += _tool1.height + buttonspace;
-		var _tool3:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvLeft", onToolCW);
-		_buildGrp.add(_tool3);
 		nextpositionY += _tool1.height + buttonspace;
 		var _tool3:FlxButton = new FlxButton(nextpositionX,nextpositionY, "ConvUp", onToolCU);
 		_buildGrp.add(_tool3);
@@ -321,15 +319,10 @@ class HUD extends FlxGroup
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}
-	private function onToolCW():Void
+	
+	private function onToolConv():Void
 	{
-		GC.currentTool = TOOL_CONV_LEFT;
-		_state.mouseController.changeTool(GC.currentTool);
-		_helperText.text = "Tool: " + GC.currentTool;
-	}
-	private function onToolCE():Void
-	{
-		GC.currentTool = TOOL_CONV_RIGHT;
+		GC.currentTool = TOOL_CONVEYOR;
 		_state.mouseController.changeTool(GC.currentTool);
 		_helperText.text = "Tool: " + GC.currentTool;
 	}

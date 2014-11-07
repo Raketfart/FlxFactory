@@ -1,4 +1,5 @@
 package machine;
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -9,7 +10,7 @@ import inventory.InventoryItem;
  * ...
  * @author 
  */
-class ConveyorLeft extends Module
+class Conveyor extends Module
 {
 	
 	var productCounter:Int;
@@ -24,49 +25,80 @@ class ConveyorLeft extends Module
 		imageLayer.add(graphic);
 		
 		graphic.animation.add("running", [40,41,42,43,44], 12, true);
-		
 		graphic.animation.play("running");
 		
 		graphic.setFacingFlip(FlxObject.LEFT, true, false);
-		graphic.facing = FlxObject.LEFT;
+		graphic.setFacingFlip(FlxObject.RIGHT, false, false);
+		graphic.facing = FlxObject.RIGHT;
 		
-		this.connectsOutLeft = true;
-		this.connectsOutRight = false;
-		
-		this.connectsInLeft = false;
-		this.connectsInRight = true;
+		moveDirectionX = 1;			
+			this.connectsOutLeft = false;
+			this.connectsOutRight = true;		
+			this.connectsInLeft = true;
+			this.connectsInRight = false;	
 		
 		this.connectsInDown = true;
 		this.connectsInUp = true;
 		
+	}
+	public function setDirectionX(direction:Int)
+	{
+		if (direction == 1) //right
+		{
+			moveDirectionX = 1;			
+			this.connectsOutLeft = false;
+			this.connectsOutRight = true;		
+			this.connectsInLeft = true;
+			this.connectsInRight = false;
+			graphic.facing = FlxObject.RIGHT;
+			
+		} else {
+			moveDirectionX = -1;			
+			this.connectsOutLeft = true;
+			this.connectsOutRight = false;		
+			this.connectsInLeft = false;
+			this.connectsInRight = true;	
+			graphic.facing = FlxObject.LEFT;
+			
+		}
+		moveDirectionY = 0;
+		//this.connectsInDown = false;
+		//this.connectsInUp = false;
 	}
 	override public function update():Void 
 	{
 		super.update();
 		//trace(this.ID + " : inv " + inventoryArr.length);
 		
+		var targetOut:Float;		
+		if (moveDirectionX == 1)
+		{	//right
+			targetOut = graphic.x + graphic.width;
+		}
+		else
+		{	//left
+			targetOut = graphic.x;
+		}
+		
 		for (item in inventoryArr) {
 			var doMove:Bool = true;
 			var orgX:Float = item.x;
 			var orgY:Float = item.y;
 		
-			if (item.y > this.graphic.y )
+			
+			if (item.x != targetOut)			
 			{
-				item.y -= .4;
-			} else {
-				item.x -= .4;
+				moveItem(item, FlxG.elapsed, targetOut, 0);					
 			}
-			if (item.x < graphic.x) // move to next module
+			
+			if (item.x == targetOut) // move to next module
 			{				
 				if (connections.length > 0)
 				{
-					for (otheritem in connections[0].inventoryArr)
+					if (doesItemOverlap(item, connections[0].inventoryArr))
 					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
-					}
+						doMove = false;						
+					}					
 					if (doMove && connections[0].willAddToInventory(item))
 					{
 						var item = getFromInventory();
@@ -79,25 +111,17 @@ class ConveyorLeft extends Module
 				}
 				
 			} else { // move in this module
-				for (otheritem in inventoryArr)
+				if (doesItemOverlap(item, inventoryArr))
 				{
-					if (item != otheritem)
-					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
-					}
-				}
+					doMove = false;					
+				}	
+				
 				if (connections.length > 0)
 				{
-					for (otheritem in connections[0].inventoryArr)
+					if (doesItemOverlap(item, inventoryArr))
 					{
-						if (item.overlaps(otheritem))
-						{
-							doMove = false;
-						}
-					}
+						doMove = false;					
+					}	
 				}
 				
 				
