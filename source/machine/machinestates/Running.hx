@@ -1,6 +1,6 @@
 package machine.machinestates;
 import flixel.util.FlxColor;
-import hud.MachineWindow;
+import machinewindow.MachineWindow;
 import util.FlxFSM;
 import util.FlxFSM.FlxFSMState;
 

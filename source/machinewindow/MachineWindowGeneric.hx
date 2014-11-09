@@ -1,27 +1,11 @@
-package hud;
-import flixel.addons.ui.FlxButtonPlus;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.group.FlxTypedGroup;
-import flixel.system.layer.frames.FlxFrame;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.ui.FlxBar;
-import flixel.ui.FlxButton;
-import flixel.util.FlxColor;
-import flixel.util.FlxPoint;
-import flixel.util.FlxRandom;
-import hud.FlipButton;
-import hud.HUDTypedText;
-import machine.Machine;
+package machinewindow ;
+
 
 /**
  * ...
  * @author 
  */
-class MachineWindow extends FlxGroup
+class MachineWindowGeneric extends MachineWindow
 {
 	var _machine:Machine;
 	var _hud:HUD;

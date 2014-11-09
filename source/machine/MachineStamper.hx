@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import hud.MachineWindow;
+import machinewindow.MachineWindow;
 import inventory.InventoryItem;
 import machine.machinestates.BootUp;
 import machine.machinestates.PowerOff;
@@ -164,7 +164,10 @@ class MachineStamper extends Machine
 		hasStamped = false;
 		hasTransformed = false;
 		super.addToInventory(item);
-		item.color = FlxColor.RED;
+		if (GC.debugdraw)
+		{
+			item.color = FlxColor.RED;
+		}
 	}
 	
 	/*

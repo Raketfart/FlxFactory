@@ -3,7 +3,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
-import hud.MachineWindow;
+import machinewindow.MachineWindow;
 import inventory.InventoryItem;
 import machine.machinestates.BootUp;
 import machine.machinestates.BreakDown;

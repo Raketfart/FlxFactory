@@ -7,9 +7,13 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import hud.HudText;
+import machinewindow.MachineWindow;
+import machinewindow.MachineWindowProcessor;
+import machinewindow.MachineWindowProcessor;
 import inventory.InventoryItem;
 import inventory.SlotContainer;
 import machine.Machine;
+import machine.MachineProcessor;
 import openfl.display.BlendMode;
 import save.SaveHandler;
 
@@ -161,6 +165,9 @@ class HUD extends FlxGroup
 		_debugGrp.add(_btn2);
 		nextpositionY += _btn2.height;
 		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Take from inv", onTakeFromInv);
+		_debugGrp.add(_btn2);
+		nextpositionY += _btn2.height;
+		var _btn2:FlxButton = new FlxButton(nextpositionX,nextpositionY, "Count", onCount);
 		_debugGrp.add(_btn2);
 		
 		nextpositionX += _cambutton.width + buttonspace;
@@ -376,8 +383,15 @@ class HUD extends FlxGroup
 	}
 	public function showMachineWindow(machine:Machine)
 	{
-		var mw:MachineWindow = new MachineWindow(this,machine);
-		add(mw);		
+		if (Std.is(machine, MachineProcessor))
+		{
+			var mw:MachineWindow = new MachineWindowProcessor(this,machine);
+			add(mw);					
+		} else {
+			var mw:MachineWindow = new MachineWindow(this,machine);
+			add(mw);			
+		}
+		
 	}
 	function onSpeedUp():Void
 	{
@@ -421,5 +435,16 @@ class HUD extends FlxGroup
 	{	
 		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
 		slotContainer.removeItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
+	}
+	function onCount():Void
+	{	
+		var invcount:Int = 0;
+		trace("mod " + _state.machineController.moduleArr.length);
+		for (m in _state.machineController.moduleArr)
+		{
+			//trace("inv " + m.inventoryArr.length);
+			invcount += m.inventoryArr.length;
+		}
+		trace("inv " + invcount);
 	}
 }
