@@ -51,6 +51,8 @@ class MachineWindow extends FlxGroup
 		_elements = new FlxTypedGroup();
 		add(_elements);
 		
+		initBackgroundElements();
+		
 		bg1 = new FlxSprite(0, 0);
 		bg1.loadGraphic(AssetPaths.mwin_bg__png, false);		
 		_elements.add(bg1);
@@ -68,7 +70,7 @@ class MachineWindow extends FlxGroup
 		var btn1:FlxButton = new FlxButton(10,bg1.height-30, "Close", onClose);
 		_elements.add(btn1);
 				
-		screenbg = new FlxSprite(bg1.width-20-111, 35);
+		screenbg = new FlxSprite(bg1.width-20-111, 39);
 		screenbg.loadGraphic(AssetPaths.mwin_screenlarge__png, false);		
 		_elements.add(screenbg);
 		
@@ -117,6 +119,11 @@ class MachineWindow extends FlxGroup
 		}
 		_machine.attachWindow(this);
 		
+		
+	}
+	
+	public function initBackgroundElements() 
+	{
 		
 	}
 	public function tweenIn()

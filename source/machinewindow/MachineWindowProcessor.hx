@@ -34,6 +34,7 @@ class MachineWindowProcessor extends MachineWindow
 	var robotWelder:FlxSprite;
 	var _emitterSmokeWhite:FlxEmitter;
 	var _whitePixel:FlxParticle;
+	var _emitterSparks:FlxEmitter;
 	
 	
 	public function new(hud:HUD,machine:Machine) 
@@ -48,7 +49,19 @@ class MachineWindowProcessor extends MachineWindow
 		createbutton(arrowsX+40, arrowsY+20, "", AssetPaths.btn_arrow_right__png, onArrowRight);	
 		createbutton(arrowsX+20, arrowsY+20, "", AssetPaths.btn_arrow_down__png, onArrowDown);	
 		
-		var screenbg2:FlxSprite = new FlxSprite(10, 10);
+		bg1.loadGraphic(AssetPaths.mwin_bg_hole__png, false);	
+		
+		
+		
+		tweenIn();
+		
+		robotOrders = new Array<RobotOrder>();
+		
+		
+	}
+	override public function initBackgroundElements() 
+	{
+		var screenbg2:FlxSprite = new FlxSprite(20, 10);
 		screenbg2.loadGraphic(AssetPaths.mwin_screenextralarge__png, false);		
 		_elements.add(screenbg2);
 		
@@ -66,42 +79,64 @@ class MachineWindowProcessor extends MachineWindow
 		robotWelder.loadGraphic(AssetPaths.robotarm_welder__png, false);
 		_elements.add(robotWelder);
 		
-		tweenIn();
-		
-		robotOrders = new Array<RobotOrder>();
-		
 		_emitterSmokeWhite = new FlxEmitter(40, 40, 100);
 		
 		_emitterSmokeWhite.setXSpeed( -40, 40);
-			_emitterSmokeWhite.setYSpeed( -10, -100);
-			_emitterSmokeWhite.width = 4;
-			_emitterSmokeWhite.height= 4;
-			
-			_emitterSmokeWhite.bounce = 0.1;
-			_emitterSmokeWhite.gravity = -100;
-			add(_emitterSmokeWhite);
-			
-			for (i in 0...(Std.int(_emitterSmokeWhite.maxSize / 2))) 
-			{			
-				_whitePixel = new FlxParticle();
-				_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
-				_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-				_whitePixel.animation.add("d", [5], 1, false);
-				_whitePixel.animation.play("d");
-				_whitePixel.visible = false; 
-				_whitePixel.acceleration.y = 10; 		
-				_whitePixel.acceleration.x = -100; 		
-				_emitterSmokeWhite.add(_whitePixel);	
-				_whitePixel = new FlxParticle();
-				_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
-				_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-				_whitePixel.animation.add("d", [6], 1, false);
-				_whitePixel.animation.play("d");
-				_whitePixel.visible = false;
-				_emitterSmokeWhite.add(_whitePixel);
-			}
+		_emitterSmokeWhite.setYSpeed( -10, -100);
+		_emitterSmokeWhite.width = 4;
+		_emitterSmokeWhite.height= 4;
+		
+		_emitterSmokeWhite.bounce = 0.1;
+		_emitterSmokeWhite.gravity = -100;
+		add(_emitterSmokeWhite);
+		
+		for (i in 0...(Std.int(_emitterSmokeWhite.maxSize / 2))) 
+		{			
+			_whitePixel = new FlxParticle();
+			_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
+			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_whitePixel.animation.add("d", [5], 1, false);
+			_whitePixel.animation.play("d");
+			_whitePixel.visible = false; 
+			_whitePixel.acceleration.y = 10; 		
+			_whitePixel.acceleration.x = -100; 		
+			_emitterSmokeWhite.add(_whitePixel);	
+			_whitePixel = new FlxParticle();
+			_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
+			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_whitePixel.animation.add("d", [6], 1, false);
+			_whitePixel.animation.play("d");
+			_whitePixel.visible = false;
+			_emitterSmokeWhite.add(_whitePixel);
+		}
+		
+		_emitterSparks = new FlxEmitter(40, 40, 100);		
+		_emitterSparks.setXSpeed( -100, 100);
+		_emitterSparks.setYSpeed( -100, 100);
+		_emitterSparks.width = 4;
+		_emitterSparks.height= 4;		
+		_emitterSparks.bounce = 0.1;
+		_emitterSparks.gravity = 50;
+		add(_emitterSparks);
+		
+		for (i in 0...(Std.int(_emitterSparks.maxSize / 2))) 
+		{			
+			_whitePixel = new FlxParticle();
+			_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
+			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_whitePixel.animation.frameIndex = 10;
+			_whitePixel.visible = false; 
+			_whitePixel.acceleration.y = 10; 		
+			_whitePixel.acceleration.x = -100; 		
+			_emitterSparks.add(_whitePixel);	
+			_whitePixel = new FlxParticle();
+			_whitePixel.scrollFactor.x = _whitePixel.scrollFactor.y = 0;
+			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_whitePixel.animation.frameIndex = 9;
+			_whitePixel.visible = false;
+			_emitterSparks.add(_whitePixel);
+		}
 	}
-	
 	override public function update():Void
 	{
 		super.update();
@@ -177,7 +212,10 @@ class MachineWindowProcessor extends MachineWindow
 		{
 			_emitterSmokeWhite.x = robotWelder.x+8;
 			_emitterSmokeWhite.y = robotWelder.y-2;
-			_emitterSmokeWhite.start(false, 0.3, 0.01,100,0.4);
+			_emitterSmokeWhite.start(false, 0.3, 0.02, 60, 0.4);
+			_emitterSparks.x = robotWelder.x+8;
+			_emitterSparks.y = robotWelder.y-2;
+			_emitterSparks.start(false, 0.3, 0.05,25,0.4);
 		}
 		if (FlxG.keys.anyJustPressed(["R"]))
 		{

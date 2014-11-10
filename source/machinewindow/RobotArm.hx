@@ -5,6 +5,7 @@ import flixel.group.FlxGroup;
 import flixel.group.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxPoint;
+import flixel.util.FlxSpriteUtil;
 
 /**
  * ...
@@ -33,7 +34,7 @@ class RobotArm extends FlxGroup
 		
 		targetObject = null;
 		
-		robobase = new FlxSprite(170, 100);
+		robobase = new FlxSprite(193, 100);
 		robobase.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		robobase.animation.frameIndex = 3;
 		_elements.add(robobase);
@@ -46,10 +47,12 @@ class RobotArm extends FlxGroup
 		roboarm2.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		roboarm2.animation.frameIndex = 1;
 		_elements.add(roboarm2);
+		
 		roboarm3 = new FlxSprite(robobase.x, 100);
 		roboarm3.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		roboarm3.animation.frameIndex = 2;
 		_elements.add(roboarm3);
+		
 		
 		robofinger1 = new FlxSprite(robobase.x-91, 104);
 		robofinger1.loadGraphic(AssetPaths.robotarm_finger__png, false, 17, 3);
@@ -72,7 +75,7 @@ class RobotArm extends FlxGroup
 	}
 	public function doOpen(targetAmount:Float):Bool
 	{
-		trace("yes"+(robofinger1.y-roboarm1.y));
+		//trace("yes"+(robofinger1.y-roboarm1.y));
 		if (robofinger1.y-roboarm1.y > targetAmount)
 		{
 			onOpen();
