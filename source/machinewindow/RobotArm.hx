@@ -34,37 +34,36 @@ class RobotArm extends FlxGroup
 		
 		targetObject = null;
 		
-		robobase = new FlxSprite(193, 100);
+		robobase = new FlxSprite(193, 90);
 		robobase.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		robobase.animation.frameIndex = 3;
 		_elements.add(robobase);
 		
-		roboarm1 = new FlxSprite(robobase.x-80, 100);
+		roboarm1 = new FlxSprite(robobase.x-0, 90);
 		roboarm1.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		roboarm1.animation.frameIndex = 0;
 		_elements.add(roboarm1);
-		roboarm2 = new FlxSprite(robobase.x-40, 100);
+		roboarm2 = new FlxSprite(robobase.x+10, 90);
 		roboarm2.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		roboarm2.animation.frameIndex = 1;
-		_elements.add(roboarm2);
-		
-		roboarm3 = new FlxSprite(robobase.x, 100);
+		_elements.add(roboarm2);		
+		roboarm3 = new FlxSprite(robobase.x+20, 90);
 		roboarm3.loadGraphic(AssetPaths.robotarm__png, false, 40, 29);
 		roboarm3.animation.frameIndex = 2;
 		_elements.add(roboarm3);
 		
 		
-		robofinger1 = new FlxSprite(robobase.x-91, 104);
+		robofinger1 = new FlxSprite(robobase.x-11, 94);
 		robofinger1.loadGraphic(AssetPaths.robotarm_finger__png, false, 17, 3);
 		robofinger1.animation.frameIndex = 0;
 		_elements.add(robofinger1);
 		
-		robofinger2 = new FlxSprite(robobase.x-91, 123);
+		robofinger2 = new FlxSprite(robobase.x-11, 113);
 		robofinger2.loadGraphic(AssetPaths.robotarm_finger__png, false, 17, 3);
 		robofinger2.animation.frameIndex = 1;
 		_elements.add(robofinger2);
 		
-		roboTarget = new FlxSprite(robobase.x-88, 115);
+		roboTarget = new FlxSprite(robobase.x-8, 105);
 		roboTarget.loadGraphic(AssetPaths.particles__png, false, 4, 4);
 		roboTarget.animation.frameIndex = 7;
 		roboTarget.visible = false;

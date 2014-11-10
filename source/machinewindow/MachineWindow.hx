@@ -47,6 +47,7 @@ class MachineWindow extends FlxGroup
 		_hud = hud;
 				
 		super();
+		GC.windowMode = true;
 		
 		_elements = new FlxTypedGroup();
 		add(_elements);
@@ -207,6 +208,7 @@ class MachineWindow extends FlxGroup
 	{
 		_machine.detachWindow();
 		_hud.remove(this);
+		GC.windowMode = false;
 		this.destroy();
 	}
 	

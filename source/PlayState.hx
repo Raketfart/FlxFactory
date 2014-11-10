@@ -163,12 +163,14 @@ class PlayState extends FlxState
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);
 		
 		//FlxG.collide(_boxGroup);
-		
-		if (camController.camZoom == 1)
-		{		
-			camController.updateCameraControls();
-		} else {
-			player.updateMovementControls();
+		if (GC.windowMode == false)
+		{
+			if (camController.camZoom == 1)
+			{		
+				camController.updateCameraControls();
+			} else {
+				player.updateMovementControls();
+			}
 		}
 		
 		_gameTimer += FlxG.elapsed*GC.gamespeed;		

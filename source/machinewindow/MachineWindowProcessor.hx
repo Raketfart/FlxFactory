@@ -42,8 +42,8 @@ class MachineWindowProcessor extends MachineWindow
 		
 		super(hud,machine);
 		
-		var arrowsX = 150;
-		var arrowsY = bg1.height - 80;
+		var arrowsX = 180;
+		var arrowsY = bg1.height - 135;
 		createbutton(arrowsX, arrowsY+20, "", AssetPaths.btn_arrow_left__png, onArrowLeft);	
 		createbutton(arrowsX+20, arrowsY, "", AssetPaths.btn_arrow_up__png, onArrowUp);	
 		createbutton(arrowsX+40, arrowsY+20, "", AssetPaths.btn_arrow_right__png, onArrowRight);	
@@ -65,11 +65,11 @@ class MachineWindowProcessor extends MachineWindow
 		screenbg2.loadGraphic(AssetPaths.mwin_screenextralarge__png, false);		
 		_elements.add(screenbg2);
 		
-		roboHead = new FlxSprite(80,50);
+		roboHead = new FlxSprite(100,50);
 		roboHead.loadGraphic(AssetPaths.parts_head__png, false);
 		_elements.add(roboHead);
 		
-		roboEye = new FlxSprite(150,30);
+		roboEye = new FlxSprite(170,30);
 		roboEye.loadGraphic(AssetPaths.parts_eye__png, false);
 		_elements.add(roboEye);
 		
@@ -220,7 +220,7 @@ class MachineWindowProcessor extends MachineWindow
 		if (FlxG.keys.anyJustPressed(["R"]))
 		{
 			
-			robotOrders.push(new RobotOrder("move", new FlxPoint(robotArm.roboTarget.x+20, robotArm.roboTarget.y),0));
+			robotOrders.push(new RobotOrder("move", new FlxPoint(robotArm.roboTarget.x+5, robotArm.roboTarget.y),0));
 			robotOrders.push(new RobotOrder("move", new FlxPoint(roboEye.x+(roboEye.width/2)+20, robotArm.roboTarget.y),0));
 			robotOrders.push(new RobotOrder("move", new FlxPoint(roboEye.x+(roboEye.width/2)+20, roboEye.y+(roboEye.height/2)),0));
 			robotOrders.push(new RobotOrder("open", null,2));
@@ -229,7 +229,7 @@ class MachineWindowProcessor extends MachineWindow
 			robotOrders.push(new RobotOrder("pickup"));
 			robotOrders.push(new RobotOrder("move", new FlxPoint(roboEye.x+(roboEye.width/2)+20, roboEye.y+(roboEye.height/2)),0));
 			robotOrders.push(new RobotOrder("move", new FlxPoint(roboEye.x+(roboEye.width/2)+20, 95),0));
-			robotOrders.push(new RobotOrder("move", new FlxPoint(170, 95),0));
+			robotOrders.push(new RobotOrder("move", new FlxPoint(190, 95),0));
 			
 		}
 	}
