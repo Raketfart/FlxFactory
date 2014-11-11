@@ -25,7 +25,11 @@ class RobotArm extends FlxGroup
 	var fingerMin:Float = 2;
 	var fingerMax:Float = 10;
 	
+	var baseYMin:Float = 39;
+	var baseYMax:Float = 112;
+	
 	public var targetObject:FlxSprite;
+	
 	
 	
 	public function new(_elements:FlxTypedGroup<FlxSprite>) 
@@ -194,31 +198,39 @@ class RobotArm extends FlxGroup
 	
 	public function onArrowUp() 
 	{
-		robofinger1.y -= 1;
-		robofinger2.y -= 1;
-		roboarm1.y -= 1;
-		roboTarget.y -= 1;
-		roboarm2.y -= 1;
-		roboarm3.y -= 1;
-		robobase.y -= 1;
-		if (targetObject != null)
+		if (robobase.y > baseYMin)
 		{
-			targetObject.y -= 1;
-		}	
+			robofinger1.y -= 1;
+			robofinger2.y -= 1;
+			roboarm1.y -= 1;
+			roboTarget.y -= 1;
+			roboarm2.y -= 1;
+			roboarm3.y -= 1;
+			robobase.y -= 1;
+			if (targetObject != null)
+			{
+				targetObject.y -= 1;
+			}	
+			trace("y" +robobase.y);
+		}
 	}
 	public function onArrowDown() 
 	{
-		robofinger1.y += 1;
-		robofinger2.y += 1;
-		roboarm1.y += 1;
-		roboTarget.y += 1;
-		roboarm2.y += 1;
-		roboarm3.y += 1;
-		robobase.y += 1;
-		if (targetObject != null)
+		if (robobase.y < baseYMax)
 		{
-			targetObject.y += 1;
-		}	
+			robofinger1.y += 1;
+			robofinger2.y += 1;
+			roboarm1.y += 1;
+			roboTarget.y += 1;
+			roboarm2.y += 1;
+			roboarm3.y += 1;
+			robobase.y += 1;
+			if (targetObject != null)
+			{
+				targetObject.y += 1;
+			}	
+			trace("y" +robobase.y);
+		}
 	}
 	public function onOpen() 
 	{
