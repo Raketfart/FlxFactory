@@ -211,7 +211,7 @@ class RobotArm extends FlxGroup
 			{
 				targetObject.y -= 1;
 			}	
-			trace("y" +robobase.y);
+			
 		}
 	}
 	public function onArrowDown() 
@@ -229,7 +229,7 @@ class RobotArm extends FlxGroup
 			{
 				targetObject.y += 1;
 			}	
-			trace("y" +robobase.y);
+		
 		}
 	}
 	public function onOpen() 
