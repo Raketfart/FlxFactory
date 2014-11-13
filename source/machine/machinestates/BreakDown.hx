@@ -2,8 +2,9 @@ package machine.machinestates;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
 import machinewindow.MachineWindow;
-import util.FlxFSM;
-import util.FlxFSM.FlxFSMState;
+import fsm.FlxFSM;
+import fsm.FlxFSM.FlxFSMState;
+
 
 class BreakDown extends FlxFSMState<Machine>
 {

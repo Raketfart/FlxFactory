@@ -59,13 +59,13 @@ class SlotContainer extends FlxGroup
 			slot.rePositionItem();
 		}
 	}
-	public function addItem(item:InventoryItem):Void
+	public function addItem(item:InventoryItem, scrollFactor:Int = 1):Void
 	{
 		for (slot in _slots)
 		{
 			if (slot.willAccept(item))
 			{
-				slot.addItem(item);
+				slot.addItem(item,scrollFactor);
 				break;
 			}
 		}

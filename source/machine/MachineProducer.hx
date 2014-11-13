@@ -4,9 +4,6 @@ import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import machinewindow.MachineWindow;
 import inventory.InventoryItem;
-import machine.machinestates.BootUp;
-import machine.machinestates.PowerOff;
-import util.FlxFSM;
 
 /**
  * ...

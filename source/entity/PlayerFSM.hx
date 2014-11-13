@@ -2,7 +2,7 @@ package entity ;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import util.FlxFSM;
+import flixel.addons.util.FlxFSM;
 
 /**
  * ...

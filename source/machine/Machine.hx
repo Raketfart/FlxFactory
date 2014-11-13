@@ -1,14 +1,14 @@
 package machine;
+import fsm.FlxFSM;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import inventory.SlotContainer;
 import machinewindow.MachineWindow;
 import inventory.InventoryItem;
-import machine.machinestates.BootUp;
-import machine.machinestates.BreakDown;
-import machine.machinestates.PowerOff;
-import util.FlxFSM;
+import machine.machinestates.*;
+
 
 /**
  * ...
@@ -41,6 +41,8 @@ class Machine extends Module
 	
 	var middleX:Float;
 	var hasTransformed:Bool;
+	
+	public var slotContainer:SlotContainer;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0,TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
@@ -86,6 +88,15 @@ class Machine extends Module
 		this.connectsInUp = false;
 		
 		fsm = new FlxFSM<Machine>(this, new PowerOff());
+		
+		slotContainer = new SlotContainer(2, 2,baseImage.x+10, baseImage.y+10);
+		add(slotContainer);
+		
+		slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
+		slotContainer.addItem(new InventoryItem(InventoryItem.INV_CRATE, 0, 0));
+		//slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
+		//slotContainer.removeItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
+	
 		
 	}
 	override public function update():Void 
@@ -255,7 +266,7 @@ class Machine extends Module
 	public function breakDown() 
 	{
 		condition = 0;
-		//fsm.state = new BreakDown();
+		fsm.state = new BreakDown();
 	}
 	public function attachWindow(Window:MachineWindow):Void
 	{

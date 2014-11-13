@@ -1,10 +1,10 @@
-package util;
+package fsm ;
 
+import flixel.util.FlxPool;
 import flixel.interfaces.IFlxDestroyable;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxRandom;
 import flixel.FlxG;
-import flixel.util.FlxPool;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
 /**

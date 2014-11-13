@@ -5,7 +5,7 @@ package machinewindow ;
  * ...
  * @author 
  */
-class MachineWindowGeneric extends MachineWindow
+class x_OLD_MachineWindowGeneric extends MachineWindow
 {
 	var _machine:Machine;
 	var _hud:HUD;

@@ -10,7 +10,7 @@ import hud.HUD;
 import machine.Machine;
 import machine.Module;
 import scene.TileType;
-import util.FlxFSM;
+import fsm.FlxFSM;
 
 /**
  * ...

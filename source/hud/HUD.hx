@@ -8,6 +8,7 @@ import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import hud.HudText;
 import machinewindow.MachineWindow;
+import machinewindow.MachineWindowBasic;
 import machinewindow.MachineWindowProcessor;
 import machinewindow.MachineWindowProcessor;
 import inventory.InventoryItem;
@@ -388,7 +389,7 @@ class HUD extends FlxGroup
 			var mw:MachineWindow = new MachineWindowProcessor(this,machine);
 			add(mw);					
 		} else {
-			var mw:MachineWindow = new MachineWindow(this,machine);
+			var mw:MachineWindow = new MachineWindowBasic(this,machine);
 			add(mw);			
 		}
 		
@@ -429,7 +430,7 @@ class HUD extends FlxGroup
 	function onAddToInv():Void
 	{	
 		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
-		slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
+		slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0),0);
 	}
 	function onTakeFromInv():Void
 	{	

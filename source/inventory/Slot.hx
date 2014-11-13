@@ -60,7 +60,7 @@ class Slot extends FlxGroup
 		}
 		return false;
 	}
-	public function addItem(Item:InventoryItem):Void
+	public function addItem(Item:InventoryItem,scrollFactor:Int = 1):Void
 	{
 		if (itemCount > 0)
 		{
@@ -72,7 +72,7 @@ class Slot extends FlxGroup
 			item.x = x+GC.tileSize;
 			item.y = y+GC.tileSize;
 			add(item);
-			item.scrollFactor.set(0, 0);
+			item.scrollFactor.set(scrollFactor, scrollFactor);
 			itemCount++;
 		}
 		txt.text = Std.string(itemCount);
