@@ -139,6 +139,7 @@ class Conveyor extends Module
 		if (GC.debugdraw)
 		{
 			item.color = FlxColor.BLUE;
+			
 		}
 		//item.x = graphic.x+graphic.width;
 		//item.y = graphic.y;

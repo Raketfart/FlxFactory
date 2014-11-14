@@ -92,8 +92,8 @@ class Machine extends Module
 		slotContainer = new SlotContainer(2, 2,baseImage.x+10, baseImage.y+10);
 		add(slotContainer);
 		
-		slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
-		slotContainer.addItem(new InventoryItem(InventoryItem.INV_CRATE, 0, 0));
+		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
+		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_CRATE, 0, 0));
 		//slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
 		//slotContainer.removeItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
 	
@@ -112,6 +112,7 @@ class Machine extends Module
 		{
 			//item.visible = false;
 		}
+		slotContainer.addItem(new InventoryItem(item.invType, 0, 0));
 		super.addToInventory(item);
 	}
 	override public function willAddToInventory(item:InventoryItem):Bool
@@ -124,6 +125,14 @@ class Machine extends Module
 		{
 			return true;
 		}
+	}
+	override public function getFromInventory():InventoryItem 
+	{
+		var item = super.getFromInventory();
+		slotContainer.removeItem(item);
+		return item;
+		
+	
 	}
 	public function setDirectionX(direction:Int)
 	{

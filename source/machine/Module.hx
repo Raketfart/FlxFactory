@@ -111,6 +111,10 @@ class Module extends FlxGroup
 	{
 		inventoryArr.push(item);		
 	}
+	/**
+	 * remove first inventory item
+	 * @return
+	 */
 	public function getFromInventory():InventoryItem 
 	{
 		if (inventoryArr.length > 0) 
@@ -119,7 +123,31 @@ class Module extends FlxGroup
 		}
 		return null;
 	}
-	
+	/**
+	 * remove specific type of inventory item
+	 * @param	itemType
+	 * @return
+	 */
+	/*
+	public function getTypeFromInventory(invType:Int):InventoryItem 
+	{
+		if (inventoryArr.length > 0) 
+		{
+			for (item in inventoryArr)
+			{
+				if (item.invType == invType)
+				{
+					if (inventoryArr.remove(item))
+					{
+						return item;
+					}
+				}
+			}
+			
+		}
+		return null;
+	}
+	*/
 	public function refreshConnections():Void
 	{
 		debugClear();
