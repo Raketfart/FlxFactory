@@ -4,6 +4,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
+import flixel.util.FlxRandom;
 import inventory.InventoryItem;
 
 /**
@@ -118,7 +119,7 @@ class Conveyor extends Module
 				
 				if (connections.length > 0)
 				{
-					if (doesItemOverlap(item, inventoryArr))
+					if (doesItemOverlap(item, connections[0].inventoryArr))
 					{
 						doMove = false;					
 					}	
@@ -138,7 +139,29 @@ class Conveyor extends Module
 		super.addToInventory(item);
 		if (GC.debugdraw)
 		{
-			item.color = FlxColor.BLUE;
+			var ran:Int = FlxRandom.intRanged(0, 5);
+			switch (ran) 
+			{
+				case 0:
+					item.color = FlxColor.BLUE;
+					
+				case 1:
+					item.color = FlxColor.AQUAMARINE;
+					
+				case 2:
+					item.color = FlxColor.AZURE;
+					
+				case 3:
+					item.color = FlxColor.BEIGE;
+					
+				case 4:
+					item.color = FlxColor.BROWN;
+					
+					
+				default:
+					item.color = FlxColor.CORAL;
+			}
+			
 			
 		}
 		//item.x = graphic.x+graphic.width;

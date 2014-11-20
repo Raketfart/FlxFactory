@@ -16,7 +16,7 @@ class MachineStamper extends Machine
 	var stamper:FlxSprite;
 	private var tween:FlxTween;	
 	var hasStamped:Bool;
-	
+	var hasTransformed:Bool;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		

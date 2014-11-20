@@ -72,7 +72,8 @@ class PlayState extends FlxState
 		machineController = new MachineController();
 		add(machineController);
 		
-		machineController.setupTestMachines();
+		//machineController.setupTestMachines();
+		machineController.setupTestMachines2();
 		
 		
 		emitter = new Emitter(collideGrp);
@@ -100,12 +101,12 @@ class PlayState extends FlxState
 		super.create();
 		
 		
-		
 		//mapGen1();
 		
 		//FlxG.watch.add(player,"x","px");
 		
 	}
+	
 	//{ region Setup
 	function setupMap() 
 	{

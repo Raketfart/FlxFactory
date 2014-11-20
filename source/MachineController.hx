@@ -139,6 +139,32 @@ class MachineController extends FlxGroup
 		}
 		
 	}
+	public function setupTestMachines2():Void
+	{
+		//DIGGER & up conveyor
+		var mod:Module = new MachineProducer(this,leftTile+18, topTile);
+		machineGrp.add(mod);
+		moduleArr.push(mod);
+		var mod3:Module = new Conveyor(this,leftTile+20, topTile+1);
+		conveyorGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new Conveyor(this,leftTile+21, topTile+1);
+		conveyorGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod3:Module = new Conveyor(this,leftTile+22, topTile+1);
+		conveyorGrp.add(mod3);
+		moduleArr.push(mod3);
+		var mod:Module = new MachineProcessor(this,leftTile+23, topTile);
+		machineGrp.add(mod);
+		moduleArr.push(mod);
+		
+		
+		for (m in moduleArr)
+		{
+			m.refreshConnections();
+		}
+		
+	}
 	public function setupMoreCrates():Void
 	{
 		for (m in moduleArr)

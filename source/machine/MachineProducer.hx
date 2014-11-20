@@ -2,6 +2,7 @@ package machine;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.util.FlxRandom;
 import machinewindow.MachineWindow;
 import inventory.InventoryItem;
 
@@ -28,9 +29,26 @@ class MachineProducer extends Machine
 	{
 		if (inventoryArr.length <= 0)
 		{
-			var item:InventoryItem = new InventoryItem(InventoryItem.INV_IRON_RAW);
+			var item:InventoryItem;
+			var ran:Int = FlxRandom.intRanged(0, 5);
+			switch (ran) 
+			{
+				case 0:					
+					item = new InventoryItem(InventoryItem.INV_IRON_RAW);
+				case 1:
+					item = new InventoryItem(InventoryItem.INV_COAL_RAW);
+				case 2:
+					item = new InventoryItem(InventoryItem.INV_COPPER_BAR);
+				case 3:
+					item = new InventoryItem(InventoryItem.INV_COPPER_CYLINDER);
+				case 4:
+					item = new InventoryItem(InventoryItem.INV_CRATE);
+				default:
+					item = new InventoryItem(InventoryItem.INV_PART_IRON_HEAD);
+			}
+			
 			this.controller.inventoryGrp.add(item);
-			this.addToInventory(item);
+			this.addToOutput(item);
 			
 			item.x = baseImage.x + 21;
 			item.y = baseImage.y + 21;
