@@ -15,7 +15,7 @@ class Running extends FlxFSMState<Machine>
 	
 	override public function update(elapsed:Float, Owner:Machine, FSM:FlxFSM<Machine>)
 	{		
-		Owner.doMoveOutput();
+		//Owner.doMoveOutput();
 		
 		Owner.doProcessing();
 		

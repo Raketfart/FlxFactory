@@ -17,7 +17,6 @@ import Lambda;
  */
 class Machine extends Module
 {
-	//var productCounter:Float;
 	var lastOutput:Int=0;
 	
 	var lampOutput:FlxSprite;
@@ -41,8 +40,6 @@ class Machine extends Module
 	public var window:MachineWindow;
 	
 	var middleX:Float;
-	//var hasTransformed:Bool;
-	
 	
 	private var slotInput1:MachineSlot;
 	private var slotInput2:MachineSlot;
@@ -50,9 +47,6 @@ class Machine extends Module
 	private var slotOutput:MachineSlot;
 	
 	public var outputTestItem:InventoryItem;		
-	//public var outputItem1:InventoryItem;
-	
-	//public var slotContainer:SlotContainer;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0,TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
@@ -106,14 +100,6 @@ class Machine extends Module
 		
 		fsm = new FlxFSM<Machine>(this, new PowerOff());
 		
-		//slotContainer = new SlotContainer(2, 2,baseImage.x+10, baseImage.y+10);
-		//add(slotContainer);
-		
-		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_COPPER_BAR, 0, 0));
-		//slotContainer.addItem(new InventoryItem(InventoryItem.INV_CRATE, 0, 0));
-		//slotContainer.addItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
-		//slotContainer.removeItem(new InventoryItem(FlxRandom.intRanged(0,9), 0, 0));
-		
 		//FlxG.watch.add(this,"slotInput1.invType","inp1 type");
 		FlxG.watch.add(this,"slotInput1.itemCount","inp1 count");
 		//FlxG.watch.add(this,"slotInput2.invType","inp2 type");
@@ -139,10 +125,7 @@ class Machine extends Module
 		{
 			//item.visible = false;
 		}
-		//slotContainer.addItem(new InventoryItem(item.invType, 0, 0));
 		
-		//inventoryInputArr.push(item);		
-		//trace("add");
 		if (slotInput1.willAccept(item.invType))
 		{
 			slotInput1.addItem(item.invType);
@@ -153,16 +136,9 @@ class Machine extends Module
 		} 
 		this.controller.inventoryGrp.remove(item);
 		item.destroy();
-		//super.addToInventory(item);
+		
 	}
-	//TODO: Maybe delete this?  only used by machineproducer
-	/*
-	public function addToOutput(item:InventoryItem):Void 
-	{
-		outputItem0 = item;
-		super.addToInventory(item);
-	}
-	*/
+	
 	override public function willAddToInventory(item:InventoryItem):Bool
 	{
 		if (power < 100)
@@ -185,10 +161,7 @@ class Machine extends Module
 	override public function getFromInventory():InventoryItem 
 	{
 		var item = super.getFromInventory();
-		//slotContainer.removeItem(item);
-		
-		
-		//inventoryOutputArr.remove(item);		
+			
 		return item;
 		
 	
@@ -225,13 +198,8 @@ class Machine extends Module
 		} 	
 		else if (currentProductionCompletion >= 100 && slotProcess.itemCount > 0)
 		{
-			//hasTransformed = true;
-			//doTransform(item);	
+			
 			productionFinished();
-			//inventoryInputArr.remove(item);		
-			//inventoryOutputArr.push(item);	
-			
-			
 			
 		}
 		if (slotProcess.itemCount == 0)
@@ -258,7 +226,6 @@ class Machine extends Module
 	{
 		var connCount:Int = connections.length;
 		var connCurrent:Int = -1;
-		//trace("connections count " + connCount);
 		if (connCount == 1)
 		{
 			connCurrent = 0;
@@ -287,16 +254,13 @@ class Machine extends Module
 			if (connections[connCurrent].willAddToInventory(outputTestItem) &&
 				!doesItemOverlap(outputTestItem, connections[connCurrent].inventoryArr))
 			{
-				//trace("connCurrent " + connCurrent+ ". item0 " + outputItem0 + ". y " + connections[connCurrent].tilePos.tileY*GC.tileSize + "." );
 				var item:InventoryItem = new InventoryItem(slotOutput.removeItem());
 				
 				if (moveDirectionX == 1) //right
 				{
 					item.x = baseImage.x + baseImage.width;
-					//item.x = connections[connCurrent].tilePos.tileX * GC.tileSize - 15;
 				} else { //left
 					item.x = baseImage.x;
-					//item.x = this.tilePos.tileX * GC.tileSize + 15;
 				}				
 				item.y = connections[connCurrent].tilePos.tileY*GC.tileSize + 0;
 				this.controller.inventoryGrp.add(item);
@@ -304,26 +268,7 @@ class Machine extends Module
 				lampOn();
 				
 			}
-				//inventoryArr.push(item);
-				//outputItem0 = item;
-				/*
-			} 
-			else if (connCurrent == 1 && outputItem1 == null)
-			{
-				trace("connCurrent " + connCurrent+ ". item1 " + outputItem1 + ". y " + connections[connCurrent].tilePos.tileY*GC.tileSize + "." );
-				
-				var item:InventoryItem = new InventoryItem(slotOutput.removeItem());
-				if (moveDirectionX == 1) //right
-				{
-					item.x = connections[connCurrent].tilePos.tileX * GC.tileSize - 15;
-				} else { //left
-					item.x = this.tilePos.tileX * GC.tileSize + 15;
-				}
-				item.y = connections[connCurrent].tilePos.tileY*GC.tileSize + 0;
-				this.controller.inventoryGrp.add(item);
-				inventoryArr.push(item);
-				outputItem1 = item;
-			}*/
+			
 			
 		}
 		
@@ -332,117 +277,12 @@ class Machine extends Module
 	//move from process to output slot
 	function productionFinished():Void
 	{		
-		//trace("slotProcess " + slotProcess.invType + "/" + slotProcess.itemCount);
-		//trace("slotOutput " + slotOutput.invType + "/" + slotOutput.itemCount);
 		if (slotOutput.willAccept(slotProcess.invType))
 		{
 			slotOutput.addItem(slotProcess.removeItem());	
 			condition -= 1;
 		}
 	}
-	
-	public function doMoveOutput():Void
-	{
-		var targetOut:Float;
-		var currentTarget:Float;
-		if (moveDirectionX == 1)
-		{	//right
-			targetOut = baseImage.x + baseImage.width;
-		}
-		else
-		{	//left
-			targetOut = baseImage.x;
-		}
-		currentTarget = targetOut;
-		/*
-		if (hasTransformed == false)
-		{
-			currentTarget = middleX;
-		} else {
-			currentTarget = targetOut;
-		}
-		*/
-		//move output
-		
-		//for (item in inventoryArr) 7
-		/*
-		if (outputItem0 != null)
-		{				
-			moveOutputItem(outputItem0,0,currentTarget);			
-		}
-		if (outputItem1 != null)
-		{			
-			moveOutputItem(outputItem1,1,currentTarget);						
-		}
-		
-		*/
-		if (lampOutputCount > 0)
-		{
-			lampOutputCount --;
-		} else {
-			lampOff();
-		}
-		
-	}
-	/*
-	function moveOutputItem(item:InventoryItem,whichOutput:Int,currentTarget:Float) 
-	{
-			var doMove:Bool = true;
-			var orgX:Float = item.x;
-			var orgY:Float = item.y;
-			if (item.x != currentTarget)			
-			{
-				moveItem(item, FlxG.elapsed, currentTarget, 0);					
-			}			
-			if (item.x == currentTarget) // move to next module
-			{								
-				if (connections.length > 0)
-				{
-					if (doesItemOverlap(item, connections[whichOutput].inventoryArr))
-					{
-						doMove = false;						
-					}
-					
-					if (doMove && connections[whichOutput].willAddToInventory(item))
-					{
-						//var item = getFromInventory();
-						connections[whichOutput].addToInventory(item);
-						lampOn();
-						
-						if (whichOutput == 0)
-						{
-							outputItem0 = null;
-						} else {
-							outputItem1 = null;
-						}
-					} else {
-						doMove = false;
-					}
-				} else {
-					doMove = false;
-				}
-				
-			} else { // move in this module
-				if (doesItemOverlap(item, inventoryArr))
-				{
-					doMove = false;					
-				}				
-				if (connections.length > 0)
-				{
-					if (doesItemOverlap(item, connections[whichOutput].inventoryArr))
-					{
-						doMove = false;						
-					}					
-				}				
-				
-			}
-			if (!doMove)
-			{
-				item.y = orgY;
-				item.x = orgX;
-			}
-	}
-	*/
 	
 	public function lampOn():Void
 	{
