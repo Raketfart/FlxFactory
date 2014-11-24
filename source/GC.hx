@@ -13,7 +13,7 @@ class GC
 	static public var currentTool:String = "";
 	static public var windowMode:Bool = false;
 	
-	static public var debugdraw:Bool = true;
+	static public var debugdraw:Bool = false;
 
 	static public var state:PlayState;
 	static public var hud:HUD;
