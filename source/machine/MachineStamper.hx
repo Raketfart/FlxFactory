@@ -17,6 +17,7 @@ class MachineStamper extends Machine
 	private var tween:FlxTween;	
 	var hasStamped:Bool;
 	var hasTransformed:Bool;
+	var processDisplayItem:InventoryItem;
 	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0) 
 	{		
@@ -34,6 +35,7 @@ class MachineStamper extends Machine
 		base.loadGraphic(AssetPaths.factory__png);
 		imageLayer.add(base);
 		*/
+		
 		baseImage.loadGraphic(AssetPaths.factoryStamper_1__png);
 		hasStamped = false;
 		hasTransformed = false;
@@ -49,20 +51,40 @@ class MachineStamper extends Machine
 		this.connectsInDown = false;
 		this.connectsInUp = false;
 		
+		processDisplayItem = new InventoryItem(0, baseImage.x,baseImage.y);
+		processDisplayItem.visible = true;
+		imageBackgroundLayer.add(processDisplayItem);
+		processDisplayItem.y = baseImage.y+(1 * GC.tileSize);
+		
+		//FlxG.watch.add(this,"hasStamped","hasStamped");
 		//tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { ease: FlxEase.expoOut, complete: stampDown} );
 	}
-	override public function doProcessing():Void
+	override public function loadProcessing(invType:Int):Void
 	{
-		//no super!!!!!!!
+		super.loadProcessing(invType);
+		hasStamped = false;	
+		hasTransformed = false;
+		processDisplayItem.setInvType(invType);
+		if (moveDirectionX == 1)
+		{	//right
+			processDisplayItem.x = baseImage.x + 10;
+		}
+		else
+		{	//left			
+			processDisplayItem.x = baseImage.x + baseImage.width-10;
+		}		
+	}
+	override public function processingAdvance():Void
+	{
 		var targetOut:Float;
 		var currentTarget:Float;
 		if (moveDirectionX == 1)
 		{	//right
-			targetOut = baseImage.x + baseImage.width;
+			targetOut = baseImage.x + baseImage.width-10;
 		}
 		else
 		{	//left
-			targetOut = baseImage.x;
+			targetOut = baseImage.x+10;
 		}
 		if (hasStamped == false)
 		{
@@ -71,95 +93,40 @@ class MachineStamper extends Machine
 			currentTarget = targetOut;
 		}
 		
-		for (item in inventoryArr) 
-		{			
-			var doMove:Bool = true;
-			var orgX:Float = item.x;
-			var orgY:Float = item.y;
-			
-			if (hasStamped || item.x != currentTarget)
-			{
-				moveItem(item, FlxG.elapsed, currentTarget, 0);				
-			} 			
-			else if (hasStamped == false && stamper.animation.name=="idle")
-			{
-				stamper.animation.play("movedown");				
-			} 
-			else if (stamper.animation.finished  && hasTransformed == false) 
-			{
-				transformItem(item);
-				hasTransformed = true;
-				stamper.animation.play("moveup");
-			}
-			else if (stamper.animation.finished) 
-			{
-				stamper.animation.play("idle");
-				hasStamped = true;
-			}
-			
-			if (item.x == targetOut) // move to next module
-			{								
-				if (connections.length > 0)
-				{
-					if (doesItemOverlap(item, connections[0].inventoryArr))
-					{
-						doMove = false;						
-					}
-					
-					if (doMove && connections[0].willAddToInventory(item))
-					{
-						var item = getFromInventory();
-						connections[0].addToInventory(item);
-						
-						//item.visible = true;
-						lampOn();
-						currentProductionCompletion = 0;
-						
-						//wear and tear
-						condition-=1;
-						
-					} else {
-						doMove = false;
-					}
-				} else {
-					doMove = false;
-				}
-				
-			} else { // move in this module
-				if (doesItemOverlap(item, inventoryArr))
-				{
-					doMove = false;					
-				}				
-				if (connections.length > 0)
-				{
-					if (doesItemOverlap(item, connections[0].inventoryArr))
-					{
-						doMove = false;						
-					}					
-				}				
-				
-			}
-			if (!doMove)
-			{
-				item.y = orgY;
-				item.x = orgX;
-			}
-			
-		}
-		
-		
-		if (lampOutputCount > 0)
+		if (hasStamped && processDisplayItem.x == currentTarget)
 		{
-			lampOutputCount --;
-		} else {
-			lampOff();
+			currentProductionCompletion = 100;
+		}
+		else if (hasStamped || processDisplayItem.x != currentTarget)
+		{
+			//trace("moving" + hasStamped + ". " + currentTarget + "-" +processDisplayItem.x);
+			moveItem(processDisplayItem, FlxG.elapsed, currentTarget, 0);				
+		}
+		else if (hasStamped == false && stamper.animation.name=="idle")
+		{
+			//trace("stampdown");
+			stamper.animation.play("movedown");				
+		} 
+		else if (stamper.animation.finished  && hasTransformed == false) 
+		{
+			//trace("transform + moveup" + hasTransformed);
+			hasTransformed = true;
+			transformItem(processDisplayItem);			
+			stamper.animation.play("moveup");
+		}
+		else if (stamper.animation.finished) 
+		{
+			//trace("idle");
+			stamper.animation.play("idle");
+			hasStamped = true;			
 		}
 	}
 	
+	
 	override public function addToInventory(item:InventoryItem):Void 
 	{
-		hasStamped = false;
-		hasTransformed = false;
+		//hasStamped = false;
+		//hasTransformed = false;
 		super.addToInventory(item);
 		if (GC.debugdraw)
 		{

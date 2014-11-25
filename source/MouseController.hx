@@ -142,7 +142,8 @@ class ToolDig extends FlxFSMState<MouseController>
 			if (TileType.isTileDiggable(tiletype))
 			{					
 				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
-				Owner.state.emitter.emit(Owner.highlightBox.x,Owner.highlightBox.y);
+				Owner.state.emitter.emit(Owner.highlightBox.x, Owner.highlightBox.y);
+				FlxG.camera.shake(.001, .05);
 			} 
 		}
 	}
@@ -205,7 +206,7 @@ class ToolBuild extends FlxFSMState<MouseController>
 			if (tiletype==TileType.TYPE_EMPTY)
 			{
 				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
-				GC.hud.addDing(Std.int(FlxG.mouse.x / GC.tileSize) * GC.tileSize, Std.int(FlxG.mouse.y / GC.tileSize) * GC.tileSize, "*");
+				GC.hud.addDing(Std.int(FlxG.mouse.x / GC.tileSize) * GC.tileSize, Std.int(FlxG.mouse.y / GC.tileSize) * GC.tileSize, "*");				
 			}			
 		}
 	}

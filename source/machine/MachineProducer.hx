@@ -44,6 +44,7 @@ class MachineProducer extends Machine
 			default:
 				type=InventoryItem.INV_PART_IRON_HEAD;
 		}
+		trace(ran + " t"+type);
 		if (slotOutput.willAccept(type))
 		{
 			slotOutput.addItem(type);	

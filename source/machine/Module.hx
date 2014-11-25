@@ -30,6 +30,7 @@ class Module extends FlxGroup
 	public var moveDirectionY:Int;
 	//private var imageBackLayer:FlxGroup;
 	private var imageLayer:FlxGroup;
+	private var imageBackgroundLayer:FlxGroup;
 	private var debugLayer:FlxGroup;
 	
 	public var connectsOutRight:Bool = false;
@@ -65,6 +66,8 @@ class Module extends FlxGroup
 		
 		//imageBackLayer = new FlxGroup();
 		//add(imageBackLayer);
+		imageBackgroundLayer = new FlxGroup();
+		add(imageBackgroundLayer);
 		imageLayer = new FlxGroup();
 		add(imageLayer);
 		debugLayer = new FlxGroup();

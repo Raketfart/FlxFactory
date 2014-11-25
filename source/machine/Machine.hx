@@ -189,18 +189,24 @@ class Machine extends Module
 		this.connectsInUp = false;
 	}
 	
+	public function loadProcessing(invType:Int):Void
+	{
+		
+	}
+	public function processingAdvance():Void
+	{
+		currentProductionCompletion += productionSpeed * FlxG.elapsed;
+	}
 	public function doProcessing():Void
 	{
 		
 		if (slotProcess.itemCount > 0 && currentProductionCompletion < 100 && power == 100)
 		{				
-			currentProductionCompletion += productionSpeed * FlxG.elapsed;								
+			processingAdvance();								
 		} 	
 		else if (currentProductionCompletion >= 100 && slotProcess.itemCount > 0)
-		{
-			
-			productionFinished();
-			
+		{			
+			productionFinished();			
 		}
 		if (slotProcess.itemCount == 0)
 		{			
@@ -210,8 +216,9 @@ class Machine extends Module
 			{				
 				slotInput1.removeItem();
 				slotInput2.removeItem();
-				slotProcess.addItem(0);
+				slotProcess.addItem(3);
 				currentProductionCompletion = 0;
+				loadProcessing(3);
 			}
 		}
 		if (slotOutput.itemCount > 0)

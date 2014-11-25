@@ -47,6 +47,7 @@ class PlayState extends FlxState
 	public var emitter:Emitter;	
 	public var hud:HUD;
 	
+	public var collideGrpWorld:FlxGroup;
 	public var collideGrp:FlxGroup;
 	
 	var camController:CameraController;
@@ -64,6 +65,7 @@ class PlayState extends FlxState
 		add(background);
 		
 		collideGrp = new FlxGroup();
+		collideGrpWorld = new FlxGroup();
 		
 		setupMap();
 		
@@ -111,8 +113,9 @@ class PlayState extends FlxState
 	function setupMap() 
 	{
 		
-		worldmap = new WorldMap();
+		worldmap = new WorldMap(collideGrpWorld);
 		add(worldmap);
+				
 	}
 	
 	
@@ -158,7 +161,7 @@ class PlayState extends FlxState
 		// Tilemaps can be collided just like any other FlxObject, and flixel
 		// automatically collides each individual tile with the object.
 		//FlxG.collide(worldmap.collisionMap,player);
-		FlxG.collide(worldmap.collisionMap,collideGrp);
+		FlxG.collide(collideGrpWorld,collideGrp);
 		//FlxG.collide(worldmap.collisionMap,emitter);
 		
 		//FlxG.collide(_boxGroup, _conveyorGroup,onConveyorCollision);

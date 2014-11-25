@@ -141,6 +141,7 @@ class MachineController extends FlxGroup
 	}
 	public function setupTestMachines2():Void
 	{
+		topTile = 8;
 		//DIGGER & up conveyor
 		var mod:Module = new MachineProducer(this,leftTile+18, topTile);
 		machineGrp.add(mod);

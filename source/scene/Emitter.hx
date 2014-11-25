@@ -42,15 +42,17 @@ class Emitter extends FlxGroup
 		{			
 			_whitePixel = new FlxParticle();
 			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.add("d", [0], 1, false);
-			_whitePixel.animation.play("d");
+			_whitePixel.animation.frameIndex = 0;
+			//_whitePixel.animation.add("d", [0], 1, false);
+			//_whitePixel.animation.play("d");
 			_whitePixel.visible = false; 
 			_whitePixel.acceleration.y = 400; 		
 			_emitterDirt.add(_whitePixel);	
 			_whitePixel = new FlxParticle();
 			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.add("d", [1], 1, false);
-			_whitePixel.animation.play("d");
+			_whitePixel.animation.frameIndex = 1;
+			//_whitePixel.animation.add("d", [1], 1, false);
+			//_whitePixel.animation.play("d");
 			_whitePixel.acceleration.y = 400; 						
 			_whitePixel.visible = false;
 			_emitterDirt.add(_whitePixel);
@@ -73,16 +75,18 @@ class Emitter extends FlxGroup
 		{			
 			_whitePixel = new FlxParticle();
 			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.add("d", [5], 1, false);
-			_whitePixel.animation.play("d");
+			_whitePixel.animation.frameIndex = 5;
+			//_whitePixel.animation.add("d", [5], 1, false);
+			//_whitePixel.animation.play("d");
 			_whitePixel.visible = false; 
 			_whitePixel.acceleration.y = 10; 		
 			_whitePixel.acceleration.x = -100; 		
 			_emitterSmokeWhite.add(_whitePixel);	
 			_whitePixel = new FlxParticle();
 			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.add("d", [6], 1, false);
-			_whitePixel.animation.play("d");
+			_whitePixel.animation.frameIndex = 6;
+			//_whitePixel.animation.add("d", [6], 1, false);
+			//_whitePixel.animation.play("d");
 			_whitePixel.acceleration.y = 10; 						
 			_whitePixel.acceleration.x = -100; 									
 			_whitePixel.visible = false;

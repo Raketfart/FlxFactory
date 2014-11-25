@@ -45,7 +45,7 @@ class Player extends FlxSprite
 		
 		drag.x = 640;
 		acceleration.y = 420;
-		maxVelocity.set(120, 260);
+		maxVelocity.set(220, 360);
 		
 		
 	}
@@ -76,7 +76,7 @@ class Player extends FlxSprite
 		if (FlxG.keys.anyJustPressed(["UP", "W"]) && velocity.y == 0)
 		{
 			y -= 1;
-			velocity.y = -200;
+			velocity.y = -300;
 		}
 		
 		// ANIMATION
