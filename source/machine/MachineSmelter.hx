@@ -1,4 +1,5 @@
 package machine;
+import crafting.Recipe;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -28,6 +29,13 @@ class MachineSmelter extends Machine
 		imageLayer.add(flames);
 		flames.animation.play("flames");
 		
+		currentRecipe = new Recipe();
+		currentRecipe.inputType1 = InventoryItem.INV_IRON_RAW;		
+		currentRecipe.inputAmount1 = 1;
+		currentRecipe.inputType2 = -1;
+		currentRecipe.inputAmount2 = 0;
+		currentRecipe.outputType = InventoryItem.INV_IRON_BAR;
+		currentRecipe.outputAmount = 1;
 		
 	}
 	

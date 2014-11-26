@@ -1,4 +1,5 @@
 package machine;
+import crafting.Recipe;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
@@ -55,16 +56,26 @@ class MachineStamper extends Machine
 		processDisplayItem.visible = true;
 		imageBackgroundLayer.add(processDisplayItem);
 		processDisplayItem.y = baseImage.y+(1 * GC.tileSize);
+		processDisplayItem.x = baseImage.x + 10;
+		
+		currentRecipe = new Recipe();
+		currentRecipe.inputType1 = InventoryItem.INV_IRON_BAR;		
+		currentRecipe.inputAmount1 = 1;
+		currentRecipe.inputType2 = -1;
+		currentRecipe.inputAmount2 = 0;
+		currentRecipe.outputType = InventoryItem.INV_IRON_CYLINDER;
+		currentRecipe.outputAmount = 1;
 		
 		//FlxG.watch.add(this,"hasStamped","hasStamped");
 		//tween = FlxTween.tween(stamper, {  y:stamper.y-12 }, .5, { ease: FlxEase.expoOut, complete: stampDown} );
 	}
-	override public function loadProcessing(invType:Int):Void
+	override public function loadProcessing(invType:Int,amount:Int):Void
 	{
-		super.loadProcessing(invType);
+		super.loadProcessing(invType,amount);
 		hasStamped = false;	
 		hasTransformed = false;
-		processDisplayItem.setInvType(invType);
+		//set display to input 1 type
+		processDisplayItem.setInvType(currentRecipe.inputType1);
 		if (moveDirectionX == 1)
 		{	//right
 			processDisplayItem.x = baseImage.x + 10;
@@ -111,7 +122,8 @@ class MachineStamper extends Machine
 		{
 			//trace("transform + moveup" + hasTransformed);
 			hasTransformed = true;
-			transformItem(processDisplayItem);			
+			//transformItem(processDisplayItem);			
+			processDisplayItem.setInvType(currentRecipe.outputType);
 			stamper.animation.play("moveup");
 		}
 		else if (stamper.animation.finished) 

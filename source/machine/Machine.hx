@@ -1,4 +1,5 @@
 package machine;
+import crafting.Recipe;
 import fsm.FlxFSM;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -48,13 +49,14 @@ class Machine extends Module
 	
 	public var outputTestItem:InventoryItem;		
 	
+	public var currentRecipe:Recipe;
+	
 	public function new(Controller:MachineController,tileX:Int = 0, tileY:Int = 0,TileWidth:Int = 1, TileHeight:Int = 1) 
 	{		
 		super(Controller,tileX, tileY,TileWidth,TileHeight);
-		
+				
 		//hasTransformed = false;
 		middleX = tileX * GC.tileSize+31;
-		
 		
 		baseImage = new FlxSprite(tileX*GC.tileSize, tileY*GC.tileSize);
 		//base.loadGraphic(AssetPaths.factory__png);
@@ -96,6 +98,8 @@ class Machine extends Module
 		slotInput2 = new MachineSlot();
 		slotProcess = new MachineSlot();
 		slotOutput = new MachineSlot();
+		
+		
 		
 		
 		fsm = new FlxFSM<Machine>(this, new PowerOff());
@@ -145,11 +149,11 @@ class Machine extends Module
 		{
 			return false;
 		}
-		if (slotInput1.willAccept(item.invType))
+		if (slotInput2.invType != item.invType && slotInput1.willAccept(item.invType))
 		{
 			return true;
 		} 
-		else if (slotInput2.willAccept(item.invType))
+		else if (slotInput1.invType != item.invType && slotInput2.willAccept(item.invType))
 		{
 			return true;
 		} 
@@ -188,10 +192,47 @@ class Machine extends Module
 		this.connectsInDown = false;
 		this.connectsInUp = false;
 	}
-	
-	public function loadProcessing(invType:Int):Void
+	public function tryLoadProcessing():Void
 	{
-		
+		if (currentRecipe != null)
+		{
+			//look for first recipe item in slot 1
+			if (slotInput1.hasItem(currentRecipe.inputType1, currentRecipe.inputAmount1))
+			{
+				//second recipe item slot 2				
+				if (slotInput2.hasItem(currentRecipe.inputType2, currentRecipe.inputAmount2)
+					|| currentRecipe.inputType2 == -1)
+				{
+					slotInput1.removeItem(currentRecipe.inputAmount1);
+					if (currentRecipe.inputType2 != -1)
+					{
+						slotInput2.removeItem(currentRecipe.inputAmount2);
+					}
+					currentProductionCompletion = 0;
+					loadProcessing(currentRecipe.outputType, currentRecipe.outputAmount);
+				}				
+			}
+			//look for first recipe item in slot 2
+			else if (slotInput2.hasItem(currentRecipe.inputType1, currentRecipe.inputAmount1))
+			{
+				//second recipe item is in slot 1				
+				if (slotInput1.hasItem(currentRecipe.inputType2, currentRecipe.inputAmount2)
+					|| currentRecipe.inputType2 == -1)
+				{
+					slotInput2.removeItem(currentRecipe.inputAmount1);
+					if (currentRecipe.inputType2 != -1)
+					{
+						slotInput1.removeItem(currentRecipe.inputAmount2);
+					}
+					currentProductionCompletion = 0;
+					loadProcessing(currentRecipe.outputType, currentRecipe.outputAmount);
+				}	
+			}
+		}
+	}
+	public function loadProcessing(invType:Int,amount:Int):Void
+	{	
+		slotProcess.addItem(invType,amount);
 	}
 	public function processingAdvance():Void
 	{
@@ -205,21 +246,13 @@ class Machine extends Module
 			processingAdvance();								
 		} 	
 		else if (currentProductionCompletion >= 100 && slotProcess.itemCount > 0)
-		{			
+		{						
 			productionFinished();			
 		}
 		if (slotProcess.itemCount == 0)
 		{			
-			//take items for next product
-			//TODO: this logic should be recipe based
-			if (slotInput1.itemCount > 0 && slotInput2.itemCount > 0)
-			{				
-				slotInput1.removeItem();
-				slotInput2.removeItem();
-				slotProcess.addItem(3);
-				currentProductionCompletion = 0;
-				loadProcessing(3);
-			}
+			tryLoadProcessing();
+			
 		}
 		if (slotOutput.itemCount > 0)
 		{
@@ -320,7 +353,7 @@ class Machine extends Module
 	public function detachWindow():Void
 	{
 		window = null;
-	}
+	}/*
 	public function transformItem(item:InventoryItem):Void
 	{
 		if (item.invType == InventoryItem.INV_IRON_RAW)
@@ -348,11 +381,11 @@ class Machine extends Module
 			item.setInvType(InventoryItem.INV_CRATE);
 		}
 
-	}
+	}*//*
 	public function doTransform(item:InventoryItem)
 	{
 		transformItem(item);	
-	}
+	}*/
 	
 	
 	

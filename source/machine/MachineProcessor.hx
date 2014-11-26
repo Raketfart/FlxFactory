@@ -1,4 +1,5 @@
 package machine;
+import crafting.Recipe;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
@@ -22,6 +23,13 @@ class MachineProcessor extends Machine
 		*/
 		baseImage.loadGraphic(AssetPaths.factory__png);
 		
+		currentRecipe = new Recipe();
+		currentRecipe.inputType1 = InventoryItem.INV_IRON_CYLINDER;		
+		currentRecipe.inputAmount1 = 2;
+		currentRecipe.inputType2 = InventoryItem.INV_IRON_BAR;
+		currentRecipe.inputAmount2 = 1;
+		currentRecipe.outputType = InventoryItem.INV_PART_IRON_BODY;
+		currentRecipe.outputAmount = 1;
 	}
 	
 	

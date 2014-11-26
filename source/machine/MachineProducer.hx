@@ -28,8 +28,9 @@ class MachineProducer extends Machine
 	override public function doProcessing():Void
 	{
 		var ran:Int = FlxRandom.intRanged(0, 5);
-		var type:Int = 0;
-		switch (ran) 
+		var type:Int = InventoryItem.INV_IRON_RAW; 
+		
+		/*switch (ran) 
 		{
 			case 0:					
 				type=InventoryItem.INV_IRON_RAW;
@@ -44,7 +45,8 @@ class MachineProducer extends Machine
 			default:
 				type=InventoryItem.INV_PART_IRON_HEAD;
 		}
-		trace(ran + " t"+type);
+		//trace(ran + " t"+type);
+		*/
 		if (slotOutput.willAccept(type))
 		{
 			slotOutput.addItem(type);	
@@ -80,10 +82,7 @@ class MachineProducer extends Machine
 		}	*/
 		super.doProcessing();
 	}
-	override public function doTransform(item:InventoryItem)
-	{
-		//dont transform
-	}
+	
 	
 	
 	

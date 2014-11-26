@@ -24,50 +24,51 @@ class MachineSlot
 	{
 		if (invType == -1)
 		{
-			return true;
+			//trace("accept 1 " + invType);
+			return true;			
 		}
 		else if (invType == inventoryType && slotCapacity > itemCount)
 		{
+			//trace("accept 2 " + invType);
 			return true;
 		}		
 		return false;
 	}
-	public function addItem(inventoryType:Int):Void
+	public function addItem(inventoryType:Int,amount:Int = 1):Void
 	{		
 		if (itemCount > 0)
 		{
-			itemCount++;
+			itemCount+=amount;
 		}
 		else if (itemCount == 0)
 		{
 			invType = inventoryType;			
-			itemCount++;
+			itemCount = amount;
 		}
-		//trace("slot type " + inventoryType + ". Amount " + itemCount);
+		//trace("slot type " + inventoryType + "/" + invType + ". Amount " + itemCount);
 	}
 	
-	public function removeItem():Int
+	public function removeItem(amount:Int=1):Int
 	{	
 		var returntype:Int = invType;
-		if (itemCount > 1)
+		if (itemCount >= amount)
 		{
-			itemCount--;
+			itemCount-= amount;
 		}
-		else if (itemCount == 1)
+		if (itemCount == 0)
 		{
-			itemCount = 0;			
 			invType = -1;
 		}
 		return returntype;
 		//trace("slot type " + invType + ". Amount " + itemCount);
 	}
-	public function hasItem(inventoryType:Int):Bool
+	public function hasItem(inventoryType:Int,amount:Int = 1):Bool
 	{
 		if (itemCount > 0)
 		{
-			if (invType == inventoryType)
-			{
-				return true;
+			if (invType == inventoryType && itemCount >= amount)
+			{				
+					return true;				
 			}			
 		}
 		return false;
