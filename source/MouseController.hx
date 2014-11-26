@@ -134,17 +134,20 @@ class ToolDig extends FlxFSMState<MouseController>
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
-		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		if (FlxG.mouse.pressed)
+		if (GC.windowMode == false)
 		{
-			var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-			if (TileType.isTileDiggable(tiletype))
-			{					
-				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
-				Owner.state.emitter.emit(Owner.highlightBox.x, Owner.highlightBox.y);
-				FlxG.camera.shake(.001, .05);
-			} 
+			Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			if (FlxG.mouse.pressed)
+			{
+				var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
+				if (TileType.isTileDiggable(tiletype))
+				{					
+					Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);					
+					Owner.state.emitter.emit(Owner.highlightBox.x, Owner.highlightBox.y);
+					FlxG.camera.shake(.001, .05);
+				} 
+			}
 		}
 	}
 	override public function exit(Owner:MouseController)
@@ -164,22 +167,26 @@ class ToolDeconstruct extends FlxFSMState<MouseController>
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
-		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		if (FlxG.mouse.pressed)
+		if (GC.windowMode == false)
 		{
-			var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));							
-			if (tiletype == TileType.TYPE_METAL_WALL)
+			Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			if (FlxG.mouse.pressed)
 			{
-				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
-				Owner.state.emitter.emitSmoke(Owner.highlightBox.x,Owner.highlightBox.y);
-			}
-			else if (Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize)) != null)
-			{
-				Owner.state.machineController.removeModule();
-				Owner.state.emitter.emitSmoke(Owner.highlightBox.x,Owner.highlightBox.y);
+				var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));							
+				if (tiletype == TileType.TYPE_METAL_WALL)
+				{
+					Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_EMPTY);
+					Owner.state.emitter.emitSmoke(Owner.highlightBox.x,Owner.highlightBox.y);
+				}
+				else if (Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize)) != null)
+				{
+					Owner.state.machineController.removeModule();
+					Owner.state.emitter.emitSmoke(Owner.highlightBox.x,Owner.highlightBox.y);
+				}
 			}
 		}
+
 	}
 	override public function exit(Owner:MouseController)
 	{
@@ -198,16 +205,19 @@ class ToolBuild extends FlxFSMState<MouseController>
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
-		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		if (FlxG.mouse.pressed)
+		if (GC.windowMode == false)
 		{
-			var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-			if (tiletype==TileType.TYPE_EMPTY)
+			Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			if (FlxG.mouse.pressed)
 			{
-				Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
-				GC.hud.addDing(Std.int(FlxG.mouse.x / GC.tileSize) * GC.tileSize, Std.int(FlxG.mouse.y / GC.tileSize) * GC.tileSize, "*");				
-			}			
+				var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
+				if (tiletype==TileType.TYPE_EMPTY)
+				{
+					Owner.state.worldmap.collisionMap.setTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize), TileType.TYPE_METAL_WALL);
+					GC.hud.addDing(Std.int(FlxG.mouse.x / GC.tileSize) * GC.tileSize, Std.int(FlxG.mouse.y / GC.tileSize) * GC.tileSize, "*");				
+				}			
+			}
 		}
 	}
 	override public function exit(Owner:MouseController)
@@ -300,100 +310,105 @@ class ToolModule extends FlxFSMState<MouseController>
 	}
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
-		//update graphics on tool change
-		if (_tool != GC.currentTool)
-		{
-			Owner.remove(_moduleGhost);
-			_moduleGhost.destroy();	
-			Owner.remove(_arrowGhost);
-			_arrowGhost.destroy();
-			_tool = GC.currentTool;
-			addgraphics(Owner);
-		}
-		
-		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		_moduleGhost.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		_moduleGhost.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		_arrowGhost.x = _moduleGhost.x;
-		_arrowGhost.y = _moduleGhost.y;
-		
-		if (FlxG.keys.anyJustPressed(["R"]))
-		{				
-			if (Owner.buildDirection == FlxObject.RIGHT)
+		if (GC.windowMode == false)
 			{
-				Owner.buildDirection = FlxObject.LEFT;					
-			} else {
-				Owner.buildDirection = FlxObject.RIGHT;					
-			}
-		}
-		_arrowGhost.facing = Owner.buildDirection;
-		if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE_STAMP || _tool == HUD.TOOL_MACHINE_SMELT)
-		{
-			if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+			//update graphics on tool change
+			if (_tool != GC.currentTool)
 			{
-				_moduleGhost.color = FlxColor.GREEN;			
-			} else {
-				_moduleGhost.color = FlxColor.RED;
+				Owner.remove(_moduleGhost);
+				_moduleGhost.destroy();	
+				Owner.remove(_arrowGhost);
+				_arrowGhost.destroy();
+				_tool = GC.currentTool;
+				addgraphics(Owner);
 			}
-		} else if ( _tool == HUD.TOOL_MACHINE_DIG )
-		{			
-			if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
+			
+			Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			_moduleGhost.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			_moduleGhost.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			_arrowGhost.x = _moduleGhost.x;
+			_arrowGhost.y = _moduleGhost.y;
+			
+			if (FlxG.keys.anyJustPressed(["R"]))
+			{				
+				if (Owner.buildDirection == FlxObject.RIGHT)
+				{
+					Owner.buildDirection = FlxObject.LEFT;					
+				} else {
+					Owner.buildDirection = FlxObject.RIGHT;					
+				}
+			}
+			_arrowGhost.facing = Owner.buildDirection;
+			if (_tool == HUD.TOOL_MACHINE1 || _tool == HUD.TOOL_MACHINE_STAMP || _tool == HUD.TOOL_MACHINE_SMELT)
 			{
-				_moduleGhost.color = FlxColor.GREEN;			
-			} else {
-				_moduleGhost.color = FlxColor.RED;
+				if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+				{
+					_moduleGhost.color = FlxColor.GREEN;			
+				} else {
+					_moduleGhost.color = FlxColor.RED;
+				}
+			} else if ( _tool == HUD.TOOL_MACHINE_DIG )
+			{			
+				if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
+				{
+					_moduleGhost.color = FlxColor.GREEN;			
+				} else {
+					_moduleGhost.color = FlxColor.RED;
+				}
 			}
-		}
-		
-		if (FlxG.mouse.justReleased)
-		{		
-			if (Owner.state.isClickOnMap() == true)
-			{	
-				var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
-				
-				if (GC.currentTool == HUD.TOOL_CONVEYOR)
-				{
-					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+			
+			if (FlxG.mouse.justReleased)
+			{		
+				if (Owner.state.isClickOnMap() == true)
+				{	
+					var tiletype:Int = Owner.state.worldmap.collisionMap.getTile(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));				
+					
+					if (GC.currentTool == HUD.TOOL_CONVEYOR)
 					{
-						Owner.state.machineController.addConveyor(Owner.buildDirection);					
-					}
-				}				
-				else if (GC.currentTool == HUD.TOOL_CONV_UP)
-				{
-					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+						if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+						{
+							Owner.state.machineController.addConveyor(Owner.buildDirection);					
+						}
+					}				
+					else if (GC.currentTool == HUD.TOOL_CONV_UP)
 					{
-						Owner.state.machineController.addConvU();			
+						if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+						{
+							Owner.state.machineController.addConvU();			
+						}
 					}
-				}
-				else if (GC.currentTool == HUD.TOOL_CONV_DOWN)
-				{
-					if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+					else if (GC.currentTool == HUD.TOOL_CONV_DOWN)
 					{
-						Owner.state.machineController.addConvD();			
+						if (Owner.state.machineController.canAddModule(1,1,Owner.state.worldmap.collisionMap))
+						{
+							Owner.state.machineController.addConvD();			
+						}
 					}
-				}
-				else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE_STAMP || GC.currentTool == HUD.TOOL_MACHINE_SMELT)
-				{
-					if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+					else if (GC.currentTool == HUD.TOOL_MACHINE1 || GC.currentTool == HUD.TOOL_MACHINE_STAMP || GC.currentTool == HUD.TOOL_MACHINE_SMELT)
 					{
-						Owner.state.machineController.addMachine( GC.currentTool,Owner.buildDirection );					
+						if (Owner.state.machineController.canAddModule(3,2,Owner.state.worldmap.collisionMap))
+						{
+							Owner.state.machineController.addMachine( GC.currentTool, Owner.buildDirection );					
+							FlxG.camera.shake(.001, .1);
+						}
 					}
-				}
-				else if (GC.currentTool == HUD.TOOL_MACHINE_DIG)
-				{
-					if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
+					else if (GC.currentTool == HUD.TOOL_MACHINE_DIG)
 					{
-						Owner.state.machineController.addMachine( GC.currentTool,Owner.buildDirection );					
+						if (Owner.state.machineController.canAddModule(2,2,Owner.state.worldmap.collisionMap))
+						{
+							Owner.state.machineController.addMachine( GC.currentTool, Owner.buildDirection );					
+							FlxG.camera.shake(.001, .1);
+						}
 					}
+					else if (GC.currentTool == HUD.TOOL_CRATE)
+					{
+						Owner.state.machineController.addCrateToModule();					
+					}
+					
+					
+					
 				}
-				else if (GC.currentTool == HUD.TOOL_CRATE)
-				{
-					Owner.state.machineController.addCrateToModule();					
-				}
-				
-				
-				
 			}
 		}
 		
@@ -417,19 +432,22 @@ class ToolControl extends FlxFSMState<MouseController>
 	}
 	
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
-	{		
-		Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
-		Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
-		if (FlxG.mouse.pressed && Owner.state.isClickOnMap() == true)
+	{	
+		if (GC.windowMode == false)
 		{
-			var m:Module = Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
-			if (m != null)
+			Owner.highlightBox.x = Math.floor(FlxG.mouse.x / GC.tileSize) * GC.tileSize;
+			Owner.highlightBox.y = Math.floor(FlxG.mouse.y / GC.tileSize) * GC.tileSize;
+			if (FlxG.mouse.pressed && Owner.state.isClickOnMap() == true)
 			{
-				if (Std.is(m, Machine))
+				var m:Module = Owner.state.machineController.getModuleAt(Std.int(FlxG.mouse.x / GC.tileSize), Std.int(FlxG.mouse.y / GC.tileSize));
+				if (m != null)
 				{
-					var machine:Machine = cast m;
-					Owner.state.hud.showMachineWindow(machine);
-					Owner.changeTool(HUD.TOOL_WINDOW);
+					if (Std.is(m, Machine))
+					{
+						var machine:Machine = cast m;
+						Owner.state.hud.showMachineWindow(machine);
+						Owner.changeTool(HUD.TOOL_WINDOW);
+					}
 				}
 			}
 		}

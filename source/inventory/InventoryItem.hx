@@ -21,6 +21,34 @@ class InventoryItem extends FlxSprite
 	public static var INV_PART_IRON_HEAD = 8;
 	public static var INV_PART_IRON_BODY = 9;
 	
+	public static function invToString(invType:Int):String
+	{
+		switch (invType) 
+		{
+			case 0:
+				return "CRATE";
+			case 1:
+				return "COAL_RAW";
+			case 2:
+				return "IRON_RAW";
+			case 3:
+				return "COPPER_RAW";
+			case 4:
+				return "IRON_BAR";
+			case 5:
+				return "IRON_CYLINDER";
+			case 6:
+				return "COPPER_BAR";
+			case 7:
+				return "COPPER_CYLINDER";
+			case 8:
+				return "PART_IRON_HEAD";
+			case 9:
+				return "PART_IRON_BODY";
+			default:
+				return "Unknown";
+		}
+	}
 	public var invType:Int;
 	
 	public function new(InvType:Int = 0, X:Float=0, Y:Float=0) 

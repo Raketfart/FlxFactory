@@ -13,6 +13,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import hud.DragLever;
 import hud.FlipButton;
 import hud.HUD;
 import hud.HUDTypedText;
@@ -36,6 +37,7 @@ class MachineWindow extends FlxGroup
 	
 	var _elements : FlxTypedGroup<FlxSprite>;	
 	var screenbg:FlxSprite;
+	public var dragLever:DragLever;
 	public var gaugebg:FlxSprite;
 	public var gaugeArrow:FlxSprite;
 	public var powerButton:FlipButton;	
@@ -91,6 +93,9 @@ class MachineWindow extends FlxGroup
 		cogs.animation.add("running", [0,1], 6, true);
 		cogs.animation.play("stopped");
 		_elements.add(cogs);
+		
+		dragLever = new DragLever(_elements,Std.int(cogs.x - 30), Std.int(cogs.y+cogs.height-45),0,100,machine.productionSpeed);
+		add(dragLever);
 		
 		gaugebg = new FlxSprite(screenbg.x, screenbg.y + screenbg.height+10);
 		gaugebg.loadGraphic(AssetPaths.mwin_gauge_bg__png, false, 55, 22);		
@@ -151,8 +156,14 @@ class MachineWindow extends FlxGroup
 		} else {
 			gaugebg.animation.play("stopped");
 		}
-		var max:Float = gaugebg.x+42;
-		var min:Float = gaugebg.x+30;
+		
+		var percent:Float = 42 * (_machine.productionSpeed) / 100;
+		
+		//var max:Float = gaugebg.x+42;
+		//var min:Float = gaugebg.x + 30;
+		var max:Float = gaugebg.x+percent;
+		var min:Float = gaugebg.x-8+percent;
+		
 		if (on == false)
 		{
 			max = min = gaugebg.x-8;
@@ -173,6 +184,8 @@ class MachineWindow extends FlxGroup
 	override public function update():Void
 	{
 		super.update();
+		
+		//trace("winupd");
 		//this.move(.1*FlxG.elapsed, 0);
 		/*
 		if (FlxG.keys.justPressed.SPACE)

@@ -1,5 +1,6 @@
 package machine.machinestates;
 import flixel.util.FlxColor;
+import inventory.InventoryItem;
 import machinewindow.MachineWindow;
 import fsm.FlxFSM;
 import fsm.FlxFSM.FlxFSMState;
@@ -39,12 +40,22 @@ class Running extends FlxFSMState<Machine>
 	
 	function updateWindow(win:MachineWindow, Owner:Machine)
 	{
+		Owner.productionSpeed = win.dragLever.currentValue;
+		
 		win.lamp1.animation.play("green");
 		win.lamp2.animation.play("green");
 		win.lamp3.animation.play("green");
 		win.cogs.animation.play("running");
 		win.bootProgressBar.visible = false;
 		win.moveGauge(true);
-		win.screentext.text = "CONDITION: " + Owner.condition + "%";
+		win.screentext.text = "CONDITION: " + Owner.condition + "%\n";
+		win.screentext.text += "SPEED: " + Owner.productionSpeed + "\n";
+		if (Owner.currentRecipe != null)
+		{
+			win.screentext.text += "OUTPUT: " + InventoryItem.invToString(Owner.currentRecipe.outputType) + "\n";
+			
+			win.screentext.text += "Req1: " + InventoryItem.invToString(Owner.currentRecipe.inputType1) + "\n";
+			win.screentext.text += "Req2: " + InventoryItem.invToString(Owner.currentRecipe.inputType2) + "\n";
+		}
 	}
 }

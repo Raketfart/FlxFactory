@@ -19,7 +19,7 @@ class MachineProducer extends Machine
 		super(Controller,tileX, tileY,2,2);
 		
 		baseImage.loadGraphic(AssetPaths.factoryDrill__png);
-		productionSpeed = 10000;
+		productionSpeed = 100;
 		
 		
 	}
