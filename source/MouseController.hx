@@ -232,6 +232,8 @@ class ToolModule extends FlxFSMState<MouseController>
 	var _arrowGhost:FlxSprite;
 	var _tool:String;
 	
+	var _hideGhostCounter:Int;
+	
 	override public function enter(Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{
 		_tool = GC.currentTool;
@@ -310,6 +312,15 @@ class ToolModule extends FlxFSMState<MouseController>
 	}
 	override public function update(elapsed:Float, Owner:MouseController, FSM:FlxFSM<MouseController>)
 	{		
+		if (_hideGhostCounter > 0)
+		{
+			_hideGhostCounter --;
+			_moduleGhost.visible = false;
+			_arrowGhost.visible = false;
+		} else {
+			_moduleGhost.visible = true;
+			_arrowGhost.visible = true;
+		}
 		if (GC.windowMode == false)
 			{
 			//update graphics on tool change
@@ -391,6 +402,8 @@ class ToolModule extends FlxFSMState<MouseController>
 						{
 							Owner.state.machineController.addMachine( GC.currentTool, Owner.buildDirection );					
 							FlxG.camera.shake(.001, .1);
+							_hideGhostCounter = 30;
+							Owner.state.emitter.emitDust(Owner.highlightBox.x, Owner.highlightBox.y+(2*GC.tileSize),(3*GC.tileSize));
 						}
 					}
 					else if (GC.currentTool == HUD.TOOL_MACHINE_DIG)
@@ -399,6 +412,8 @@ class ToolModule extends FlxFSMState<MouseController>
 						{
 							Owner.state.machineController.addMachine( GC.currentTool, Owner.buildDirection );					
 							FlxG.camera.shake(.001, .1);
+							_hideGhostCounter = 30;
+							Owner.state.emitter.emitDust(Owner.highlightBox.x, Owner.highlightBox.y+(2*GC.tileSize),(2*GC.tileSize));
 						}
 					}
 					else if (GC.currentTool == HUD.TOOL_CRATE)

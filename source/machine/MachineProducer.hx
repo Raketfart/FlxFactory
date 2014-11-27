@@ -77,7 +77,7 @@ class MachineProducer extends Machine
 			this.addToOutput(item);
 			
 			item.x = baseImage.x + 21;
-			item.y = baseImage.y + 21;
+			item.y = baseImage.y + 21+7;
 			
 		}	*/
 		super.doProcessing();

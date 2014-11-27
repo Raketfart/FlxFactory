@@ -37,7 +37,9 @@ class MachineStamper extends Machine
 		imageLayer.add(base);
 		*/
 		
-		baseImage.loadGraphic(AssetPaths.factoryStamper_1__png);
+		baseImage.loadGraphic(AssetPaths.factoryStamper_B_1__png);
+		baseImage.offset.set(4, 0);
+		
 		hasStamped = false;
 		hasTransformed = false;
 		middleX = tileX * GC.tileSize+31;

@@ -289,7 +289,7 @@ class Machine extends Module
 			} else { //left
 				outputTestItem.x = baseImage.x;
 			}				
-			outputTestItem.y = connections[connCurrent].tilePos.tileY * GC.tileSize + 0;
+			outputTestItem.y = connections[connCurrent].tilePos.tileY * GC.tileSize + 7;
 			outputTestItem.invType = slotOutput.invType;
 			if (connections[connCurrent].willAddToInventory(outputTestItem) &&
 				!doesItemOverlap(outputTestItem, connections[connCurrent].inventoryArr))
@@ -302,7 +302,7 @@ class Machine extends Module
 				} else { //left
 					item.x = baseImage.x;
 				}				
-				item.y = connections[connCurrent].tilePos.tileY*GC.tileSize + 0;
+				item.y = connections[connCurrent].tilePos.tileY*GC.tileSize + 7;
 				this.controller.inventoryGrp.add(item);
 				connections[connCurrent].addToInventory(item);
 				lampOn();

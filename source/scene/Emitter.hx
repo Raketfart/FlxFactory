@@ -16,7 +16,8 @@ class Emitter extends FlxGroup
 	private var _emitterDirt:FlxEmitter;
 	private var _emitterSmokeWhite:FlxEmitter;
 	private var _emitterSmokeBlack:FlxEmitter;
-	private var _whitePixel:FlxParticle;	
+	private var _emitterDust:FlxEmitter;
+	private var _Particle:FlxParticle;	
 	/* EMITTER */
 	
 	public function new(CollideGrp:FlxGroup = null ) 
@@ -40,22 +41,22 @@ class Emitter extends FlxGroup
 		}
 		for (i in 0...(Std.int(_emitterDirt.maxSize / 2))) 
 		{			
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 0;
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 0;
 			//_whitePixel.animation.add("d", [0], 1, false);
 			//_whitePixel.animation.play("d");
-			_whitePixel.visible = false; 
-			_whitePixel.acceleration.y = 400; 		
-			_emitterDirt.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 1;
+			_Particle.visible = false; 
+			_Particle.acceleration.y = 400; 		
+			_emitterDirt.add(_Particle);	
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 1;
 			//_whitePixel.animation.add("d", [1], 1, false);
 			//_whitePixel.animation.play("d");
-			_whitePixel.acceleration.y = 400; 						
-			_whitePixel.visible = false;
-			_emitterDirt.add(_whitePixel);
+			_Particle.acceleration.y = 400; 						
+			_Particle.visible = false;
+			_emitterDirt.add(_Particle);
 		}
 		//_emitterDirt.maxRotation = 0;
 		//_emitterDirt.minRotation  = 0;
@@ -73,24 +74,24 @@ class Emitter extends FlxGroup
 		
 		for (i in 0...(Std.int(_emitterSmokeWhite.maxSize / 2))) 
 		{			
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 5;
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 5;
 			//_whitePixel.animation.add("d", [5], 1, false);
 			//_whitePixel.animation.play("d");
-			_whitePixel.visible = false; 
-			_whitePixel.acceleration.y = 10; 		
-			_whitePixel.acceleration.x = -100; 		
-			_emitterSmokeWhite.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 6;
+			_Particle.visible = false; 
+			_Particle.acceleration.y = 10; 		
+			_Particle.acceleration.x = -100; 		
+			_emitterSmokeWhite.add(_Particle);	
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 6;
 			//_whitePixel.animation.add("d", [6], 1, false);
 			//_whitePixel.animation.play("d");
-			_whitePixel.acceleration.y = 10; 						
-			_whitePixel.acceleration.x = -100; 									
-			_whitePixel.visible = false;
-			_emitterSmokeWhite.add(_whitePixel);
+			_Particle.acceleration.y = 10; 						
+			_Particle.acceleration.x = -100; 									
+			_Particle.visible = false;
+			_emitterSmokeWhite.add(_Particle);
 		}
 		
 		_emitterSmokeBlack = new FlxEmitter(40, 40, 100);
@@ -104,21 +105,50 @@ class Emitter extends FlxGroup
 		
 		for (i in 0...(Std.int(_emitterSmokeBlack.maxSize / 2))) 
 		{			
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 7;			
-			_whitePixel.visible = false; 
-			_whitePixel.acceleration.y = 10; 		
-			_whitePixel.acceleration.x = -100; 		
-			_emitterSmokeBlack.add(_whitePixel);	
-			_whitePixel = new FlxParticle();
-			_whitePixel.loadGraphic(AssetPaths.particles__png, false, 4, 4);
-			_whitePixel.animation.frameIndex = 8;	
-			_whitePixel.acceleration.y = 10; 						
-			_whitePixel.acceleration.x = -100; 									
-			_whitePixel.visible = false;
-			_emitterSmokeBlack.add(_whitePixel);
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 7;			
+			_Particle.visible = false; 
+			_Particle.acceleration.y = 10; 		
+			_Particle.acceleration.x = -100; 		
+			_emitterSmokeBlack.add(_Particle);	
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 8;	
+			_Particle.acceleration.y = 10; 						
+			_Particle.acceleration.x = -100; 									
+			_Particle.visible = false;
+			_emitterSmokeBlack.add(_Particle);
 		}
+		
+		_emitterDust = new FlxEmitter(40, 40, 50);
+		_emitterDust.setXSpeed( -60, 60);
+		_emitterDust.setYSpeed( 0, 0);
+		_emitterDust.width = GC.tileSize;
+		_emitterDust.height= 3;		
+		_emitterDust.bounce = 0.1;
+		_emitterDust.gravity = -30;
+		add(_emitterDust);
+		
+		for (i in 0...(Std.int(_emitterDust.maxSize / 2))) 
+		{			
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 11;			
+			_Particle.visible = false; 			
+			_Particle.acceleration.y = 0; 		
+			_Particle.acceleration.x = 0; 		
+			_emitterDust.add(_Particle);	
+			_Particle = new FlxParticle();
+			_Particle.loadGraphic(AssetPaths.particles__png, false, 4, 4);
+			_Particle.animation.frameIndex = 12;	
+			//_Particle.acceleration.y = 10; 						
+			//_Particle.acceleration.x = -100; 									
+			_Particle.visible = false;
+			_emitterDust.add(_Particle);
+		}
+		//_emitterDust.maxRotation = 0;
+		//_emitterDust.minRotation  = 0;
 		
 	}
 	public function emit(X:Float,Y:Float):Void
@@ -147,5 +177,14 @@ class Emitter extends FlxGroup
 	public function stopSmokeBlack():Void
 	{		
 		_emitterSmokeBlack.start(false, 0.1, 0.05,1,.2);		
+	}
+	
+	public function emitDust(X:Float,Y:Float,width:Float):Void
+	{		
+		_emitterDust.width = width;
+		_emitterDust.x = X;
+		_emitterDust.y = Y-2;
+		//_emitter.start(false, 1, 0.01,10,3);
+		_emitterDust.start(true, 0.2, 0,0,.1);
 	}
 }
